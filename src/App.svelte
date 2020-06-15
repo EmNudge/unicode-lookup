@@ -1,6 +1,7 @@
 <script>
-	import { resultsStore, workerStore } from './stores';
+	import { resultsStore, workerStore, showPopoverStore } from './stores';
 	import ResultsContainer from './components/ResultsContainer.svelte';
+	import Popover from './components/Popover.svelte';
 
 	let hasSearched = false;
 
@@ -52,6 +53,10 @@
 		{/if}
 	{/if}
 </main>
+
+{#if $showPopoverStore}
+	<Popover />
+{/if}
 
 <style>
 	main {

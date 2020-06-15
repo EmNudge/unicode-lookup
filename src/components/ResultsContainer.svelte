@@ -1,5 +1,7 @@
 <script>
   import { loop } from '../utils/iterable'; 
+  import { popoverStore, showPopoverStore } from '../stores';
+  import { tick } from 'svelte'
 
   export let results;
   
@@ -14,6 +16,25 @@
 	function changeCodePoint() {
  		numType = numLoop.next().value;
   }
+
+  let timeoutId;
+  async function copyChar(e, num) {
+    const char = String.fromCodePoint(num);
+    navigator.clipboard.writeText(char);
+
+    // open popover
+    const { x: xPos, y: yPos, height } = e.target.getBoundingClientRect();
+    const x = xPos + 20;
+    const y = yPos + height / 2;
+    $popoverStore = { x, y, content: 'Copied!' };
+    
+    // in case there was a second copy here
+    clearTimeout(timeoutId);
+    $showPopoverStore = false;
+    await tick();
+    $showPopoverStore = true;
+    timeoutId = setTimeout(() => showPopoverStore.set(false), 1000);
+  }
 </script>
 
 <div class="results">
@@ -24,7 +45,7 @@
   
   <!-- content -->
   {#each results as [num, name]}
-    <span class="symbol">{String.fromCodePoint(num)}</span>
+    <span class="symbol" on:dblclick={e => copyChar(e, num)}>{String.fromCodePoint(num)}</span>
     <span class="number">{numType && getNum(num)}</span>
     <span>{name}</span>
   {/each}
