@@ -24,7 +24,7 @@
   
   <!-- content -->
   {#each results as [num, name]}
-    <span>"{String.fromCodePoint(num)}"</span>
+    <span class="symbol">{String.fromCodePoint(num)}</span>
     <span class="number">{numType && getNum(num)}</span>
     <span>{name}</span>
   {/each}
@@ -40,7 +40,7 @@
     margin: 0 auto;
     text-align: left;
   }
-  .results .header {
+  .header {
     font-weight: bold;
   }
   span {
@@ -48,5 +48,8 @@
   }
   .number {
     font-family: 'Courier New', Courier, monospace;
+  }
+  .symbol::before, .symbol::after {
+    content: '"';
   }
 </style>
