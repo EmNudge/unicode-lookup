@@ -1,5 +1,5 @@
 import App from './App.svelte';
-import { resultsStore, workerStore } from './stores';
+import { resultsStore, exactMatchStore, workerStore } from './stores';
 
 const worker = new Worker('./worker.js');
 workerStore.set(worker);
@@ -13,8 +13,9 @@ worker.addEventListener('message', ({ data }) => {
 		return;
 	}
 	if (type === 'query') {
-		resultsStore.set(payload);
-		console.log(payload);
+		const { exactMatch, matches } = payload;
+		resultsStore.set(matches);
+		exactMatchStore.set(exactMatch);
 		return;	
 	}
 });

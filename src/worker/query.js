@@ -1,4 +1,4 @@
-import { take, filter, pipe, collect, pass } from '../utils/iterable';
+import { take, filter, pipe, collect, forEach, pass } from '../utils/iterable';
 
 export default class QueryMachine {
   constructor(unicodeMap, unicodeRangeMap, { limit }) {
@@ -40,22 +40,45 @@ export default class QueryMachine {
   // This is a slower method which checks for non-exact matches. 
   // It's required for strings, but for numbers it can give us the nums around it
   iteratorQuery({ type, value }) {
-    let filterFunc = () => false;
+    const funcs = [];
+    let exactMatch = null;
 
     if (type === 'number') {
-      const closeNum = this.limit ? this.limit / 2 : 3;
-      const isClose = ([num]) => Math.abs(value - num) < closeNum;
-      filterFunc = isClose;
+      const getMatch = ([num, name]) => {
+        if (num === value) exactMatch = [num, name];
+      }
+      funcs.push(forEach(getMatch));
+
+      // collect all "kinda" matches. We want to get surrounding nums, so we split limit in 2
+      const closeNum = this.limit ? this.limit / 2 : 20;
+      const isClose = ([num]) => Math.abs(value - num) < closeNum && num !== value;
+      funcs.push(filter(isClose));
+
     } else if (type === 'string') {
       const val = value.toUpperCase();
-      const hasName = ([,name]) => name.includes(val);
-      filterFunc = hasName;
+      
+      const getMatch = ([num, name]) => {
+        if (name === val) exactMatch = [num, name];
+      }
+      funcs.push(forEach(getMatch));
+
+      // collect all "kinda" matches
+      const hasName = ([,name]) => name.includes(val) && name !== val;
+      funcs.push(filter(hasName));
     }
 
-    return pipe(
-      filter(filterFunc),
-      this.limit > 0 ? take(this.limit) : pass,
+    if (this.limit > 0) {
+      funcs.push(take(this.limit));
+    }
+
+    const matches = pipe(
+      ...funcs,
       collect
     )(this.unicodeMap);
+
+    return {
+      exactMatch,
+      matches,
+    }
   }
 }

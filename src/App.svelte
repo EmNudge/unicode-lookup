@@ -1,5 +1,5 @@
 <script>
-	import { resultsStore, workerStore } from './stores';
+	import { resultsStore, exactMatchStore, workerStore } from './stores';
 	import ResultsContainer from './components/ResultsContainer.svelte';
 
 	let hasSearched = false;
@@ -22,7 +22,6 @@
 			payload: {
 				type: isNum ? 'number' : 'string',
 				value: isNum ? num : text,
-				exact: isNum,
 				limit: 50,
 			} 
 		})
@@ -42,8 +41,8 @@
 		<br>
 	</form>
 
-	{#if $resultsStore.length}
-		<ResultsContainer results={$resultsStore} />
+	{#if $resultsStore.length || $exactMatchStore}
+		<ResultsContainer />
 	{:else}
 		<br>
 		{#if hasSearched}

@@ -62,6 +62,13 @@ export function* pass(iter) {
   yield* iter;
 }
 
+export const forEach = func => function*(iter) {
+  for (const [index, item] of enumerate(iter)) {
+    func(item, index);
+    yield item;
+  }
+}
+
 // util funcs
 export const pipe = (...funcs) => val => funcs.reduce((accum, curr) => curr(accum), val);
 

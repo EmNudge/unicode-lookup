@@ -1,26 +1,14 @@
 <script>
   import { loop } from '../utils/iterable'; 
   import { tick } from 'svelte';
-  import Clipboard from '../icons/clipboard.svelte';
+  import ResultsRow from './ResultsRow.svelte';
 
-  export let results;
-
+  import { exactMatchStore, resultsStore } from '../stores'
   
 	const numLoop = loop(['dec', 'hex', 'oct']);
 	let numType = numLoop.next().value;
-	function getNum(num) {
-		if (numType === 'hex') return `0x${num.toString(16).toLowerCase().padStart(4, '0')}`;
-		if (numType === 'oct') return `0${num.toString(8).padStart(4, '0')}`;
-		return num;
-  }
-  
 	function changeCodePoint() {
  		numType = numLoop.next().value;
-  }
-
-  async function copyChar(num) {
-    const char = String.fromCodePoint(num);
-    navigator.clipboard.writeText(char);
   }
 </script>
 
@@ -30,14 +18,19 @@
   <button class="header" on:click={changeCodePoint}>Code Point</button>
   <span class="header">Description</span>
   
+  <!-- exact match, if found -->
+  {#if $exactMatchStore}
+    <ResultsRow 
+      num={$exactMatchStore[0]} 
+      name={$exactMatchStore[1]}
+      {numType} 
+      special={true} 
+    />
+  {/if}
+
   <!-- content -->
-  {#each results as [num, name]}
-    <span class="symbol">
-      <span>{String.fromCodePoint(num)}</span>
-      <Clipboard on:click={() => copyChar(num)} />
-    </span>
-    <span class="number">{numType && getNum(num)}</span>
-    <span>{name}</span>
+  {#each $resultsStore as [num, name]}
+    <ResultsRow {num} {name} {numType} />
   {/each}
 </div>
 
@@ -57,26 +50,5 @@
   span {
     padding: 2px 10px;
     align-self: baseline;
-  }
-  .number {
-    font-family: 'Courier New', Courier, monospace;
-  }
-
-  .symbol {
-    display: grid;
-    grid-template-columns: auto 1fr;
-  }
-  .symbol span::before, .symbol span::after {
-    content: '"';
-  }
-  .symbol :global(svg) {
-    display: none;
-    cursor: pointer;
-  }
-  .symbol :global(svg:active) {
-    transform: scale(.9);
-  }
-  .symbol:hover :global(svg) {
-    display: block;
   }
 </style>
