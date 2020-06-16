@@ -22,6 +22,7 @@
 <span class="symbol" class:special>
   <span>{String.fromCodePoint(num)}</span>
   <Clipboard on:click={() => copyChar(num)} />
+  <div class="placeholder"></div>
 </span>
 
 <span class="number">{numType && getNum(num)}</span>
@@ -44,6 +45,10 @@
   .symbol span::before, .symbol span::after {
     content: '"';
   }
+  .placeholder {
+    height: 24px;
+    width: 24px;
+  }
   .symbol :global(svg) {
     display: none;
     cursor: pointer;
@@ -53,6 +58,9 @@
   }
   .symbol:hover :global(svg) {
     display: block;
+  }
+  .symbol:hover .placeholder {
+    display: none;
   }
   .symbol.special {
     border-left: 4px solid #92bdff;
