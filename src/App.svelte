@@ -1,7 +1,6 @@
 <script>
-	import { resultsStore, workerStore, showPopoverStore } from './stores';
+	import { resultsStore, workerStore } from './stores';
 	import ResultsContainer from './components/ResultsContainer.svelte';
-	import Popover from './components/Popover.svelte';
 
 	let hasSearched = false;
 
@@ -23,7 +22,8 @@
 			payload: {
 				type: isNum ? 'number' : 'string',
 				value: isNum ? num : text,
-				exact: isNum
+				exact: isNum,
+				limit: 50,
 			} 
 		})
 	}
@@ -53,10 +53,6 @@
 		{/if}
 	{/if}
 </main>
-
-{#if $showPopoverStore}
-	<Popover />
-{/if}
 
 <style>
 	main {

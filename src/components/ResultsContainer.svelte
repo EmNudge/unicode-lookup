@@ -1,9 +1,10 @@
 <script>
   import { loop } from '../utils/iterable'; 
-  import { popoverStore, showPopoverStore } from '../stores';
-  import { tick } from 'svelte'
+  import { tick } from 'svelte';
+  import Clipboard from '../icons/clipboard.svelte';
 
   export let results;
+
   
 	const numLoop = loop(['dec', 'hex', 'oct']);
 	let numType = numLoop.next().value;
@@ -17,23 +18,9 @@
  		numType = numLoop.next().value;
   }
 
-  let timeoutId;
-  async function copyChar(e, num) {
+  async function copyChar(num) {
     const char = String.fromCodePoint(num);
     navigator.clipboard.writeText(char);
-
-    // open popover
-    const { x: xPos, y: yPos, height } = e.target.getBoundingClientRect();
-    const x = xPos + 20;
-    const y = yPos + height / 2;
-    $popoverStore = { x, y, content: 'Copied!' };
-    
-    // in case there was a second copy here
-    clearTimeout(timeoutId);
-    $showPopoverStore = false;
-    await tick();
-    $showPopoverStore = true;
-    timeoutId = setTimeout(() => showPopoverStore.set(false), 1000);
   }
 </script>
 
@@ -45,7 +32,10 @@
   
   <!-- content -->
   {#each results as [num, name]}
-    <span class="symbol" on:dblclick={e => copyChar(e, num)}>{String.fromCodePoint(num)}</span>
+    <span class="symbol">
+      <span>{String.fromCodePoint(num)}</span>
+      <Clipboard on:click={() => copyChar(num)} />
+    </span>
     <span class="number">{numType && getNum(num)}</span>
     <span>{name}</span>
   {/each}
@@ -66,11 +56,27 @@
   }
   span {
     padding: 2px 10px;
+    align-self: baseline;
   }
   .number {
     font-family: 'Courier New', Courier, monospace;
   }
-  .symbol::before, .symbol::after {
+
+  .symbol {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+  .symbol span::before, .symbol span::after {
     content: '"';
+  }
+  .symbol :global(svg) {
+    display: none;
+    cursor: pointer;
+  }
+  .symbol :global(svg:active) {
+    transform: scale(.9);
+  }
+  .symbol:hover :global(svg) {
+    display: block;
   }
 </style>
