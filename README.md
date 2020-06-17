@@ -8,9 +8,11 @@ That's what this is.
 
 A quick, easy, static unicode lookup web app.
 
-### To Do
-I found [DerivedNames.txt](https://www.unicode.org/Public/UCD/latest/ucd/extracted/DerivedName.txt) to be the easiest way to derive names from code points. There may be more efficient ways (as it's a massive text file), but this is what is being used.
+Try it at https://unicode-lookup.netlify.app/
 
-There is also [UnicodeData.txt](https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt) which includes more information about many characters - such as their category and their uppercase/lowercase variants. 
-
-If people request this in the future, I may end up adding functionality to scrape that file to add more info to the resulting queried characters.
+### Roadmap
+- Make site a PWA
+We're already using web workers, so this is dead simple.
+- In addition to using [DerivedNames.txt](https://www.unicode.org/Public/UCD/latest/ucd/extracted/DerivedName.txt) as the main file to parse from, use [UnicodeData.txt](https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt) to grab more information for specified characters.
+- Allow users to save characters for later.
+- Add character combination and normalization tools
