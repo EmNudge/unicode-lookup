@@ -11,6 +11,7 @@
 		const url = new URL(window.location);
 		const path = url.pathname.slice(1);
 		text = decodeURI(path);
+		if (!text.length) return;
 		await onStoreTrue(workerIsReadyStore)
 		await query(text);
 	})
