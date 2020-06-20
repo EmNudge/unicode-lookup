@@ -1,32 +1,21 @@
 <script>
-	import { resultsStore, exactMatchStore, workerStore } from './stores';
+	import { resultsStore, exactMatchStore, workerStore, workerIsReadyStore } from './stores';
 	import ResultsContainer from './components/ResultsContainer.svelte';
-
-	let hasSearched = false;
+	import { onMount } from 'svelte';
+	import { onStoreTrue } from './utils/store'
+	import { query } from './utils/worker'
 
 	let text = '';
 
-	function query() {
-		hasSearched = true;
+	onMount(async () => {
+		const url = new URL(window.location);
+		const path = url.pathname.slice(1);
+		text = decodeURI(path);
+		await onStoreTrue(workerIsReadyStore)
+		await query(text);
+	})
 
-		let num = Number(text);
-		if ([...text].length === 1) {
-			 num = text.codePointAt(0);
-			 console.log(num)
-		}
-		if (isNaN(num) && /^[0-9a-fA-F]+$/.test(num)) num = parseInt(text, 16);
-		const isNum = !isNaN(num);
-
-		$workerStore.postMessage({ 
-			type: 'query',
-			payload: {
-				type: isNum ? 'number' : 'string',
-				value: isNum ? num : text,
-				limit: 50,
-			} 
-		})
-	}
-
+	let hasSearched = false;
 </script>
 
 <main>
@@ -34,7 +23,7 @@
 	<p>A static unicode lookup web app using web workers.</p>
 	<br>
 
-	<form on:submit|preventDefault={query}>
+	<form on:submit|preventDefault={() => query(text)}>
 		<input type="text" bind:value={text}>
 		<button type="submit">Submit</button>
 		<br>

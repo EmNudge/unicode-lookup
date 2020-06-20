@@ -7,7 +7,7 @@ let unicodeMap = new Map();
 let unicodeRangesMap = new Map();
 
 self.addEventListener('message', async ({ data }) => {
-  const { type } = data;
+  const { type, id } = data;
 
   if (type === 'retrieve-table') {
     // this also sets unicode locally
@@ -15,7 +15,7 @@ self.addEventListener('message', async ({ data }) => {
     unicodeMap = payload.unicodeMap;
     unicodeRangesMap = payload.unicodeRangesMap;
 
-    self.postMessage({ type, payload });
+    self.postMessage({ type, id, payload });
     return;
   }
 
@@ -25,7 +25,7 @@ self.addEventListener('message', async ({ data }) => {
     const queryMachine = new QueryMachine(unicodeMap, unicodeRangesMap, { limit });
     const payload = queryMachine.query({ type, value });
     
-    self.postMessage({ type: 'query', payload });
+    self.postMessage({ type: 'query', id, payload });
 
     return;
   }
