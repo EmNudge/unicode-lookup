@@ -48,9 +48,7 @@ export const getPayload = text => {
     }
     
     // if hexidecimal number
-    const isFullHex = /^0x[0-9a-zA-Z]+$/;
-    const isKindaHex = /^[0-9a-zA-Z]+$/;
-    if (isFullHex.test(text) || (isKindaHex.test(text) && text.length > 1)) {
+    if (/^0x[0-9a-fA-F]+$/.test(text)) {
         return { 
             type: 'number', 
             value: parseInt(text, 16),
