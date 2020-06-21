@@ -18,6 +18,12 @@ worker.addEventListener('message', ({ data }) => {
 	exactMatchStore.set(exactMatch);
 });
 
+if('serviceWorker' in navigator) {
+	navigator.serviceWorker
+		.register('/pwa-worker.js')
+		.then(() => console.log('Service Worker Registered'));
+}
+
 const app = new App({ target: document.body });
 
 export default app;

@@ -64,6 +64,18 @@ export default [
 		plugins: [
 			production && terser()
 		]
+	},
+	{
+		input: 'src/pwa.js',
+		output: {
+			sourcemap: true,
+			format: 'iife',
+			name: 'app',
+			file: 'public/pwa-worker.js'
+		},
+		plugins: [
+			production && terser()
+		]
 	}
 ]
 
