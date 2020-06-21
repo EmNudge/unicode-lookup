@@ -2,5 +2,7 @@
 /public/build/
 /public/worker.js
 /public/worker.js.map
+/public/pwa-worker.js
+/public/pwa-worker.js.map
 
 .DS_Store

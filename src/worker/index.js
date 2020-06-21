@@ -10,9 +10,11 @@ self.addEventListener('message', async ({ data }) => {
   const { type, id } = data;
 
   if (type === 'retrieve-table') {
+    let payload = { unicodeMap, unicodeRangesMap };
+
     if (!unicodeMap.size) {
       // this also sets unicode locally
-      const payload = await getUnicode();
+      payload = await getUnicode();
       unicodeMap = payload.unicodeMap;
       unicodeRangesMap = payload.unicodeRangesMap;
     }
