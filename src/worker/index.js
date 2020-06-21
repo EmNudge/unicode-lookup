@@ -15,7 +15,7 @@ self.addEventListener('message', async ({ data }) => {
     unicodeMap = payload.unicodeMap;
     unicodeRangesMap = payload.unicodeRangesMap;
 
-    self.postMessage({ type, id, payload });
+    self.postMessage({ type, id, payload, request: data });
     return;
   }
 
@@ -25,7 +25,7 @@ self.addEventListener('message', async ({ data }) => {
     const queryMachine = new QueryMachine(unicodeMap, unicodeRangesMap, { limit });
     const payload = queryMachine.query({ type, value });
     
-    self.postMessage({ type: 'query', id, payload });
+    self.postMessage({ type: 'query', id, payload, request: data });
 
     return;
   }

@@ -38,7 +38,7 @@ export const asyncPost = data => new Promise(res => {
 });
 
 // takes text, parses it and returns type
-const getPayload = text => {
+export const getPayload = text => {
     // if decimal number
     if (/^[0-9]+$/.test(text)) {
         return { 

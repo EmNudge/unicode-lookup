@@ -1,22 +1,35 @@
 <script>
-	import { resultsStore, exactMatchStore, workerStore, workerIsReadyStore } from './stores';
+	import { 
+		resultsStore, exactMatchStore, 
+		workerStore, workerIsReadyStore,
+	} from './stores';
 	import ResultsContainer from './components/ResultsContainer.svelte';
 	import { onMount } from 'svelte';
 	import { onStoreTrue } from './utils/store'
 	import { query } from './utils/worker'
 
 	let text = '';
+	let isLoading = false;
+	let hasSearched = false;
+
+	async function search() {
+		hasSearched = true;
+		const { request } = await query(text);
+		const val = request.payload.value;
+		history.pushState(null, '', val);
+	}
 
 	onMount(async () => {
 		const url = new URL(window.location);
 		const path = url.pathname.slice(1);
 		text = decodeURI(path);
 		if (!text.length) return;
-		await onStoreTrue(workerIsReadyStore)
-		await query(text);
-	})
 
-	let hasSearched = false;
+		isLoading = true;
+		await onStoreTrue(workerIsReadyStore);
+		await search();
+		isLoading = false;
+	});
 </script>
 
 <main>
@@ -24,14 +37,16 @@
 	<p>A static unicode lookup web app using web workers.</p>
 	<br>
 
-	<form on:submit|preventDefault={() => query(text)}>
+	<form on:submit|preventDefault={search}>
 		<input type="text" bind:value={text}>
 		<button type="submit">Submit</button>
 		<br>
 		<br>
 	</form>
 
-	{#if $resultsStore.length || $exactMatchStore}
+	{#if isLoading}
+		<div>Loading...</div>
+	{:else if $resultsStore.length || $exactMatchStore}
 		<ResultsContainer />
 	{:else}
 		<br>
