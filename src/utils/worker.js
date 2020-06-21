@@ -48,11 +48,10 @@ export const getPayload = text => {
     }
     
     // if hexidecimal number
-    const hex = parseInt(text, 16);
-    if (!isNaN(hex)) {
+    if (/^(:?0x)?[0-9a-zA-Z]+$/.test(text)) {
         return { 
             type: 'number', 
-            value: hex,
+            value: parseInt(text, 16),
         };
     }
 
