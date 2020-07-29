@@ -12,18 +12,30 @@
 	let isLoading = false;
 	let hasSearched = false;
 
+	function getRegURI(re) {
+		const { source, flags } = re;
+		return `REGEX-${flags}-${source}`;
+	}
 	async function search() {
 		hasSearched = true;
 		const { request } = await query(text);
-		const val = request.payload.value;
-		history.pushState(null, '', val);
+		let val = request.payload.value;
+		if (val instanceof RegExp) val = getRegURI(val);
+		history.pushState(null, '', encodeURI(val));
 	}
 
 	onMount(async () => {
 		const url = new URL(window.location);
 		const path = url.pathname.slice(1);
+
 		text = decodeURI(path);
 		if (!text.length) return;
+
+		// we custom encode regex due to the '/' messing with relative URLs
+		if (/REGEX-(.+?)-(.+)/.test(text)) {
+			const { 1: flags, 2: source } = text.match(/REGEX-(.+?)-(.+)/);
+			text = `/${source}/${flags}`;
+		}
 
 		isLoading = true;
 		await onStoreTrue(workerIsReadyStore);
