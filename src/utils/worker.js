@@ -63,6 +63,18 @@ export const getPayload = text => {
         };
     }
 
+    // if regex, retrieve it, but always include flag u. Only add i if requested
+    // the other flags don't matter in this context
+    const regexRes = text.match(/\/(.+?)\/([a-z]+)?/);
+    if (regexRes) {
+        const { 1: regStr, 2: flags } = regexRes;
+        const caseInsensitive = flags && flags.includes('i');
+        return {
+            type: 'regex',
+            value: new RegExp(regStr, caseInsensitive ? 'ui' : 'u'),
+        }
+    }
+
     // must just be a description
     return {
         type: 'string',

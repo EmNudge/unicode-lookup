@@ -38,7 +38,7 @@ export default class QueryMachine {
   }
 
   // This is a slower method which checks for non-exact matches. 
-  // It's required for strings, but for numbers it can give us the nums around it
+  // It's required for strings and regex, but for numbers it can give us the nums around it
   iteratorQuery({ type, value }) {
     const funcs = [];
     let exactMatch = null;
@@ -65,6 +65,13 @@ export default class QueryMachine {
       // collect all "kinda" matches
       const hasName = ([,name]) => name.includes(val) && name !== val;
       funcs.push(filter(hasName));
+    } else if (type === 'regex') {
+      // testing in the order the user most likely meant to
+      // first the name, then the char itself, then the number
+      const passesRegex = ([num, name]) => 
+      value.test(name) || value.test(String.fromCodePoint(num)) || value.test(num);
+
+      funcs.push(filter(passesRegex));
     }
 
     if (this.limit > 0) {

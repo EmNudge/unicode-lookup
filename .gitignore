@@ -6,3 +6,4 @@
 /public/pwa-worker.js.map
 
 .DS_Store
+.vscode
