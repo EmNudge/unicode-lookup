@@ -11,8 +11,10 @@ A quick, easy, static unicode lookup web app.
 Try it at https://unicode-lookup.netlify.app/
 
 ### Roadmap
-- Make site a PWA
-We're already using web workers, so this is dead simple.
-- In addition to using [DerivedNames.txt](https://www.unicode.org/Public/UCD/latest/ucd/extracted/DerivedName.txt) as the main file to parse from, use [UnicodeData.txt](https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt) to grab more information for specified characters.
-- Allow users to save characters for later.
-- Add character combination and normalization tools
+- [x] Make site a PWA
+- [x] Add support for Regex, dec/hex numbers
+- [x] Allow linking to a specific search
+- [ ] Add settings section to specify regex and number searches
+- [ ] In addition to using [DerivedNames.txt](https://www.unicode.org/Public/UCD/latest/ucd/extracted/DerivedName.txt) as the main file to parse from, use [UnicodeData.txt](https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt) to grab more information for specified characters.
+- [ ] Allow users to save characters for later.
+- [ ] Add character combination and normalization tools

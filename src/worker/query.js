@@ -67,9 +67,9 @@ export default class QueryMachine {
       funcs.push(filter(hasName));
     } else if (type === 'regex') {
       // testing in the order the user most likely meant to
-      // first the name, then the char itself, then the number
+      // first the name, then the char itself
       const passesRegex = ([num, name]) => 
-      value.test(name) || value.test(String.fromCodePoint(num)) || value.test(num);
+        value.test(name) || value.test(String.fromCodePoint(num));
 
       funcs.push(filter(passesRegex));
     }
