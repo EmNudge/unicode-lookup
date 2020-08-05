@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { 
-		resultsStore, exactMatchStore, workerIsReadyStore,
-	} from './stores';
+	import { resultsStore, exactMatchStore } from './stores';
 	import ResultsContainer from './components/ResultsContainer.svelte';
 	import { onMount } from 'svelte';
 	import { onStoreTrue } from './utils/store'
 	import { query } from './utils/worker'
 	import EasySearch from './components/EasySearch.svelte';
+	import CategorySearch from './components/CategorySearch.svelte';
 
-	let text = '';
+	let searchMode = 1;
 	let isLoading: boolean = false;
 	let hasSearched: boolean = false;
 
@@ -19,30 +18,14 @@
 
 	async function search(text: string) {
 		hasSearched = true;
+		isLoading = true;
 		const { request } = await query(text);
+		isLoading = false;
+
 		let val = request.payload.value;
 		if (val instanceof RegExp) val = getRegURI(val);
 		history.pushState(null, '', encodeURI(val));
 	}
-
-	onMount(async () => {
-		const url = new URL(String(window.location));
-		const path = url.pathname.slice(1);
-
-		text = decodeURI(path);
-		if (!text.length) return;
-
-		// we custom encode regex due to the '/' messing with relative URLs
-		if (/REGEX-(.+?)-(.+)/.test(text)) {
-			const { 1: flags, 2: source } = text.match(/REGEX-(.+?)-(.+)/);
-			text = `/${source}/${flags}`;
-		}
-
-		isLoading = true;
-		await onStoreTrue(workerIsReadyStore);
-		await search(text);
-		isLoading = false;
-	});
 </script>
 
 <main>
@@ -50,7 +33,16 @@
 	<p>A static unicode lookup web app using web workers.</p>
 	<br>
 
-	<EasySearch {search} />
+	<div class="searchbox">
+		{#if searchMode === 1}
+			<EasySearch {search} />
+			<p class="hint" on:click={() => searchMode = 2}>category search</p>
+		{:else}
+			<CategorySearch {search} />
+			<p class="hint" on:click={() => searchMode = 1}>simple search</p>
+		{/if}
+	</div>
+
 
 	{#if isLoading}
 		<div>Loading...</div>
@@ -78,6 +70,16 @@
 		text-transform: uppercase;
 		font-size: 2em;
 		font-weight: 100;
+	}
+
+	p.hint {
+		text-decoration: underline;
+		cursor: pointer;
+	}
+
+	.searchbox {
+		max-width: 400px;
+		margin: 0 auto;
 	}
 
 	@media (min-width: 640px) {
