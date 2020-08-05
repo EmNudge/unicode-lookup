@@ -1,6 +1,5 @@
 <script>
   import { loop } from '../utils/iterable'; 
-  import { tick } from 'svelte';
   import ResultsRow from './ResultsRow.svelte';
 
   import { exactMatchStore, resultsStore } from '../stores'

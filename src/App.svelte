@@ -1,7 +1,6 @@
 <script>
 	import { 
-		resultsStore, exactMatchStore, 
-		workerStore, workerIsReadyStore,
+		resultsStore, exactMatchStore, workerIsReadyStore,
 	} from './stores';
 	import ResultsContainer from './components/ResultsContainer.svelte';
 	import { onMount } from 'svelte';

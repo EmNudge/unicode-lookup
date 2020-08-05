@@ -9,7 +9,6 @@ loadChars().then(() => workerIsReadyStore.set(true));
 
 worker.addEventListener('message', ({ data }) => {
 	const { type, payload } = data;
-	console.log(data)
 
 	if (type !== 'query') return;
 
