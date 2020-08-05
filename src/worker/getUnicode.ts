@@ -6,8 +6,8 @@ export default async function getUnicode() {
   const res = await fetch('/DerivedName.txt');
   const text = await res.text();
 
-  const unicodeMap = new Map();
-  const unicodeRangesMap = new Map();
+  const unicodeMap: Map<number, string> = new Map();
+  const unicodeRangesMap: Map<number[], string> = new Map();
 
   const lines = pipe(
     split('\n'),
@@ -33,7 +33,7 @@ export default async function getUnicode() {
   };
 }
 
-function parseDerivedNameLine(line) {
+function parseDerivedNameLine(line: string) {
   const [hex, n] = line.split(';');
   
   if (!n) console.log(line)

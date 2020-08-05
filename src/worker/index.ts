@@ -19,6 +19,7 @@ self.addEventListener('message', async ({ data }) => {
       unicodeRangesMap = payload.unicodeRangesMap;
     }
 
+    // @ts-ignore
     self.postMessage({ type, id, payload, request: data });
     return;
   }
@@ -29,6 +30,7 @@ self.addEventListener('message', async ({ data }) => {
     const queryMachine = new QueryMachine(unicodeMap, unicodeRangesMap, { limit });
     const payload = queryMachine.query({ type, value });
     
+    // @ts-ignore
     self.postMessage({ type: 'query', id, payload, request: data });
 
     return;
@@ -42,7 +44,7 @@ self.addEventListener('message', async ({ data }) => {
 // http://unicode.org/reports/tr44/#UnicodeData.txt
 // Not sure how to implement this, but here is the chart of category names:
 // http://unicode.org/reports/tr44/#General_Category_Values
-function parseLine(line) {
+function parseLine(line: string) {
   const [
     hex, name, category, combiningClass, bidiClass, 
     decomp, numDec, numDigit, numNumeric, bidiMirrrored,,, // skipping 2 obsolete properties

@@ -3,7 +3,7 @@ import { get } from 'svelte/store';
 import { getID } from './rand';
 
 // query that returns a promise that only resolves once its specific request resolves
-export const query = async (text, limit = 50) => {
+export const query = async (text: string, limit = 50) => {
     const payload = {
         ...getPayload(text),
         limit,
@@ -12,21 +12,16 @@ export const query = async (text, limit = 50) => {
     return await asyncPost({ type: 'query', payload });
 };
 
-export const queryWhenReady = async text => {
-    await asyncPost('retrieve-table');
-    return await query(text);
-};
-
 // chars are cached, so no problem with loading multiple times
 export const loadChars = async () => await asyncPost({ type: 'retrieve-table' });
 
 // post to worker asynchonously. Removes listener after getting a response.
-export const asyncPost = data => new Promise(res => {
+export const asyncPost = (data: any) => new Promise(res => {
     const worker = get(workerStore);
     const id = getID();
     worker.postMessage({ ...data, id });
 
-    const func = ({ data }) => {
+    const func = ({ data }: { data: any }) => {
         if (data.id !== id) return;
 
         res(data);
@@ -38,7 +33,7 @@ export const asyncPost = data => new Promise(res => {
 });
 
 // takes text, parses it and returns type
-export const getPayload = text => {
+export const getPayload = (text: string) => {
     // if decimal number
     if (/^[0-9]+$/.test(text)) {
         return { 

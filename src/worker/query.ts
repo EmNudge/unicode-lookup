@@ -1,7 +1,15 @@
-import { take, filter, pipe, collect, forEach, pass } from '../utils/iterable';
+import { take, filter, pipe, collect, forEach } from '../utils/iterable';
+
+interface QueryOptions {
+  limit: number;
+}
 
 export default class QueryMachine {
-  constructor(unicodeMap, unicodeRangeMap, { limit }) {
+  unicodeMap: Map<number, string>;
+  unicodeRangeMap: Map<number[], string>;
+  limit: number;
+
+  constructor(unicodeMap: Map<number, string>, unicodeRangeMap: Map<number[], string>, { limit }: QueryOptions) {
     if (!unicodeMap || !unicodeRangeMap) {
       throw new Error('Cannot initialize QueryMachine without unicode maps');
     }
@@ -13,62 +21,36 @@ export default class QueryMachine {
     this.limit = limit;
   }
 
-  query({ type, value, exact = false }) {
-    if (type === 'number' && exact) {
-      return this.exactQuery(value);
-    }
-
-    return this.iteratorQuery({ type, value });
-  }
-
-  // Exact query that we can only use numbers for
-  exactQuery(num) {
-    const isRegHex = this.unicodeMap.has(num);
-    if (isRegHex) {
-      return this.unicodeMap.get(num);
-    }
-
-    for (const [[start, end], name] of this.unicodeRangeMap) {
-      if (num < start || num > end) continue;
-      // chop off asterisk and replace with hex
-      return name.slice(0, -1) + num.toString(16);
-    }
-
-    return null;
-  }
-
-  // This is a slower method which checks for non-exact matches. 
-  // It's required for strings and regex, but for numbers it can give us the nums around it
-  iteratorQuery({ type, value }) {
+  query({ type, value }: { type: string, value: any}) {
     const funcs = [];
-    let exactMatch = null;
+    let exactMatch: [number, string] | null = null;
 
     if (type === 'number') {
-      const getMatch = ([num, name]) => {
+      const getMatch = ([num, name]: [number, string]) => {
         if (num === value) exactMatch = [num, name];
       }
       funcs.push(forEach(getMatch));
 
       // collect all "kinda" matches. We want to get surrounding nums, so we split limit in 2
       const closeNum = this.limit ? this.limit / 2 : 20;
-      const isClose = ([num]) => Math.abs(value - num) < closeNum && num !== value;
+      const isClose = ([num]: [number]) => Math.abs(value - num) < closeNum && num !== value;
       funcs.push(filter(isClose));
 
     } else if (type === 'string') {
       const val = value.toUpperCase();
       
-      const getMatch = ([num, name]) => {
+      const getMatch = ([num, name]: [number, string]) => {
         if (name === val) exactMatch = [num, name];
       }
       funcs.push(forEach(getMatch));
 
       // collect all "kinda" matches
-      const hasName = ([,name]) => name.includes(val) && name !== val;
+      const hasName = ([,name]: [number, string]) => name.includes(val) && name !== val;
       funcs.push(filter(hasName));
     } else if (type === 'regex') {
       // testing in the order the user most likely meant to
       // first the name, then the char itself
-      const passesRegex = ([num, name]) => 
+      const passesRegex = ([num, name]: [number, string]) => 
         value.test(name) || value.test(String.fromCodePoint(num));
 
       funcs.push(filter(passesRegex));
