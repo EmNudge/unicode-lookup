@@ -58,7 +58,7 @@ export default [
 		}
 	},
 	{
-		input: 'src/worker/index.js',
+		input: 'src/worker/index.ts',
 		output: {
 			sourcemap: true,
 			format: 'iife',
@@ -66,7 +66,8 @@ export default [
 			file: 'public/worker.js'
 		},
 		plugins: [
-			production && terser()
+			production && terser(),
+			typescript({ sourceMap: !production }),
 		]
 	},
 	{
