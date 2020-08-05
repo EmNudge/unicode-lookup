@@ -1,6 +1,8 @@
 <script lang="ts">  
-  export let search: (text: string) => void;
   import { Categories } from '../utils/regexBuilder';
+  import { categorySearchStore } from '../stores';
+  
+  export let search: (text: string) => void;
 
   let error = '';
 
@@ -10,8 +12,7 @@
   let excludeOrInclude = "include";
   let currCategory: Categories;
 
-  type Pattern = { exclude: boolean, category: Categories }
-  let patterns: Pattern[] = [];
+  $: patterns = $categorySearchStore;
 
   function getRegex() {
     const str = patterns.map(({ exclude, category }) => {
@@ -33,10 +34,10 @@
   }
   
   function addCat() {
-    const pattern: Pattern = {
+    const pattern = {
       exclude: excludeOrInclude === "exclude",
       category: currCategory,
-    }
+    };
     
     const repeatedCategory = patterns.find(p => p.category === pattern.category);
   
@@ -47,15 +48,20 @@
     }
     error = '';
 
-    patterns = [...patterns, pattern];
+    $categorySearchStore = [...patterns, pattern];
   }
 
   const remove = (index: number) => () => {
-    patterns = [...patterns.slice(0, index), ...patterns.slice(index + 1)];
+    $categorySearchStore = [...patterns.slice(0, index), ...patterns.slice(index + 1)];
   }
 </script>
 
 <style>
+  h3 {
+    font-weight: 100;
+    text-align: left;
+    margin: 0;
+  }
   .categories {
     display: grid;
     grid-template-columns: auto auto 1fr;
@@ -73,8 +79,8 @@
 <h3>Category Regex Builder</h3>
 <form on:submit|preventDefault={trySearch}>
   <div class="categories">
-    {#each patterns as { exclude, category }, i}
-      <button on:click={remove(i)} type="button">Remove</button>
+    {#each $categorySearchStore as { exclude, category }, i}
+      <button on:click={remove(i)} type="button">X</button>
       <span>{exclude ? 'exclude' : 'include'}</span>
       <span>{category}</span>
     {/each}
@@ -83,7 +89,7 @@
   <br>
 
   <div class="add-category">
-    <button on:click={addCat} type="button">Add</button>
+    <button on:click={addCat} type="button">+</button>
 
     <select bind:value={excludeOrInclude}>
       <option>include</option>

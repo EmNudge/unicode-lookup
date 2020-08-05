@@ -1,33 +1,41 @@
 <script lang="ts">  
 	import { onMount } from 'svelte';
   import { onStoreTrue } from '../utils/store';
-  import { workerIsReadyStore } from '../stores';
+  import { workerIsReadyStore, easySearchStore } from '../stores';
   
   export let search: (text: string) => void;
   
-  let text = '';
   let error = '';
 
-  onMount(async () => {
-		const { origin, href } = new URL(String(window.location)); 
+  async function searchFromUrl() {
+    const { origin, href } = new URL(String(window.location)); 
     const path = href.slice(origin.length + 1);
-
-		text = decodeURI(path);
-		if (!text.length) return;
-
-		// we custom encode regex due to the '/' messing with relative URLs
-		if (/REGEX-(.+?)-(.+)/.test(text)) {
-      const { 1: flags, 2: source } = text.match(/REGEX-(.+?)-(.+)/);
-			text = `/${source}/${flags}`;
-		}
-
+  
+    $easySearchStore = decodeURI(path);
+    if (!$easySearchStore.length) return;
+    console.log('hello from url search')
+  
+    // we custom encode regex due to the '/' messing with relative URLs
+    const regMatch = $easySearchStore.match(/REGEX-(.+?)-(.+)/);
+    if (regMatch) {
+      const { 1: flags, 2: source } = regMatch;
+      $easySearchStore = `/${source}/${flags}`;
+    }
+  
     await onStoreTrue(workerIsReadyStore);
-    search(text);
+    search($easySearchStore);
+  }
+
+  onMount(() => {
+    // if we already have some data stored, ignore the URL
+    if ($easySearchStore.length) return;
+    console.log('hello from onMount')
+    searchFromUrl();
 	});
 
   function hasRegexError() {
     // if not regex, no errors
-    const regexRes = text.match(/\/(.+?)\/([a-z]+)?/);
+    const regexRes = $easySearchStore.match(/\/(.+?)\/([a-z]+)?/);
     if (!regexRes) return false;
 
     const { 1: regStr, 2: flags } = regexRes;
@@ -47,12 +55,12 @@
     }
     error = '';
 
-    search(text);
+    search($easySearchStore);
 	}
 </script>
 
 <form on:submit|preventDefault={trySearch}>
-  <input type="text" bind:value={text}>
+  <input type="text" bind:value={$easySearchStore}>
   <button type="submit">Submit</button>
   {#if error}
     <br>

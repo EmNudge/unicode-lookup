@@ -31,8 +31,7 @@
 <main>
 	<h1>Unicode Lookup</h1>
 	<p>A static unicode lookup web app using web workers.</p>
-	<br>
-
+	
 	<div class="searchbox">
 		{#if searchMode === 1}
 			<EasySearch {search} />
