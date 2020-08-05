@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { 
 		resultsStore, exactMatchStore, workerIsReadyStore,
 	} from './stores';
@@ -11,7 +11,7 @@
 	let isLoading = false;
 	let hasSearched = false;
 
-	function getRegURI(re) {
+	function getRegURI(re: RegExp) {
 		const { source, flags } = re;
 		return `REGEX-${flags}-${source}`;
 	}
@@ -24,7 +24,7 @@
 	}
 
 	onMount(async () => {
-		const url = new URL(window.location);
+		const url = new URL(String(window.location));
 		const path = url.pathname.slice(1);
 
 		text = decodeURI(path);

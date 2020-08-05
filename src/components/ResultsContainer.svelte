@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
   import { loop } from '../utils/iterable'; 
   import ResultsRow from './ResultsRow.svelte';
 
   import { exactMatchStore, resultsStore } from '../stores'
   
-	const numLoop = loop(['dec', 'hex', 'oct']);
-	let numType = numLoop.next().value;
+	const numLoop = loop(['dec', 'hex', 'oct']) as Generator<string, void, string>;
+	let numType: string = numLoop.next().value as string;
 	function changeCodePoint() {
- 		numType = numLoop.next().value;
+ 		numType = numLoop.next().value as string;
   }
 </script>
 

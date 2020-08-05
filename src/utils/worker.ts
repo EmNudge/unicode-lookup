@@ -16,7 +16,7 @@ export const query = async (text: string, limit = 50) => {
 export const loadChars = async () => await asyncPost({ type: 'retrieve-table' });
 
 // post to worker asynchonously. Removes listener after getting a response.
-export const asyncPost = (data: any) => new Promise(res => {
+export const asyncPost = (data: any): Promise<any> => new Promise(res => {
     const worker = get(workerStore);
     const id = getID();
     worker.postMessage({ ...data, id });

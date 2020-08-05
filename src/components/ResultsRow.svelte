@@ -1,18 +1,18 @@
-<script>
+<script lang="ts">
   import Clipboard from '../icons/clipboard.svelte';
   
-  export let num;
-  export let name;
-  export let special = false;
+  export let num: number;
+  export let name: string;
+  export let special: boolean = false;
 
   export let numType = 'dec';
-  function getNum(num) {
+  function getNum(num: number) {
 		if (numType === 'hex') return `0x${num.toString(16).toLowerCase().padStart(4, '0')}`;
 		if (numType === 'oct') return `0${num.toString(8).padStart(4, '0')}`;
 		return num;
   }
 
-  async function copyChar(num) {
+  async function copyChar(num: number) {
     const char = String.fromCodePoint(num);
     navigator.clipboard.writeText(char);
   }
