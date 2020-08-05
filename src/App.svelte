@@ -6,16 +6,18 @@
 	import { onMount } from 'svelte';
 	import { onStoreTrue } from './utils/store'
 	import { query } from './utils/worker'
+	import EasySearch from './components/EasySearch.svelte';
 
 	let text = '';
-	let isLoading = false;
-	let hasSearched = false;
+	let isLoading: boolean = false;
+	let hasSearched: boolean = false;
 
 	function getRegURI(re: RegExp) {
 		const { source, flags } = re;
 		return `REGEX-${flags}-${source}`;
 	}
-	async function search() {
+
+	async function search(text: string) {
 		hasSearched = true;
 		const { request } = await query(text);
 		let val = request.payload.value;
@@ -38,7 +40,7 @@
 
 		isLoading = true;
 		await onStoreTrue(workerIsReadyStore);
-		await search();
+		await search(text);
 		isLoading = false;
 	});
 </script>
@@ -48,12 +50,7 @@
 	<p>A static unicode lookup web app using web workers.</p>
 	<br>
 
-	<form on:submit|preventDefault={search}>
-		<input type="text" bind:value={text}>
-		<button type="submit">Submit</button>
-		<br>
-		<br>
-	</form>
+	<EasySearch {search} />
 
 	{#if isLoading}
 		<div>Loading...</div>

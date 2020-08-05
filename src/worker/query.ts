@@ -48,8 +48,6 @@ export default class QueryMachine {
       const hasName = ([,name]: [number, string]) => name.includes(val) && name !== val;
       funcs.push(filter(hasName));
     } else if (type === 'regex') {
-      // testing in the order the user most likely meant to
-      // first the name, then the char itself
       const passesRegex = ([num]: [number]) => 
         value.test(String.fromCodePoint(num));
 
