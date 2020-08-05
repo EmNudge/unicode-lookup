@@ -50,8 +50,8 @@ export default class QueryMachine {
     } else if (type === 'regex') {
       // testing in the order the user most likely meant to
       // first the name, then the char itself
-      const passesRegex = ([num, name]: [number, string]) => 
-        value.test(name) || value.test(String.fromCodePoint(num));
+      const passesRegex = ([num]: [number]) => 
+        value.test(String.fromCodePoint(num));
 
       funcs.push(filter(passesRegex));
     }
