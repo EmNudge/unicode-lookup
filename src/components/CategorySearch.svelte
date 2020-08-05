@@ -49,27 +49,32 @@
 
     patterns = [...patterns, pattern];
   }
+
+  const remove = (index: number) => () => {
+    patterns = [...patterns.slice(0, index), ...patterns.slice(index + 1)];
+  }
 </script>
 
 <style>
   .categories {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto auto 1fr;
     grid-gap: 10px;
     text-align: left;
   }
 
   .add-category {
     display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-gap: 20px;
+    grid-template-columns: auto auto 1fr;
+    grid-gap: 10px;
   }
 </style>
 
 <h3>Category Regex Builder</h3>
 <form on:submit|preventDefault={trySearch}>
   <div class="categories">
-    {#each patterns as { exclude, category }}
+    {#each patterns as { exclude, category }, i}
+      <button on:click={remove(i)} type="button">Remove</button>
       <span>{exclude ? 'exclude' : 'include'}</span>
       <span>{category}</span>
     {/each}
@@ -78,6 +83,8 @@
   <br>
 
   <div class="add-category">
+    <button on:click={addCat} type="button">Add</button>
+
     <select bind:value={excludeOrInclude}>
       <option>include</option>
       <option>exclude</option>
@@ -88,8 +95,6 @@
         <option>{category}</option>
       {/each}
     </select>
-
-    <button on:click={addCat} type="button">Add</button>
   </div>
 
   <button type="submit">Submit</button>
