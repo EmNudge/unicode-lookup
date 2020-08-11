@@ -3,18 +3,12 @@
   import ResultsRow from './ResultsRow.svelte';
 
   import { exactMatchStore, resultsStore } from '../stores'
-  
-	const numLoop = loop(['dec', 'hex', 'oct']) as Generator<string, void, string>;
-	let numType: string = numLoop.next().value as string;
-	function changeCodePoint() {
- 		numType = numLoop.next().value as string;
-  }
 </script>
 
 <div class="results">
   <!-- headers -->
   <span class="header">Character</span>
-  <button class="header" on:click={changeCodePoint}>Code Point</button>
+  <span class="header">Code Point</span>
   <span class="header">Description</span>
   
   <!-- exact match, if found -->
@@ -22,14 +16,13 @@
     <ResultsRow 
       num={$exactMatchStore[0]} 
       name={$exactMatchStore[1]}
-      {numType} 
       special={true} 
     />
   {/if}
 
   <!-- content -->
   {#each $resultsStore as [num, name]}
-    <ResultsRow {num} {name} {numType} />
+    <ResultsRow {num} {name} />
   {/each}
 </div>
 

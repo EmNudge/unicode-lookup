@@ -1,14 +1,15 @@
 <script lang="ts">
   import Clipboard from '../icons/clipboard.svelte';
-  
+  import { codepointTypeStore } from '../stores';
+
   export let num: number;
   export let name: string;
   export let special: boolean = false;
 
-  export let numType = 'dec';
-  function getNum(num: number) {
-		if (numType === 'hex') return `0x${num.toString(16).toLowerCase().padStart(4, '0')}`;
-		if (numType === 'oct') return `0${num.toString(8).padStart(4, '0')}`;
+  $: numStr = getNum(num, $codepointTypeStore);
+  function getNum(num: number, type: string) {
+		if (type === 'hex') return `0x${num.toString(16).toLowerCase().padStart(4, '0')}`;
+		if (type === 'oct') return `0${num.toString(8).padStart(4, '0')}`;
 		return num;
   }
 
@@ -25,7 +26,7 @@
   <div class="placeholder"></div>
 </span>
 
-<span class="number">{numType && getNum(num)}</span>
+<span class="number">{numStr}</span>
 
 <span>{name}</span>
 

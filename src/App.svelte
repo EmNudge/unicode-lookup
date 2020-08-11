@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { resultsStore, exactMatchStore } from './stores';
+	import { resultsStore, exactMatchStore, modalOpenStore } from './stores';
 	import ResultsContainer from './components/ResultsContainer.svelte';
 	import { onMount } from 'svelte';
 	import { onStoreTrue } from './utils/store'
 	import { query } from './utils/worker'
 	import EasySearch from './components/EasySearch.svelte';
 	import CategorySearch from './components/CategorySearch.svelte';
+	import Settings from './components/Settings.svelte';
 
 	let searchMode = 1;
 	let isLoading: boolean = false;
@@ -28,6 +29,10 @@
 	}
 </script>
 
+{#if $modalOpenStore}
+	<Settings />
+{/if}
+
 <main>
 	<h1>Unicode Lookup</h1>
 	<p>A static unicode lookup web app using web workers.</p>
@@ -42,6 +47,7 @@
 		{/if}
 	</div>
 
+	<button on:click={() => $modalOpenStore = true}>open settings</button>
 
 	{#if isLoading}
 		<div>Loading...</div>
