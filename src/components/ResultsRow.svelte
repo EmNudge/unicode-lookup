@@ -1,17 +1,12 @@
 <script lang="ts">
   import Clipboard from '../icons/clipboard.svelte';
   import { codepointTypeStore } from '../stores';
-
+  import { getNum } from '../utils/char';
   export let num: number;
   export let name: string;
   export let special: boolean = false;
 
   $: numStr = getNum(num, $codepointTypeStore);
-  function getNum(num: number, type: string) {
-		if (type === 'hex') return `0x${num.toString(16).toLowerCase().padStart(4, '0')}`;
-		if (type === 'oct') return `0${num.toString(8).padStart(4, '0')}`;
-		return num;
-  }
 
   async function copyChar(num: number) {
     const char = String.fromCodePoint(num);

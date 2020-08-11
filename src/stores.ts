@@ -15,6 +15,6 @@ export const easySearchStore: Writable<string> = writable('');
 type Pattern = { exclude: boolean, category: Categories };
 export const categorySearchStore: Writable<Pattern[]> = writable([]);
 
-export const modalOpenStore = writable(true);
+export const modalOpenStore = writable(false);
 type CodepointNum = "hex" | "oct" | "dec";
 export const codepointTypeStore: Writable<CodepointNum> = writable("hex");
