@@ -38,6 +38,7 @@
   }
   .header {
     font-weight: bold;
+    font-size: .8em;
   }
   span {
     padding: 2px 10px;
