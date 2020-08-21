@@ -60,8 +60,8 @@
 </script>
 
 <form on:submit|preventDefault={trySearch}>
-  <input type="text" bind:value={$easySearchStore}>
-  <button type="submit">Submit</button>
+  <input type="text" bind:value={$easySearchStore} on:input={trySearch}>
+  <!-- <button type="submit">Submit</button> -->
   {#if error}
     <br>
     <span style="color: red">{error}</span>

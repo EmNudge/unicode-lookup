@@ -19,7 +19,7 @@ currentQueryStore.subscribe(async val => {
 
 	
 	const results = await get(workerStore).query(val);
-	console.log({ val, results })
+
 	resultsStore.set(results);
 });
 
