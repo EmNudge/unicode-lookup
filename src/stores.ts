@@ -5,6 +5,8 @@ import type { Writable } from 'svelte/store';
 export const resultsStore: Writable<[number, string][]> = writable([]);
 export const exactMatchStore: Writable<[number, string]> = writable(null);
 
+export const currentQueryStore = writable(null);
+
 export const workerStore: Writable<Worker> = writable(null);
 
 export const workerIsReadyStore = writable(false);

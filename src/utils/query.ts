@@ -1,39 +1,29 @@
-import { workerStore } from '../stores';
-import { get } from 'svelte/store';
-import { getID } from './rand';
+import { getIterArr } from './iterableObj';
+import { currentQueryStore } from './../stores';
 
-// query that returns a promise that only resolves once its specific request resolves
-export const query = async (text: string, limit = 50) => {
-    const payload = {
-        ...getPayload(text),
-        limit,
-    };
+type QueryType = 'string' | 'number' | 'regex';
 
-    return await asyncPost({ type: 'query', payload });
-};
+export const queries = {
+    'number': (value: any) => `([num]) => Math.abs(${value} - num) < 25`,
+    'string': (value: any) => `([,name]) => name.includes("${value.toUpperCase()}")`,
+    'regex': (value: any) => `([num]) => ${value}.test(String.fromCodePoint(num))`
+}
 
-// chars are cached, so no problem with loading multiple times
-export const loadChars = async () => await asyncPost({ type: 'retrieve-table' });
+export const autoQuery = (text: string, limit: number = 50) => {
+    const { type, value } = getPayload(text);
+    const funcText = queries[type](value);
+    const filterFunc = { type: 'FUNCTION', value: `return ${funcText}` };
+    const queryArr = [
+        getIterArr('filter', [filterFunc]),
+        getIterArr('take', [limit]),
+    ];
 
-// post to worker asynchonously. Removes listener after getting a response.
-export const asyncPost = (data: any): Promise<any> => new Promise(res => {
-    const worker = get(workerStore);
-    const id = getID();
-    worker.postMessage({ ...data, id });
-
-    const func = ({ data }: { data: any }) => {
-        if (data.id !== id) return;
-
-        res(data);
-
-        worker.removeEventListener('message', func);
-    };
-
-    worker.addEventListener('message', func);
-});
+    currentQueryStore.set(queryArr);
+}
 
 // takes text, parses it and returns type
-export const getPayload = (text: string) => {
+type Payload = { type: QueryType, value: number | string | RegExp };
+export const getPayload = (text: string): Payload => {
     // if decimal number
     if (/^[0-9]+$/.test(text)) {
         return { 

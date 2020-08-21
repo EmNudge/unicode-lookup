@@ -66,11 +66,14 @@ export default [
 			file: 'public/worker.js'
 		},
 		plugins: [
+			resolve({	browser: true	}),
+			commonjs(),
 			production && terser(),
 			typescript({ sourceMap: !production }),
 		]
 	},
-	{
+	production &&
+	({
 		input: 'src/pwa.js',
 		output: {
 			sourcemap: true,
@@ -81,7 +84,7 @@ export default [
 		plugins: [
 			production && terser()
 		]
-	}
+	})
 ]
 
 function serve() {

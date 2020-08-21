@@ -1,27 +1,37 @@
 import App from './App.svelte';
-import { resultsStore, exactMatchStore, workerStore, workerIsReadyStore } from './stores';
-import { loadChars } from './utils/worker'
-
-const worker = new Worker('./worker.js');
-workerStore.set(worker);
-
-loadChars().then(() => workerIsReadyStore.set(true));
-
-worker.addEventListener('message', ({ data }) => {
-	const { type, payload } = data;
-
-	if (type !== 'query') return;
-
-	const { exactMatch, matches } = payload;
-	resultsStore.set(matches);
-	exactMatchStore.set(exactMatch);
-});
+import { resultsStore, exactMatchStore, currentQueryStore, workerStore, workerIsReadyStore } from './stores';
+import { get } from 'svelte/store';
+import * as Comlink from 'comlink';
+import * as iter from './utils/iterable';
+import { getIterArr, getIterFromArr } from './utils/iterableObj';
 
 if('serviceWorker' in navigator) {
 	navigator.serviceWorker
 		.register('/pwa-worker.js')
 		.then(() => console.log('Service Worker Registered'));
 }
+
+currentQueryStore.subscribe(async val => {
+	if (val === null) return;
+	
+	const workerIsReady = get(workerIsReadyStore);
+	if (!workerIsReady) return;
+
+	
+	const results = await get(workerStore).query(val);
+	console.log({ val, results })
+	resultsStore.set(results);
+});
+
+const ComWorker = Comlink.wrap(new Worker('./worker.js'));
+// @ts-ignore
+new ComWorker().then(async worker => {
+	workerStore.set(worker);
+	
+	await worker.loadTable();
+
+	workerIsReadyStore.set(true);
+});
 
 const app = new App({ target: document.body });
 

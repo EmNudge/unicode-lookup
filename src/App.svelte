@@ -4,7 +4,7 @@
 	import ResultsGrid from './components/ResultsGrid.svelte';
 	import { onMount } from 'svelte';
 	import { onStoreTrue } from './utils/store'
-	import { query } from './utils/worker'
+	import { autoQuery } from './utils/query'
 	import EasySearch from './components/EasySearch.svelte';
 	import CategorySearch from './components/CategorySearch.svelte';
 	import Settings from './components/Settings.svelte';
@@ -20,13 +20,10 @@
 
 	async function search(text: string) {
 		hasSearched = true;
-		isLoading = true;
-		const { request } = await query(text);
-		isLoading = false;
+		autoQuery(text);
 
-		let val = request.payload.value;
-		if (val instanceof RegExp) val = getRegURI(val);
-		history.pushState(null, '', encodeURI(val));
+		// if (val instanceof RegExp) val = getRegURI(val);
+		// history.pushState(null, '', encodeURI(val));
 	}
 </script>
 

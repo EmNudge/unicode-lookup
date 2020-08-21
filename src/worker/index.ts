@@ -1,42 +1,43 @@
-import QueryMachine from './query';
 import getUnicode from './getUnicode';
+import * as Comlink from 'comlink';
+import * as iters from '../utils/iterable'
+import { getIterFromArr } from '../utils/iterableObj';
 
 // Massive hashmap of all codepoints to their name
 let unicodeMap = new Map();
 // As not to take up space, we don't expand ranges and instead stick them here
 let unicodeRangesMap = new Map();
 
-self.addEventListener('message', async ({ data }) => {
-  const { type, id } = data;
+class Querier {
+  queryId: Symbol;
 
-  if (type === 'retrieve-table') {
-    let payload = { unicodeMap, unicodeRangesMap };
-
+  async loadTable() {
     if (!unicodeMap.size) {
       // this also sets unicode locally
-      payload = await getUnicode();
+      const payload = await getUnicode();
       unicodeMap = payload.unicodeMap;
       unicodeRangesMap = payload.unicodeRangesMap;
     }
 
-    // @ts-ignore
-    self.postMessage({ type, id, payload, request: data });
-    return;
+    return { unicodeMap, unicodeRangesMap };
   }
 
-  if (type === 'query') {
-    const { limit, type, value } = data.payload;
-
-    const queryMachine = new QueryMachine(unicodeMap, unicodeRangesMap, { limit });
-    const payload = queryMachine.query({ type, value });
+  async query(itersArr: any) {
+    const currQueryid = Symbol();
+    this.queryId = currQueryid;
     
-    // @ts-ignore
-    self.postMessage({ type: 'query', id, payload, request: data });
+    const iterFunc = getIterFromArr(itersArr, iters);
+    const arr = [];
+    for (const val of iterFunc(unicodeMap)) {
+      if (this.queryId !== currQueryid) return arr;
+      arr.push(val);
+    }
 
-    return;
+    return arr;
   }
-});
+}
 
+Comlink.expose(Querier);
 
 // UnicodeData parsing, if need be in the future
 
