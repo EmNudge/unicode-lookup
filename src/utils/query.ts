@@ -1,7 +1,7 @@
 import { getIterArr } from './iterableObj';
 import { currentQueryStore } from './../stores';
 
-type QueryType = 'string' | 'number' | 'regex';
+export type QueryType = 'string' | 'number' | 'regex';
 
 export const queries = {
     'number': (value: any) => `([num]) => Math.abs(${value} - num) < 25`,
