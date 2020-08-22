@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { loop, map, pipe, filter, collect } from '../utils/iterable'; 
+  import { loop, map, pipe, filter, collect } from '../../utils/iterable'; 
   import ResultsRow from './ResultsRow.svelte';
-  import { getPayload } from '../utils/query';
+  import { getPayload } from '../../utils/query';
 
-  import { easySearchStore, resultsStore } from '../stores';
+  import { easySearchStore, resultsStore } from '../../stores';
   
   let exactMatch: any = null;
   $: exactMatch = ((text) => {

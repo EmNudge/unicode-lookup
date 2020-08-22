@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resultsStore, exactMatchStore, modalOpenStore, resultsTypeStore } from './stores';
-	import ResultsContainer from './components/ResultsContainer.svelte';
-	import ResultsGrid from './components/ResultsGrid.svelte';
+	import ResultsContainer from './components/table-container/ResultsContainer.svelte';
+	import ResultsGrid from './components/grid-container/ResultsGrid.svelte';
 	import { onMount } from 'svelte';
 	import { onStoreTrue } from './utils/store'
 	import { autoQuery } from './utils/query'

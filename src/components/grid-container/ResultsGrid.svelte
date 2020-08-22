@@ -1,6 +1,6 @@
 <script lang="ts">
-  import GridItem from './GridItem.svelte';
-  import { exactMatchStore, resultsStore } from '../stores';
+  import { resultsStore } from '../../stores';
+  import GridItem from './GridItem.svelte'
 </script>
 
 <div class="results">

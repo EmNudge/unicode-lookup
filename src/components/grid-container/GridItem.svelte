@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { codepointTypeStore } from '../stores';
-  import { getNum } from '../utils/char';
+  import { codepointTypeStore } from '../../stores';
+  import { getNum } from '../../utils/char';
 
   export let num: number;
   export let name: string;
