@@ -2,8 +2,6 @@ import App from './App.svelte';
 import { resultsStore, exactMatchStore, currentQueryStore, workerStore, workerIsReadyStore } from './stores';
 import { get } from 'svelte/store';
 import * as Comlink from 'comlink';
-import * as iter from './utils/iterable';
-import { getIterArr, getIterFromArr } from './utils/iterableObj';
 
 if('serviceWorker' in navigator) {
 	navigator.serviceWorker
@@ -17,9 +15,7 @@ currentQueryStore.subscribe(async val => {
 	const workerIsReady = get(workerIsReadyStore);
 	if (!workerIsReady) return;
 
-	
 	const results = await get(workerStore).query(val);
-
 	resultsStore.set(results);
 });
 

@@ -5,6 +5,7 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import autoPreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
+import json from '@rollup/plugin-json';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -28,7 +29,7 @@ export default [
 				},
 				preprocess: autoPreprocess()
 			}),
-
+			json(),
 			typescript({ sourceMap: !production }),
 			// If you have external dependencies installed from
 			// npm, you'll most likely need these plugins. In
@@ -72,8 +73,7 @@ export default [
 			typescript({ sourceMap: !production }),
 		]
 	},
-	production &&
-	({
+	{
 		input: 'src/pwa.js',
 		output: {
 			sourcemap: true,
@@ -84,7 +84,7 @@ export default [
 		plugins: [
 			production && terser()
 		]
-	})
+	}
 ]
 
 function serve() {

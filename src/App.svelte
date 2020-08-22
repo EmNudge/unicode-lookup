@@ -6,7 +6,7 @@
 	import { onStoreTrue } from './utils/store'
 	import { autoQuery } from './utils/query'
 	import EasySearch from './components/EasySearch.svelte';
-	import CategorySearch from './components/CategorySearch.svelte';
+	import PropertySearch from './components/regex-props/PropertySearch.svelte';
 	import Settings from './components/Settings.svelte';
 
 	let searchMode = 1;
@@ -40,7 +40,7 @@
 			<EasySearch {search} />
 			<p class="hint" on:click={() => searchMode = 2}>category search</p>
 		{:else}
-			<CategorySearch {search} />
+			<PropertySearch {search} />
 			<p class="hint" on:click={() => searchMode = 1}>simple search</p>
 		{/if}
 	</div>
