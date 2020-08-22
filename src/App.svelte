@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { resultsStore, exactMatchStore, modalOpenStore } from './stores';
+	import { resultsStore, exactMatchStore, modalOpenStore, resultsTypeStore } from './stores';
 	import ResultsContainer from './components/ResultsContainer.svelte';
 	import ResultsGrid from './components/ResultsGrid.svelte';
 	import { onMount } from 'svelte';
@@ -50,7 +50,11 @@
 	{#if isLoading}
 		<div>Loading...</div>
 	{:else if $resultsStore.length || $exactMatchStore}
-		<ResultsContainer />
+		{#if $resultsTypeStore === 0}
+			<ResultsContainer />
+		{:else}
+			<ResultsGrid />
+		{/if}
 	{:else}
 		<br>
 		{#if hasSearched}

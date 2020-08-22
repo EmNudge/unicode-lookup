@@ -20,3 +20,9 @@ export const categorySearchStore: Writable<Pattern[]> = writable([]);
 export const modalOpenStore = writable(false);
 type CodepointNum = "hex" | "oct" | "dec";
 export const codepointTypeStore: Writable<CodepointNum> = writable("hex");
+
+export enum ResultsType {
+  EasySearch = 0,
+  GridSearch = 1,
+}
+export const resultsTypeStore = writable<ResultsType>(ResultsType.EasySearch);

@@ -32,7 +32,6 @@
   }
   .char {
     font-size: 1.5em;
-    background: #f1f1f1;
     min-width: 20px;
     text-align: center;
 
