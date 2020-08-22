@@ -1,23 +1,25 @@
 import { getIterArr } from './iterableObj';
-import { currentQueryStore } from './../stores';
+import { currentQueryStore, resultsNumStore } from './../stores';
+import { get } from 'svelte/store';
 
 export type QueryType = 'string' | 'number' | 'regex';
 
 export const queries = {
-    'number': (value: any) => `([num]) => Math.abs(${value} - num) < 25`,
+    'number': (value: any, maxResults: number = 50) => `([num]) => Math.abs(${value} - num) < ${~~(maxResults/2)}`,
     'string': (value: any) => `([,name]) => name.includes("${value.toUpperCase()}")`,
     'regex': (value: any) => `([num]) => ${value}.test(String.fromCodePoint(num))`
 }
 
-export const autoQuery = (text: string, limit: number = 50) => {
+export const autoQuery = (text: string) => {
     const { type, value } = getPayload(text);
-    const funcText = queries[type](value);
+    const num = get(resultsNumStore)
+    const funcText = queries[type](value, num);
     const filterFunc = { type: 'FUNCTION', value: `return ${funcText}` };
     const queryArr = [
         getIterArr('filter', [filterFunc]),
-        getIterArr('take', [limit]),
+        getIterArr('take', [num]),
     ];
-
+    
     currentQueryStore.set(queryArr);
 }
 

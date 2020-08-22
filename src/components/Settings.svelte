@@ -1,32 +1,41 @@
 <script>
   import Modal from './Modal.svelte';
-  import { codepointTypeStore, resultsTypeStore } from '../stores';
+  import { codepointTypeStore, resultsTypeStore, resultsNumStore } from '../stores';
 </script>
 
 <style>
-  h1 {
-    margin-top: 0;
-    min-width: 400px;
-    text-align: center;
+  .items {
+    display: grid;
+    grid-gap: 8px;
+  }
+  .input {
+    display: grid;
+    grid-gap: 5px;
   }
 </style>
 
-<Modal>
-  <h1>Settings</h1>
+<Modal title="Settings">
+  <div class="items">
+    <div class="input">
+      <label>Codepoint Format</label>
+      <select bind:value={$codepointTypeStore}>
+        <option value="hex">Hexidecimal</option>
+        <option value="oct">Octal</option>
+        <option value="dec">Decimal</option>
+      </select>
+    </div>
 
-  <label>Codepoint Format</label>
-  <br>
-  <select bind:value={$codepointTypeStore}>
-    <option value="hex">Hexidecimal</option>
-    <option value="oct">Octal</option>
-    <option value="dec">Decimal</option>
-  </select>
+    <div class="input">
+      <label>Results Container</label>
+      <select bind:value={$resultsTypeStore}>
+        <option value={0}>Table</option>
+        <option value={1}>Grid</option>
+      </select>
+    </div>
 
-  <br>
-  <label>Results Container</label>
-  <br>
-  <select bind:value={$resultsTypeStore}>
-    <option value={0}>Table</option>
-    <option value={1}>Grid</option>
-  </select>
+    <div class="input">
+      <label>Results Amount</label>
+      <input type="number" bind:value={$resultsNumStore} />
+    </div>
+  </div>
 </Modal>
