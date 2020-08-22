@@ -33,15 +33,15 @@
     searchFromUrl();
 	});
 
-  function hasRegexError() {
+  function hasRegexError(text: string) {
     // if not regex, no errors
-    const regexRes = $easySearchStore.match(/\/(.+?)\/([a-z]+)?/);
+    const regexRes = text.match(/\/(.+?)\/([a-z]+)?/);
     if (!regexRes) return false;
 
-    const { 1: regStr, 2: flags } = regexRes;
+    const { 1: regStr, 2: _flags } = regexRes;
 
     try {
-      const _regex = new RegExp(regStr, flags);
+      const _regex = new RegExp(regStr, "u");
       return false;
     } catch(e) {
       return true;
@@ -49,13 +49,15 @@
   }
   
   async function trySearch() {
-    if (hasRegexError()) {
+    const text = $easySearchStore;
+    
+    if (hasRegexError(text)) {
       error = 'Regex Error. Please verify search text.';
       return;
     }
     error = '';
 
-    search($easySearchStore);
+    search(text);
 	}
 </script>
 
