@@ -8,7 +8,7 @@
 
   $: numStr = getNum(num, $codepointTypeStore);
 
-  async function copyChar(num: number) {
+  function copyChar() {
     const char = String.fromCodePoint(num);
     navigator.clipboard.writeText(char);
   }
@@ -17,7 +17,7 @@
 
 <span class="symbol" class:special>
   <span>{String.fromCodePoint(num)}</span>
-  <Clipboard on:click={() => copyChar(num)} />
+  <Clipboard on:click={copyChar} />
   <div class="placeholder"></div>
 </span>
 

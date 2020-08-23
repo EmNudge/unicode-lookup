@@ -6,6 +6,11 @@
   export let name: string;
 
   $: numStr = getNum(num, $codepointTypeStore);
+
+  async function copyChar() {
+    const char = String.fromCodePoint(num);
+    navigator.clipboard.writeText(char);
+  }
 </script>
 
 <style>
@@ -18,6 +23,7 @@
     box-shadow: -2px 2px 6px #0003;
     font-size: .9em;
     border-radius: 4px;
+    background: #fff7;
   }
   .num {
     text-align: right;
@@ -31,16 +37,20 @@
     display: flex;
     justify-content: center;
   }
-  .char {
+  button.char {
     font-size: 1.5em;
     min-width: 20px;
     text-align: center;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
 
     transition: .15s;
     cursor: pointer;
     user-select: none;
   }
-  .char:active {
+  button.char:active {
     transform: scale(.8);
     background: #ccc;
   }
@@ -49,7 +59,7 @@
 <div class="item">
   <span class="num">{numStr}</span>
   <span class="char-container">
-    <span class="char">{String.fromCodePoint(num)}</span>
+    <button class="char" on:click={copyChar}>{String.fromCodePoint(num)}</button>
   </span>
   <span class="name">{name}</span>
 </div>
