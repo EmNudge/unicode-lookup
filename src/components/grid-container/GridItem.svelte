@@ -15,8 +15,9 @@
     width: 90px;
     padding: 10px;
     text-align: center;
-    box-shadow: -2px 2px 11px #0003;
+    box-shadow: -2px 2px 6px #0003;
     font-size: .9em;
+    border-radius: 4px;
   }
   .num {
     text-align: right;

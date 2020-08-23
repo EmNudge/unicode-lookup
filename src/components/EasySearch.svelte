@@ -61,6 +61,13 @@
 	}
 </script>
 
+<style>
+  input {
+    width: 90%;
+    margin: 0 auto;
+  }
+</style>
+
 <form on:submit|preventDefault={trySearch}>
   <input type="text" bind:value={$easySearchStore} on:input={trySearch}>
   <!-- <button type="submit">Submit</button> -->

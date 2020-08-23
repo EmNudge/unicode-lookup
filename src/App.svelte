@@ -2,12 +2,10 @@
 	import { resultsStore, exactMatchStore, modalOpenStore, resultsTypeStore } from './stores';
 	import ResultsContainer from './components/table-container/ResultsContainer.svelte';
 	import ResultsGrid from './components/grid-container/ResultsGrid.svelte';
-	import { onMount } from 'svelte';
-	import { onStoreTrue } from './utils/store'
 	import { autoQuery } from './utils/query'
 	import EasySearch from './components/EasySearch.svelte';
 	import PropertySearch from './components/regex-props/PropertySearch.svelte';
-	import Settings from './components/Settings.svelte';
+	import Header from './components/Header.svelte';
 
 	let searchMode = 1;
 	let isLoading: boolean = false;
@@ -27,14 +25,9 @@
 	}
 </script>
 
-{#if $modalOpenStore}
-	<Settings />
-{/if}
+<Header />
 
 <main>
-	<h1>Unicode Lookup</h1>
-	<p>A static unicode lookup web app using web workers.</p>
-	
 	<div class="searchbox">
 		{#if searchMode === 1}
 			<EasySearch {search} />
@@ -44,8 +37,6 @@
 			<p class="hint" on:click={() => searchMode = 1}>simple search</p>
 		{/if}
 	</div>
-
-	<button on:click={() => $modalOpenStore = true}>open settings</button>
 
 	{#if isLoading}
 		<div>Loading...</div>
@@ -68,15 +59,7 @@
 <style>
 	main {
 		text-align: center;
-		padding: 1em;
 		margin: 0 auto;
-	}
-
-	h1 {
-		color: #004eff;
-		text-transform: uppercase;
-		font-size: 2em;
-		font-weight: 100;
 	}
 
 	p.hint {
