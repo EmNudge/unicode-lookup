@@ -12,7 +12,19 @@
 		return `(?${symbol}\\p{${p}})`;
 	}).join('');
 	
-  $: search(`/${regex}/u`);
+	$: search(`/${regex}/u`);
+	
+	function clearProps() {
+		properties.clear();
+		properties = properties;
+	}
+
+	let searchTerm: string = '';
+	$: filteredProps = props.filter(p => {
+		const txt = p.toUpperCase();
+		const term = searchTerm.toUpperCase();
+		return txt.includes(term);
+	})
 </script>
 
 <style>
@@ -20,6 +32,7 @@
 		display: grid;
 		grid-gap: 10px;
 		padding: 15px;
+    padding-top: 0;
 
 		--grn: hsl(125, 70%, 80%);
 		--red: hsl(0, 70%, 80%);
@@ -30,11 +43,17 @@
 	}
 </style>
 
+<button class="underline-btn" on:click={clearProps}>clear selection</button>
+
+<input type="text" bind:value={searchTerm} />
+
 <div class="container">
-	<PropertyButton 
+	{#if "SCRIPT".includes(searchTerm.toUpperCase())}
+		<PropertyButton 
 			bind:properties
 			name="Script" />
-	{#each props as value}
+	{/if}
+	{#each filteredProps as value}
 		<PropertyButton 
 			bind:properties
 			name={value} />

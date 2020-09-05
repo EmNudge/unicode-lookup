@@ -67,3 +67,12 @@ button:not(:disabled):active {
 button:focus {
 	border-color: #666;
 }
+
+button.underline-btn {
+	border: none;
+	padding: 0;
+	margin: 0;
+	background: 0;
+	text-decoration: underline;
+	cursor: pointer;
+}

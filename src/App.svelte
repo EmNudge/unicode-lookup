@@ -31,10 +31,10 @@
 	<div class="searchbox">
 		{#if searchMode === 1}
 			<EasySearch {search} />
-			<p class="hint" on:click={() => searchMode = 2}>category search</p>
-		{:else}
+			<button class="underline-btn" on:click={() => searchMode = 2}>category search</button>
+			{:else}
 			<PropertySearch {search} />
-			<p class="hint" on:click={() => searchMode = 1}>simple search</p>
+			<button class="underline-btn" on:click={() => searchMode = 1}>category search</button>
 		{/if}
 	</div>
 
@@ -60,11 +60,6 @@
 	main {
 		text-align: center;
 		margin: 0 auto;
-	}
-
-	p.hint {
-		text-decoration: underline;
-		cursor: pointer;
 	}
 
 	.searchbox {
