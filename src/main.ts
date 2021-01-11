@@ -3,11 +3,11 @@ import { resultsStore, exactMatchStore, currentQueryStore, workerStore, workerIs
 import { get } from 'svelte/store';
 import * as Comlink from 'comlink';
 
-if('serviceWorker' in navigator) {
-	navigator.serviceWorker
-		.register('/pwa-worker.js')
-		.then(() => console.log('Service Worker Registered'));
-}
+// if('serviceWorker' in navigator) {
+// 	navigator.serviceWorker
+// 		.register('/pwa-worker.js')
+// 		.then(() => console.log('Service Worker Registered'));
+// }
 
 currentQueryStore.subscribe(async val => {
 	if (val === null) return;

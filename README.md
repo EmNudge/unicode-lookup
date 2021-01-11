@@ -7,14 +7,27 @@ It turns out that it's super easy to use web workers and a massive text file to 
 That's what this is.
 
 A quick, easy, static unicode lookup web app.
-
+![tool](https://i.imgur.com/isD2LpT.png)
 Try it at https://unicode-lookup.netlify.app/
 
+# How To Use
+Currently there is "Simple Search" and "Category Matcher". Soon there will be "Simple Search" and "Advanced Search".
+
+For *Simple Search*, it accepts:
+- character to find
+- text to match against description
+- regex to match against *character* (in form `/regex/`)
+- codepoint of character
+  - decimal form
+  - hexidecimal form (in form `0x[somenumber]` e.g. `0xfab23`)
+  - binary form (in form `0b[somenumber]` e.g. `0b1101110`)
+
 ### Roadmap
-- [x] Make site a PWA
-- [x] Add support for Regex, dec/hex numbers
-- [x] Allow linking to a specific search
-- [ ] Add settings section to specify regex and number searches
-- [ ] In addition to using [DerivedNames.txt](https://www.unicode.org/Public/UCD/latest/ucd/extracted/DerivedName.txt) as the main file to parse from, use [UnicodeData.txt](https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt) to grab more information for specified characters.
-- [ ] Allow users to save characters for later.
-- [ ] Add character combination and normalization tools
+- [] make ugly UI/UX a bit prettier
+- [] add advanced search
+- [] add more data to results
+  - [] block (e.g. `'Basic Latin'`)
+  - [] plane (e.g. `'Basic Multilingual Plane'`)
+  - [] encoding (UTF-8, UTF-16, and UTF-32)
+  - [] matching Unicode properties
+    - [tool for that here](https://svelte.dev/repl/853ca8e17da544308cbb5c081ad56a6d?version=3.31.2)
