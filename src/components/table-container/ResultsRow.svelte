@@ -1,7 +1,8 @@
 <script lang="ts">
   import Clipboard from '../../icons/clipboard.svelte';
-  import { codepointTypeStore } from '../../stores';
+  import { codepointTypeStore, nameCasingStore, CasingType } from '../../stores';
   import { getNum } from '../../utils/char';
+
   export let num: number;
   export let name: string;
   export let special: boolean = false;
@@ -12,6 +13,19 @@
     const char = String.fromCodePoint(num);
     navigator.clipboard.writeText(char);
   }
+
+  function getName(name: string, casingType: CasingType) {
+    if (casingType === CasingType.TitleCase) {
+      return name
+        .toLowerCase()
+        .replace(/(?<=^| )./g, c => c.toUpperCase());
+    }
+    if (casingType === CasingType.UPPERCASE) {
+      return name.toUpperCase();
+    }
+    
+    return name.toLowerCase();
+  }
 </script>
 
 
@@ -21,9 +35,9 @@
   <div class="placeholder"></div>
 </span>
 
-<span class="number">{numStr}</span>
+<span class="number styled" style="--hue: 35">{numStr}</span>
 
-<span>{name}</span>
+<span>{getName(name, $nameCasingStore)}</span>
 
 <style>
   span {

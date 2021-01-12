@@ -29,3 +29,10 @@ export enum ResultsType {
 export const resultsTypeStore = writable<ResultsType>(ResultsType.EasySearch);
 
 export const resultsNumStore = writable(50);
+
+export enum CasingType {
+  TitleCase,
+  UPPERCASE,
+  lowercase
+}
+export const nameCasingStore = writable<CasingType>(CasingType.UPPERCASE);

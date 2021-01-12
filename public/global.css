@@ -76,3 +76,14 @@ button.underline-btn {
 	text-decoration: underline;
 	cursor: pointer;
 }
+
+body {
+	--hue: 100;
+}
+
+.styled {
+	--hsl: hsl(var(--hue), 66%, 39%);
+	color: var(--hsl);
+	border: 1px solid var(--hsl);
+	background: hsl(var(--hue), 100%, 95%);
+}

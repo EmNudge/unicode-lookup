@@ -1,6 +1,19 @@
 <script>
   import Modal from './Modal.svelte';
-  import { codepointTypeStore, resultsTypeStore, resultsNumStore } from '../stores';
+  import { codepointTypeStore, resultsTypeStore, resultsNumStore, CasingType, nameCasingStore } from '../stores';
+  
+  function arrayFrom(thing) {
+    const arr = [];
+    let i = 0;
+    while(true) {
+      if (!(i in thing)) break;
+      arr.push(thing[i]);
+
+      i++
+    }
+
+    return arr;
+  }
 </script>
 
 <style>
@@ -22,6 +35,15 @@
         <option value="hex">Hexidecimal</option>
         <option value="oct">Octal</option>
         <option value="dec">Decimal</option>
+      </select>
+    </div>
+
+    <div class="input">
+      <label>Title Casing</label>
+      <select bind:value={$nameCasingStore}>
+        {#each arrayFrom(CasingType) as type}
+          <option value={CasingType[type]}>{type}</option>
+        {/each}
       </select>
     </div>
 

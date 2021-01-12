@@ -67,6 +67,7 @@
   .header {
     font-weight: bold;
     font-size: .8em;
+    color: #4B558C;
   }
   span {
     padding: 2px 10px;
