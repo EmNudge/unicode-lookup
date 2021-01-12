@@ -6,6 +6,7 @@
 	import EasySearch from './components/EasySearch.svelte';
 	import PropertySearch from './components/regex-props/PropertySearch.svelte';
 	import Header from './components/Header.svelte';
+	import GithubIcon from './icons/github.svelte';
 
 	let searchMode = 1;
 	let isLoading: boolean = false;
@@ -26,6 +27,7 @@
 </script>
 
 <Header />
+<GithubIcon href="https://github.com/EmNudge/unicode-lookup" />
 
 <main>
 	<div class="searchbox">
