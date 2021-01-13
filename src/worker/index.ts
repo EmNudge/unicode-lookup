@@ -22,13 +22,13 @@ class Querier {
     return { unicodeMap, unicodeRangesMap };
   }
 
-  async query(itersArr: BoxSet[]) {
+  async query(itersArr: BoxSet[], resultsNum: number) {
     const arr = [];
     let index = 0;
 
     for (const item of getIter(itersArr, unicodeMap)) {
       arr.push(item);
-      if (++index > 50) break;
+      if (++index > resultsNum) break;
     }
 
     return arr;

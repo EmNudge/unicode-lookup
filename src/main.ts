@@ -1,5 +1,5 @@
 import App from './App.svelte';
-import { resultsStore, currentQueryStore, workerStore, workerIsReadyStore } from './stores';
+import { resultsStore, currentQueryStore, workerStore, workerIsReadyStore, resultsNumStore } from './stores';
 import { get } from 'svelte/store';
 import * as Comlink from 'comlink';
 
@@ -15,7 +15,7 @@ currentQueryStore.subscribe(async val => {
 	const workerIsReady = get(workerIsReadyStore);
 	if (!workerIsReady) return;
 
-	const results = await get(workerStore).query(val);
+	const results = await get(workerStore).query(val, get(resultsNumStore));
 	resultsStore.set(results);
 });
 
