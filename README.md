@@ -23,9 +23,10 @@ For *Simple Search*, it accepts:
   - binary form (in form `0b[somenumber]` e.g. `0b1101110`)
 
 ### Roadmap
+- [x] add advanced search
+- [ ] remove "results number" and move into a streamable output
 - [ ] fix codepoints skipping massive ranges or control codes
 - [ ] make ugly UI/UX a bit prettier
-- [ ] add advanced search
 - [ ] add more data to results
   - [ ] block (e.g. `'Basic Latin'`)
   - [ ] plane (e.g. `'Basic Multilingual Plane'`)
