@@ -1,5 +1,5 @@
 import App from './App.svelte';
-import { resultsStore, exactMatchStore, currentQueryStore, workerStore, workerIsReadyStore } from './stores';
+import { resultsStore, currentQueryStore, workerStore, workerIsReadyStore } from './stores';
 import { get } from 'svelte/store';
 import * as Comlink from 'comlink';
 
