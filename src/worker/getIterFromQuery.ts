@@ -13,13 +13,12 @@ function shouldYieldCodepoint(boxSets: BoxSet[], unicode: [number, string]) {
   for (const boxSet of boxSets) {
     const { boxes, type } = boxSet;
     const matches = matchesBoxes(boxes, unicode);
-    if (!matches) continue;
     
-    if (type === BoxSetType.Require) return true;
-    return false;
+    if (!matches && type === BoxSetType.Require) return false;
+    if (matches && type === BoxSetType.Exclude) return false;
   }
 
-  return false;
+  return true;
 }
 
 function matchesBoxes(boxes: Box[], unicode: [number, string]) {
