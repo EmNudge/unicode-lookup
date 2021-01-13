@@ -2,8 +2,11 @@
 	import { onMount } from 'svelte';
   import { onStoreTrue } from '../utils/store';
   import { workerIsReadyStore, easySearchStore } from '../stores';
-  
-  export let search: (text: string) => void;
+  import { debounce } from '../utils/debounce';
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+  const search = debounce(() => dispatch('search'), 100);
   
   let error = '';
 
@@ -23,13 +26,12 @@
     }
   
     await onStoreTrue(workerIsReadyStore);
-    search($easySearchStore);
+    search();
   }
 
   onMount(() => {
     // if we already have some data stored, ignore the URL
     if ($easySearchStore.length) return;
-    console.log('hello from onMount')
     searchFromUrl();
 	});
 

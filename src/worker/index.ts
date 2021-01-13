@@ -1,12 +1,12 @@
 import getUnicode from './getUnicode';
 import * as Comlink from 'comlink';
-import * as iters from '../utils/iterable'
-import { getIterFromArr } from '../utils/iterableObj';
+import type { BoxSet } from '../stores';
+import { getIter } from './getIterFromQuery';
 
 // Massive hashmap of all codepoints to their name
-let unicodeMap = new Map();
+let unicodeMap = new Map<number, string>();
 // As not to take up space, we don't expand ranges and instead stick them here
-let unicodeRangesMap = new Map();
+let unicodeRangesMap = new Map<number[], string>();
 
 class Querier {
   queryId: Symbol;
@@ -22,15 +22,13 @@ class Querier {
     return { unicodeMap, unicodeRangesMap };
   }
 
-  async query(itersArr: any) {
-    const currQueryid = Symbol();
-    this.queryId = currQueryid;
-    
-    const iterFunc = getIterFromArr(itersArr, iters);
+  async query(itersArr: BoxSet[]) {
     const arr = [];
-    for (const val of iterFunc(unicodeMap)) {
-      if (this.queryId !== currQueryid) return arr;
-      arr.push(val);
+    let index = 0;
+
+    for (const item of getIter(itersArr, unicodeMap)) {
+      arr.push(item);
+      if (++index > 50) break;
     }
 
     return arr;

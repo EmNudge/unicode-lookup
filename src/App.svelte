@@ -1,60 +1,55 @@
 <script lang="ts">
-	import { resultsStore, exactMatchStore, modalOpenStore, resultsTypeStore } from './stores';
+	import { resultsStore, currentQueryStore, easySearchStore, boxSetsStore } from './stores';
 	import ResultsContainer from './components/table-container/ResultsContainer.svelte';
-	import ResultsGrid from './components/grid-container/ResultsGrid.svelte';
-	import { autoQuery } from './utils/query'
+	import { getBoxSetsFromText } from './utils/query'
 	import EasySearch from './components/EasySearch.svelte';
-	import PropertySearch from './components/regex-props/PropertySearch.svelte';
 	import Header from './components/Header.svelte';
 	import GithubIcon from './icons/github.svelte';
+	import AdvancedSearch from './components/advanced-search/AdvancedSearch.svelte';
 
-	let searchMode = 1;
-	let isLoading: boolean = false;
-	let hasSearched: boolean = false;
-
-	function getRegURI(re: RegExp) {
-		const { source, flags } = re;
-		return `REGEX-${flags}-${source}`;
+	import type { BoxSet } from './stores';
+	let queryArr: BoxSet[] = null;
+	$: {
+		currentQueryStore.set(queryArr);
 	}
 
-	async function search(text: string) {
-		hasSearched = true;
-		autoQuery(text);
+	const easySearch = () =>
+		queryArr = getBoxSetsFromText($easySearchStore);
+	const advancedSearch = () => 
+		queryArr = $boxSetsStore;
 
-		// if (val instanceof RegExp) val = getRegURI(val);
-		// history.pushState(null, '', encodeURI(val));
-	}
+	import { searchMode, SearchMode } from './stores'
 </script>
 
-<Header />
+<Header searchMode={$searchMode} />
 <GithubIcon href="https://github.com/EmNudge/unicode-lookup" />
 
 <main>
 	<div class="searchbox">
-		{#if searchMode === 1}
-			<EasySearch {search} />
-			<button class="underline-btn" on:click={() => searchMode = 2}>category search</button>
-			{:else}
-			<PropertySearch {search} />
-			<button class="underline-btn" on:click={() => searchMode = 1}>category search</button>
+		{#if $searchMode === SearchMode.SimpleSearch}
+			<EasySearch on:search={easySearch} />
+
+			<button 
+				class="underline-btn" 
+				on:click={() => $searchMode = SearchMode.AdvancedSearch}
+			>advanced search</button>
+		{:else}
+			<AdvancedSearch on:search={advancedSearch} />
+
+			<button 
+				class="underline-btn" 
+				on:click={() => $searchMode = SearchMode.SimpleSearch}
+			>simple search</button>
 		{/if}
 	</div>
 
-	{#if isLoading}
-		<div>Loading...</div>
-	{:else if $resultsStore.length || $exactMatchStore}
-		{#if $resultsTypeStore === 0}
-			<ResultsContainer />
-		{:else}
-			<ResultsGrid />
-		{/if}
+	<br>
+
+	{#if $resultsStore.length}
+		<ResultsContainer />
 	{:else}
 		<br>
-		{#if hasSearched}
-			<div>No results fit that query :/</div>
-		{:else}
-			<div>Type and search :)</div>
-		{/if}
+		<p>No results fit that query :/</p>
 	{/if}
 </main>
 

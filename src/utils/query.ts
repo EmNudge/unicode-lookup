@@ -1,70 +1,55 @@
-import { getIterArr } from './iterableObj';
-import { currentQueryStore, resultsNumStore } from './../stores';
-import { get } from 'svelte/store';
+import type { Box, BoxSet } from '../stores/advancedSearch';
+import { BoxSetType } from '../stores/advancedSearch';
 
-export type QueryType = 'string' | 'number' | 'regex';
+export function getBoxSetsFromText(text: string): BoxSet[] {
+    const box = getQueryFromText(text);
+    const query = {
+        type: BoxSetType.Require,
+        boxes: [box]
+    };
 
-export const queries = {
-    'number': (value: any, maxResults: number = 50) => `([num]) => Math.abs(${value} - num) < ${~~(maxResults/2)}`,
-    'string': (value: any) => `([,name]) => name.includes("${value.toUpperCase()}")`,
-    'regex': (value: any) => `([num]) => ${value}.test(String.fromCodePoint(num))`
+    return [query];
 }
 
-export const autoQuery = (text: string) => {
-    const { type, value } = getPayload(text);
-    const num = get(resultsNumStore)
-    const funcText = queries[type](value, num);
-    const filterFunc = { type: 'FUNCTION', value: `return ${funcText}` };
-    const queryArr = [
-        getIterArr('filter', [filterFunc]),
-        getIterArr('take', [num]),
-    ];
-    
-    currentQueryStore.set(queryArr);
+function getNumFromText(text: string): number {
+    if (/^[0-9]+$/.test(text)) return Number(text);
+    if (/^0x[0-9a-fA-F]+$/.test(text)) return Number(text);
+    if (/^0b[10]+$/.test(text)) return parseInt(text.slice(2), 16);
+    return null;
 }
 
-// takes text, parses it and returns type
-type Payload = { type: QueryType, value: number | string | RegExp };
-export const getPayload = (text: string): Payload => {
-    // if decimal number
-    if (/^[0-9]+$/.test(text)) {
+export function getQueryFromText(text: string): Box {
+    const num = getNumFromText(text);
+    if (typeof num === "number") {
+        const char = String.fromCodePoint(num);
         return { 
-            type: 'number', 
-            value: Number(text),
-        };
-    }
-    
-    // if hexidecimal number
-    if (/^0x[0-9a-fA-F]+$/.test(text)) {
-        return { 
-            type: 'number', 
-            value: parseInt(text, 16),
+            name: 'Is Near Char',
+            data: { char, distance: 50 }
         };
     }
 
-    // if single char, get its codepoint
     if ([...text].length === 1) {
         return { 
-            type: 'number', 
-            value: text.codePointAt(0),
+            name: 'Is Near Char',
+            data: { char: text, distance: 50 }
         };
     }
 
-    // if regex, retrieve it, but always include flag u. Only add i if requested
-    // the other flags don't matter in this context
     const regexRes = text.match(/\/(.+?)\/([a-z]+)?/);
     if (regexRes) {
-        const { 1: regStr, 2: flags } = regexRes;
-        const caseInsensitive = flags && flags.includes('i');
-        return {
-            type: 'regex',
-            value: new RegExp(regStr, caseInsensitive ? 'ui' : 'u'),
-        }
+        const { 1: regex, 2: flagsStr } = regexRes;
+        const flags = /i/i.test(flagsStr) ? 'ui' : 'u';
+        return { 
+            name: 'Regex Match',
+            data: { 
+                regex: new RegExp(regex, flags), 
+                matchOn: 'Character'
+            }
+        };
     }
 
-    // must just be a description
     return {
-        type: 'string',
-        value: text
-    }
-};
+        name: 'Name Includes',
+        data: text
+    };
+}
