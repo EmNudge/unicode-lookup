@@ -23,6 +23,7 @@ For *Simple Search*, it accepts:
   - binary form (in form `0b[somenumber]` e.g. `0b1101110`)
 
 ### Roadmap
+- [ ] fix codepoints skipping massive ranges or control codes
 - [ ] make ugly UI/UX a bit prettier
 - [ ] add advanced search
 - [ ] add more data to results
