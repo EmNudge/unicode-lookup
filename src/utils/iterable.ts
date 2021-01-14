@@ -54,7 +54,7 @@ export const take = <T>(num: number) => function*(iter: Iterable<T>): Iterable<T
   }
 }
 
-export function* loop<T>(iter: Iterable<T>): Iterable<T> {
+export function* loop<T>(iter: Iterable<T>) {
   while (true) {
     yield* iter;
   }

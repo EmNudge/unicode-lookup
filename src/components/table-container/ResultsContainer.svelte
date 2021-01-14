@@ -1,38 +1,59 @@
 <script lang="ts">
   import ResultsRow from './ResultsRow.svelte';
 
-  import { resultsStore } from '../../stores';
+  import { resultsStore, activeIndex } from '../../stores';
+
+  const isSymbolEl = (el: EventTarget) => el instanceof HTMLElement && el.classList.contains('symbol');
+  function handleClick(e: MouseEvent) {
+    if (!isSymbolEl(e.target)) return;
+
+    const index = Number((e.target as HTMLElement).dataset.index);
+    activeIndex.update(i => i === index ? -1 : index);
+  }
+  function handleRightClick(e: MouseEvent) {
+    if (!isSymbolEl(e.target)) return;
+
+    const index = Number((e.target as HTMLElement).dataset.index);
+    const [codepoint] = $resultsStore[index];
+    const char = String.fromCodePoint(codepoint);
+    navigator.clipboard.writeText(char);
+
+    e.preventDefault();
+  }
 </script>
 
-<div class="results">
-  <!-- headers -->
-  <span class="header">Character</span>
-  <span class="header">Code Point</span>
-  <span class="header">Description</span>
+<table class="results">
+  <thead>
+    <tr>
+      <th>Character</th>
+      <th>Code point</th>
+      <th>Description</th>
+    </tr>
+  </thead>
 
-  <!-- content -->
-  {#each $resultsStore as [num, name]}
-    <ResultsRow {num} {name} />
-  {/each}
-</div>
+  <tbody on:click={handleClick} on:contextmenu={handleRightClick}>
+    {#each $resultsStore as [codepoint, name], i}
+      <ResultsRow index={i} {codepoint} {name} />
+    {/each}
+  </tbody>
+</table>
 
 <style>
-  .results {
-    display: grid;
-    grid-template-columns: auto auto 1fr;
-    grid-gap: 5px 20px;
+  table {
+    padding: 20px;
 
-    width: max-content;
+    border-spacing: 5px;
+
+    width: 100%;
     margin: 0 auto;
     text-align: left;
   }
-  .header {
+  tr {
+    width: 100%;
+  }
+  th {
     font-weight: bold;
     font-size: .8em;
     color: #4B558C;
-  }
-  span {
-    padding: 2px 10px;
-    align-self: baseline;
   }
 </style>

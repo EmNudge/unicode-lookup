@@ -57,10 +57,12 @@
 	main {
 		text-align: center;
 		margin: 0 auto;
+		
+    width: 600px;
+    max-width: 100%;
 	}
 
 	.searchbox {
-		max-width: 400px;
 		margin: 0 auto;
 	}
 

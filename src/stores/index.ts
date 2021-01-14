@@ -22,6 +22,8 @@ export const easySearchStore = writable<string>('');
 type Pattern = { exclude: boolean, category: string };
 export const categorySearchStore = writable<Pattern[]>([]);
 
+export const activeIndex = writable(-1);
+
 // settings menu
 export * from './settings';
 

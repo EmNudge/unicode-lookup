@@ -1,18 +1,15 @@
 <script lang="ts">
-  import Clipboard from '../../icons/clipboard.svelte';
-  import { codepointTypeStore, nameCasingStore, CasingType } from '../../stores';
+  import { codepointTypeStore, nameCasingStore, CasingType, activeIndex } from '../../stores';
   import { getNum } from '../../utils/char';
+  import InfoContainer from './InfoContainer.svelte';
 
-  export let num: number;
+  export let codepoint: number;
   export let name: string;
-  export let special: boolean = false;
+  export let index: number;
 
-  $: numStr = getNum(num, $codepointTypeStore);
-
-  function copyChar() {
-    const char = String.fromCodePoint(num);
-    navigator.clipboard.writeText(char);
-  }
+  $: nameStr = getName(name, $nameCasingStore);
+  $: numStr = getNum(codepoint, $codepointTypeStore);
+  $: char = String.fromCodePoint(codepoint);
 
   function getName(name: string, casingType: CasingType) {
     if (casingType === CasingType.TitleCase) {
@@ -26,53 +23,58 @@
     
     return name.toLowerCase();
   }
+
+  import { quartInOut } from 'svelte/easing';
+	const expand = (_node: HTMLElement, { duration, height }: { duration: number, height: number }) => ({	
+    duration,
+    css: (t: number) => `height: ${Math.floor(quartInOut(t) * height)}px`
+	});
 </script>
 
+<tr class:highlight={index % 2 === 0}>
+  <td 
+    class="symbol" 
+    data-index={index}
+  >{char}</td>
+  <td class="number styled" style="--hue: 35">{numStr}</td>
+  <td>{nameStr}</td>
+</tr>
 
-<span class="symbol" class:special>
-  <span>{String.fromCodePoint(num)}</span>
-  <Clipboard on:click={copyChar} />
-  <div class="placeholder"></div>
-</span>
-
-<span class="number styled" style="--hue: 35">{numStr}</span>
-
-<span>{getName(name, $nameCasingStore)}</span>
+{#if $activeIndex == index}
+  <tr>
+    <td colspan="3">
+      <div transition:expand={{ duration: 500, height: 300 }} class="info-cell">
+        <InfoContainer {codepoint} name={nameStr} />
+      </div>
+    </td>
+  </tr>
+{/if}
 
 <style>
-  span {
+  td {
     padding: 2px 10px;
     align-self: baseline;
+  }
+  .info-cell {
+    height: 300px;
+    overflow: auto;
   }
   .number {
     font-family: 'Courier New', Courier, monospace;
   }
-
+  .highlight {
+    background: #ffffffad;
+  }
   .symbol {
-    display: grid;
-    grid-template-columns: auto 1fr;
+    padding: 5px;
+    border-radius: 4px;
+    text-align: center;
   }
-  .symbol span::before, .symbol span::after {
-    content: '"';
-  }
-  .placeholder {
-    height: 24px;
-    width: 24px;
-  }
-  .symbol :global(svg) {
-    display: none;
+  .symbol:hover {
+    background: #47474714;
     cursor: pointer;
   }
-  .symbol :global(svg:active) {
-    transform: scale(.9);
-  }
-  .symbol:hover :global(svg) {
-    display: block;
-  }
-  .symbol:hover .placeholder {
-    display: none;
-  }
-  .symbol.special {
-    border-left: 4px solid #92bdff;
+  .symbol::after, .symbol::before {
+    content: "\"";
   }
 </style>
