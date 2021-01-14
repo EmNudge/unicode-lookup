@@ -1,4 +1,6 @@
 <script lang="ts">  
+  import { getPropertiesForChar } from '../../utils/unicode';
+
   export let codepoint: number;
   export let name: string;
 
@@ -22,7 +24,6 @@
     background: #a4b1c838;
     border-radius: 8px;
     padding: 20px;
-    height: 100%;
   }
 
   td:first-child {
@@ -52,6 +53,20 @@
   }
   .encoding-table td:last-child span, .encoding-table th:last-child span {
     padding: 0 5px;
+  }
+
+  .properties {
+    display: grid;
+		grid-template-rows: repeat(7, 1fr);
+		grid-template-columns: 1fr 1fr;
+		width: min-content;
+		gap: 5px 40px;
+		text-align: left;
+  }
+
+  h3 {
+    padding: 5px;
+    padding-bottom: 15px;
   }
 </style>
 
@@ -111,4 +126,13 @@
       </tr>
     </tbody>
   </table>
+
+  <br>
+
+  <h3>Properties</h3>
+  <div class="properties">
+    {#each getPropertiesForChar(char) as property}
+      <span>{property}</span>
+    {/each}
+  </div>
 </div>

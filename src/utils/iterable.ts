@@ -60,6 +60,17 @@ export function* loop<T>(iter: Iterable<T>) {
   }
 }
 
+export function* join<T>(...iters: Iterable<T>[]) {
+  for (const iter of iters) {
+    yield* iter;
+  }
+}
+
+export const append = <T>(iter: Iterable<T>) => function*(mainIter: Iterable<T>) {
+  yield* mainIter;
+  yield* iter;
+}
+
 type voidFunc<T> = (input: T, index: number) => void;
 export const forEach = <T>(func: voidFunc<T>) => function*(iter: Iterable<T>): Iterable<T> {
   for (const [index, item] of enumerate(iter)) {
