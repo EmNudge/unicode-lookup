@@ -30,6 +30,6 @@ For *Simple Search*, it accepts:
 - [ ] add more data to results
   - [ ] block (e.g. `'Basic Latin'`)
   - [ ] plane (e.g. `'Basic Multilingual Plane'`)
-  - [ ] encoding (UTF-8, UTF-16, and UTF-32)
-  - [ ] matching Unicode properties
+  - [x] encoding (UTF-8, UTF-16, and UTF-32)
+  - [x] matching Unicode properties
     - [tool for that here](https://svelte.dev/repl/853ca8e17da544308cbb5c081ad56a6d?version=3.31.2)
