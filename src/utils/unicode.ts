@@ -32,19 +32,39 @@ export function getPropertiesForChar(char: string) {
 }
 
 const PLANE_LENGTH = 2**16;
-type Plane = { number: number, name?: string };
+export enum PlaneName {
+  BasicMultilingual = 'Basic Multilingual Plane',
+  SupplementaryMultilingual = 'Supplementary Multilingual Plane',
+  SupplementaryIdeographic = 'Supplementary Ideographic Plane',
+  TertiaryIdeographic = 'Tertiary Ideographic Plane',
+  SupplementarySpecialPurpose = 'Supplementary Special-purpose Plane',
+  SupplementaryPrivateUseArea = 'Supplementary Private Use Area Plane',
+};
+
+export const PlaneMap = new Map<number, PlaneName>([
+  [0, PlaneName.BasicMultilingual],
+  [1, PlaneName.SupplementaryMultilingual],
+  [2, PlaneName.SupplementaryIdeographic],
+  [3, PlaneName.TertiaryIdeographic],
+  [14, PlaneName.SupplementarySpecialPurpose],
+  [15, PlaneName.SupplementaryPrivateUseArea],
+  [16, PlaneName.SupplementaryPrivateUseArea],
+]);
+
+export type Plane = { 
+  number: number, 
+  name?: PlaneName;
+};
 export function getPlaneForChar(char: string): Plane {
   if ([...char].length > 1) throw new Error('Cannot get plane on string with length over 1');
 
   const codepoint = char.codePointAt(0);
   const plane = Math.floor(codepoint / PLANE_LENGTH);
 
-  if (plane === 0) return { number: plane, name: 'Basic Multilingual Plane' };
-  if (plane === 1) return { number: plane, name: 'Supplementary Multilingual Plane' };
-  if (plane === 2) return { number: plane, name: 'Supplementary Ideographic Plane' };
-  if (plane === 3) return { number: plane, name: 'Tertiary Ideographic Plane' };
-  if (plane === 14) return { number: plane, name: 'Supplement­ary Special-purpose Plane' };
-  if (plane === 15 || plane === 16) return { number: plane, name: 'Supplement­ary Private Use Area Plane' };
+  if (PlaneMap.has(plane)) {
+    return { number: plane, name: PlaneMap.get(plane) };
+  }
+  
   return { number: plane };
 }
 
