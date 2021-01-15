@@ -1,5 +1,6 @@
 import { BoxSetType } from '../stores';
 import type { BoxSet, Box } from '../stores';
+import { PLANE_LENGTH } from '../utils/unicode';
 
 export function* getIter(boxSets: BoxSet[], unicodeMap: Map<number, string>) {
   console.log({ boxSets })
@@ -24,7 +25,14 @@ function shouldYieldCodepoint(boxSets: BoxSet[], unicode: [number, string]) {
 function matchesBoxes(boxes: Box[], unicode: [number, string]) {
   for (const box of boxes) {
     if (box.name === 'Codepoint Range') {
-      const inRange = box.data.from <= unicode[0] && unicode[0] <= box.data.to;
+      const { from, to } = box.data;
+      const inRange = from <= unicode[0] && unicode[0] <= to;
+      if (inRange) return true;
+    }
+    if (box.name === 'Unicode Plane') {
+      const from = PLANE_LENGTH * box.data;
+      const to = from + PLANE_LENGTH;
+      const inRange = from <= unicode[0] && unicode[0] <= to;
       if (inRange) return true;
     }
     if (box.name === 'Is Near Char') {

@@ -6,8 +6,8 @@ export type Box =
   | { name: 'Is Near Char', data: { char: string, distance: number } }
   | { name: 'Regex Match', data: { regex: RegExp, matchOn: 'Character' | 'Name' } }
   | { name: 'In Unicode Block', data: string }
-  | { name: 'In Unicode Plane', data: string }
   | { name: 'Unicode Property', data: string }
+  | { name: 'Unicode Plane', data: number }
 
 export const getNewBox = (): Box => ({
   name: 'Codepoint Range',

@@ -31,7 +31,7 @@ export function getPropertiesForChar(char: string) {
   )(allRegex);
 }
 
-const PLANE_LENGTH = 2**16;
+export const PLANE_LENGTH = 2**16;
 export enum PlaneName {
   BasicMultilingual = 'Basic Multilingual Plane',
   SupplementaryMultilingual = 'Supplementary Multilingual Plane',
@@ -41,7 +41,7 @@ export enum PlaneName {
   SupplementaryPrivateUseArea = 'Supplementary Private Use Area Plane',
 };
 
-export const PlaneMap = new Map<number, PlaneName>([
+export const planeMap = new Map<number, PlaneName>([
   [0, PlaneName.BasicMultilingual],
   [1, PlaneName.SupplementaryMultilingual],
   [2, PlaneName.SupplementaryIdeographic],
@@ -61,8 +61,8 @@ export function getPlaneForChar(char: string): Plane {
   const codepoint = char.codePointAt(0);
   const plane = Math.floor(codepoint / PLANE_LENGTH);
 
-  if (PlaneMap.has(plane)) {
-    return { number: plane, name: PlaneMap.get(plane) };
+  if (planeMap.has(plane)) {
+    return { number: plane, name: planeMap.get(plane) };
   }
   
   return { number: plane };
