@@ -1,5 +1,6 @@
 // https://tc39.es/ecma262/#table-nonbinary-unicode-properties
-import { join, append, filter, map, collect, pipe } from './iterable.js';
+import { append, filter, map, collect, pipe } from './iterable.js';
+import type { Block } from '../stores';
 
 export const valueAliases = ["Cased_Letter","Close_Punctuation","Connector_Punctuation","Control","Currency_Symbol","Dash_Punctuation","Decimal_Number","Enclosing_Mark","Final_Punctuation","Format","Initial_Punctuation","Letter","Letter_Number","Line_Separator","Lowercase_Letter","Mark","Math_Symbol","Modifier_Letter","Modifier_Symbol","Nonspacing_Mark","Number","Open_Punctuation","Other","Other_Letter","Other_Number","Other_Punctuation","Other_Symbol","Paragraph_Separator","Private_Use","Punctuation","Separator","Space_Separator","Spacing_Mark","Surrogate","Symbol","Titlecase_Letter","Unassigned","Uppercase_Letter"];
 
@@ -45,4 +46,23 @@ export function getPlaneForChar(char: string): Plane {
   if (plane === 14) return { number: plane, name: 'Supplement­ary Special-purpose Plane' };
   if (plane === 15 || plane === 16) return { number: plane, name: 'Supplement­ary Private Use Area Plane' };
   return { number: plane };
+}
+
+export function parseBlocks(textFile: string): Block[] {
+  return textFile.split('\n').map(row => {
+    const [rangeStr, name] = row.split(',');
+    const range = rangeStr.split('..').map(str => parseInt(str.slice(2), 16)) as [number, number];
+    return { range, name };
+  });
+}
+
+export function getCodepointBlock(blocks: Block[], codepoint: number) {
+  for (const block of blocks) {
+    const { range, name } = block;
+    if (codepoint > range[1]) continue;
+
+    return { range: [...range], name };
+  }
+
+  throw new Error('codepoint does not match any block');
 }

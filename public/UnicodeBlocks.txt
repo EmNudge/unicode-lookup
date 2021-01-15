@@ -1,5 +1,5 @@
-U+0000..U+007F,Basic Latin[g],128,128,"Latin (52 characters), Common (76 characters)"
-U+0080..U+00FF,Latin-1 Supplement[h],128,128,"Latin (64 characters), Common (64 characters)"
+U+0000..U+007F,Basic Latin,128,128,"Latin (52 characters), Common (76 characters)"
+U+0080..U+00FF,Latin-1 Supplement,128,128,"Latin (64 characters), Common (64 characters)"
 U+0100..U+017F,Latin Extended-A,128,128,"Latin"
 U+0180..U+024F,Latin Extended-B,208,208,"Latin"
 U+0250..U+02AF,IPA Extensions,96,96,"Latin"

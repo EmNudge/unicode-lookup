@@ -19,10 +19,13 @@ export const workerIsReadyStore = writable(false);
 // stores for searches. We want them to persist even when they're not visible
 export const easySearchStore = writable<string>('');
 
-type Pattern = { exclude: boolean, category: string };
+export type Pattern = { exclude: boolean, category: string };
 export const categorySearchStore = writable<Pattern[]>([]);
 
 export const activeIndex = writable(-1);
+
+export type Block = { range: [number, number], name: string };
+export const blockLookupStore = writable<Block[]>(null);
 
 // settings menu
 export * from './settings';

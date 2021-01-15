@@ -1,8 +1,12 @@
 <script lang="ts">  
-  import { getPropertiesForChar, getPlaneForChar } from '../../utils/unicode';
+  import { getPropertiesForChar, getPlaneForChar, getCodepointBlock } from '../../utils/unicode';
+  import { blockLookupStore } from '../../stores';
 
   export let codepoint: number;
   export let name: string;
+
+  $: charBlock = getCodepointBlock($blockLookupStore, codepoint);
+  $: charBlockName = `(${charBlock.range[0]}-${charBlock.range[1]}) ${charBlock.name}`;
 
   const char = String.fromCodePoint(codepoint);
   const utf8 = new TextEncoder().encode(char);
@@ -87,6 +91,10 @@
       <tr>
         <td>Plane</td>
         <td>{planeName}</td>
+      </tr>
+      <tr>
+        <td>Block</td>
+        <td>{charBlockName}</td>
       </tr>
     </tbody>
   </table>
