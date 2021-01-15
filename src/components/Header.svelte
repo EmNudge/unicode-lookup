@@ -13,7 +13,7 @@
   header {
     display: flex;
     justify-content: space-between;
-    max-width: 400px;
+    max-width: 600px;
     margin: 20px auto;
     display: flex;
     align-items: center;

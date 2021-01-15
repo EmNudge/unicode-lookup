@@ -22,10 +22,27 @@ const allRegex = pipe(
 
 export function getPropertiesForChar(char: string) {
 	if ([...char].length > 1) throw new Error('Cannot match on string with length over 1');
-
+  
 	return pipe(
-		filter(([,regex]) => regex.test(char)),
+    filter(([,regex]) => regex.test(char)),
 		map(([property]) => property),
 		collect
-	)(allRegex);
+  )(allRegex);
+}
+
+const PLANE_LENGTH = 2**16;
+type Plane = { number: number, name?: string };
+export function getPlaneForChar(char: string): Plane {
+  if ([...char].length > 1) throw new Error('Cannot get plane on string with length over 1');
+
+  const codepoint = char.codePointAt(0);
+  const plane = Math.floor(codepoint / PLANE_LENGTH);
+
+  if (plane === 0) return { number: plane, name: 'Basic Multilingual Plane' };
+  if (plane === 1) return { number: plane, name: 'Supplementary Multilingual Plane' };
+  if (plane === 2) return { number: plane, name: 'Supplementary Ideographic Plane' };
+  if (plane === 3) return { number: plane, name: 'Tertiary Ideographic Plane' };
+  if (plane === 14) return { number: plane, name: 'Supplement­ary Special-purpose Plane' };
+  if (plane === 15 || plane === 16) return { number: plane, name: 'Supplement­ary Private Use Area Plane' };
+  return { number: plane };
 }

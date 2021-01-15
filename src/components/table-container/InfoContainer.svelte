@@ -1,5 +1,5 @@
 <script lang="ts">  
-  import { getPropertiesForChar } from '../../utils/unicode';
+  import { getPropertiesForChar, getPlaneForChar } from '../../utils/unicode';
 
   export let codepoint: number;
   export let name: string;
@@ -17,6 +17,9 @@
     if (encoding === 'bin') return '0b' + num.toString(2);
     return String(num);
   }
+
+  $: planeData = getPlaneForChar(char);
+  $: planeName = planeData.name ? `(${planeData.number}) ${planeData.name}` : planeData.number;
 </script>
 
 <style>
@@ -70,7 +73,7 @@
   }
 </style>
 
-<div>
+<div class="container">
   <table>
     <tbody>
       <tr>
@@ -80,6 +83,10 @@
       <tr>
         <td>Codepoint</td>
         <td>{codepoint}</td>
+      </tr>
+      <tr>
+        <td>Plane</td>
+        <td>{planeName}</td>
       </tr>
     </tbody>
   </table>
