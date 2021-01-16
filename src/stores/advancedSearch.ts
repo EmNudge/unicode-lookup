@@ -1,11 +1,11 @@
 import { writable } from 'svelte/store';
 
 export type Box = 
-  { name: 'Codepoint Range', data: { from: number, to: number } }
+  | { name: 'Codepoint Range', data: { from: number, to: number } }
   | { name: 'Name Includes', data: string }
   | { name: 'Is Near Char', data: { char: string, distance: number } }
   | { name: 'Regex Match', data: { regex: RegExp, matchOn: 'Character' | 'Name' } }
-  | { name: 'In Unicode Block', data: string }
+  | { name: 'Unicode Block', data: string }
   | { name: 'Unicode Property', data: string }
   | { name: 'Unicode Plane', data: number }
 

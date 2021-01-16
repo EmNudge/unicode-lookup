@@ -1,6 +1,7 @@
 import { BoxSetType } from '../stores';
 import type { BoxSet, Box } from '../stores';
 import { PLANE_LENGTH } from '../utils/unicode';
+import { unicodeBlocksMap } from './index';
 
 export function* getIter(boxSets: BoxSet[], unicodeMap: Map<number, string>) {
   console.log({ boxSets })
@@ -22,42 +23,42 @@ function shouldYieldCodepoint(boxSets: BoxSet[], unicode: [number, string]) {
   return true;
 }
 
+const numInRange = (num: number, range: [number, number]) =>
+  range[0] < num && num < range[1];
+
 function matchesBoxes(boxes: Box[], unicode: [number, string]) {
   for (const box of boxes) {
-    if (box.name === 'Codepoint Range') {
+    // for Okku:
+  /*} else*/if(box.name === 'Codepoint Range') {
       const { from, to } = box.data;
-      const inRange = from <= unicode[0] && unicode[0] <= to;
-      if (inRange) return true;
-    }
-    if (box.name === 'Unicode Plane') {
+      if (numInRange(unicode[0], [from, to])) return true;
+    } else if (box.name === 'Unicode Plane') {
       const from = PLANE_LENGTH * box.data;
       const to = from + PLANE_LENGTH;
-      const inRange = from <= unicode[0] && unicode[0] <= to;
-      if (inRange) return true;
-    }
-    if (box.name === 'Is Near Char') {
+      if (numInRange(unicode[0], [from, to])) return true;
+    } else if (box.name === 'Is Near Char') {
       const { char, distance } = box.data;
       const nearChar = Math.abs(char.codePointAt(0) - unicode[0]) <= distance;
       if (nearChar) return true;
-    }
-    if (box.name === 'Name Includes') {
+    } else if (box.name === 'Name Includes') {
       const nameIncludes = unicode[1].toLowerCase().includes(box.data.toLowerCase());
       if (nameIncludes) return true;
-    }
-    if (box.name === 'Unicode Property') {
+    } else if (box.name === 'Unicode Property') {
       const regex = new RegExp(`\\p{${box.data}}`, 'u');
       const hasProperty = regex.test(String.fromCodePoint(unicode[0]));
       if (hasProperty) return true;
-    }
-    if (box.name === 'Regex Match') {
+    } else if (box.name === 'Regex Match') {
       const { regex, matchOn } = box.data;
       const matches = matchOn === 'Character'
         ? regex.test(String.fromCodePoint(unicode[0]))
         : regex.test(unicode[1]);
       if (matches) return true;
+    } else if (box.name === 'Unicode Block') {
+      const range = unicodeBlocksMap.get(box.data);
+      if (numInRange(unicode[0], range)) return true;
     }
 
-    // we have yet to match unicode planes or blocks
+    // unreachable code (theoretically)
   }
 
   return false;

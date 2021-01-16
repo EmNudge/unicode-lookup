@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	export let hue = 111;
-	export let options = ['Dropdown'];
-	export let value;
+	export let options: any[] = ['Dropdown'];
+	export let value: any;
 	export let disabled = false;
 </script>
 

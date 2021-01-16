@@ -1,7 +1,8 @@
 import { split, filter, pipe } from '../utils/iterable'
+import { parseBlocks } from '../utils/unicode';
 
 // This gets AND sets local unicode maps
-export default async function getUnicode() {
+export async function getUnicodeTable() {
   // this is a massive file - over 33k lines
   const res = await fetch('/DerivedName.txt');
   const text = await res.text();
@@ -31,6 +32,19 @@ export default async function getUnicode() {
     unicodeMap,
     unicodeRangesMap,
   };
+}
+
+export async function getUnicodeBlockMap() {
+  const res = await fetch('/UnicodeBlocks.txt');
+  const text = await res.text();
+
+  const blocks = parseBlocks(text);
+  const blocksMap = new Map();
+  for (const block of blocks) {
+    blocksMap.set(block.name, block.range);
+  }
+
+  return blocksMap;
 }
 
 function parseDerivedNameLine(line: string) {

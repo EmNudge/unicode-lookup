@@ -1,4 +1,4 @@
-import getUnicode from './getUnicode';
+import { getUnicodeTable, getUnicodeBlockMap } from './retrieval';
 import * as Comlink from 'comlink';
 import type { BoxSet } from '../stores';
 import { getIter } from './getIterFromQuery';
@@ -7,6 +7,8 @@ import { getIter } from './getIterFromQuery';
 let unicodeMap = new Map<number, string>();
 // As not to take up space, we don't expand ranges and instead stick them here
 let unicodeRangesMap = new Map<number[], string>();
+// maps a block name onto a codepoint range
+export let unicodeBlocksMap = new Map<string, [number, number]>();
 
 class Querier {
   queryId: Symbol;
@@ -14,9 +16,13 @@ class Querier {
   async loadTable() {
     if (!unicodeMap.size) {
       // this also sets unicode locally
-      const payload = await getUnicode();
+      const payload = await getUnicodeTable();
       unicodeMap = payload.unicodeMap;
       unicodeRangesMap = payload.unicodeRangesMap;
+    }
+
+    if (!unicodeBlocksMap.size) {
+      unicodeBlocksMap = await getUnicodeBlockMap();
     }
 
     return { unicodeMap, unicodeRangesMap };
