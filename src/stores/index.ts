@@ -23,6 +23,7 @@ export type Pattern = { exclude: boolean, category: string };
 export const categorySearchStore = writable<Pattern[]>([]);
 
 export const activeIndex = writable(-1);
+resultsStore.subscribe(() => activeIndex.set(-1));
 
 export type Block = { range: [number, number], name: string };
 export const blockLookupStore = writable<Block[]>(null);
