@@ -27,6 +27,8 @@ export const activeIndex = writable(-1);
 export type Block = { range: [number, number], name: string };
 export const blockLookupStore = writable<Block[]>(null);
 
+export const encodingMode = writable<'hex' | 'bin' | 'dec'>('hex');
+
 // settings menu
 export * from './settings';
 

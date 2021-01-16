@@ -1,6 +1,6 @@
 <script lang="ts">  
   import { getPropertiesForChar, getPlaneForChar, getCodepointBlock } from '../../utils/unicode';
-  import { blockLookupStore } from '../../stores';
+  import { blockLookupStore, encodingMode } from '../../stores';
 
   export let codepoint: number;
   export let name: string;
@@ -13,10 +13,10 @@
   const utf16 = [char.charCodeAt(0), char.charCodeAt(1)].filter(Boolean);
   const utf32 = codepoint;
 
-  let encodingTypes = ['hex', 'bin', 'dec'];
-  let currEncoding = 'hex';
+  type EncodingType = 'hex' | 'bin' | 'dec';
+  let encodingTypes: EncodingType[] = ['hex', 'bin', 'dec'];
 
-  function getNumber(num: number, encoding: string) {
+  function getNumber(num: number, encoding: EncodingType) {
     if (encoding === 'hex') return '0x' + num.toString(16);
     if (encoding === 'bin') return '0b' + num.toString(2);
     return String(num);
@@ -108,8 +108,8 @@
         <th class="encoding-type">
           {#each encodingTypes as encoding}
             <span 
-              class:active={currEncoding === encoding}
-              on:click={() => currEncoding = encoding}
+              class:active={$encodingMode === encoding}
+              on:click={() => $encodingMode = encoding}
             >{encoding}</span>
           {/each}
         </th>
@@ -121,7 +121,7 @@
         <td>UTF-8</td>
         <td>
           {#each utf8 as byte}
-            <span>{getNumber(byte, currEncoding)}</span>
+            <span>{getNumber(byte, $encodingMode)}</span>
           {/each}  
         </td>
       </tr>
@@ -129,14 +129,14 @@
         <td>UTF-16</td>
         <td>
           {#each utf16 as num}
-            <span>{getNumber(num, currEncoding)}</span>
+            <span>{getNumber(num, $encodingMode)}</span>
           {/each}  
         </td>
       </tr>
       <tr>
         <td>UTF-32</td>
         <td>
-          <span>{getNumber(utf32, currEncoding)}</span>
+          <span>{getNumber(utf32, $encodingMode)}</span>
         </td>
       </tr>
     </tbody>
