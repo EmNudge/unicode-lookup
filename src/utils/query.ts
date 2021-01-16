@@ -24,14 +24,14 @@ export function getQueryFromText(text: string): Box {
         const char = String.fromCodePoint(num);
         return { 
             name: 'Is Near Char',
-            data: { char, distance: 50 }
+            data: { char, distance: 0 }
         };
     }
 
     if ([...text].length === 1) {
         return { 
             name: 'Is Near Char',
-            data: { char: text, distance: 50 }
+            data: { char: text, distance: 0 }
         };
     }
 
