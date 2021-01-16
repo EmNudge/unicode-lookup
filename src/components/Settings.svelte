@@ -1,6 +1,6 @@
 <script>
   import Modal from './Modal.svelte';
-  import { codepointTypeStore, resultsTypeStore, resultsNumStore, CasingType, nameCasingStore } from '../stores';
+  import { codepointTypeStore, resultsNumStore, CasingType, nameCasingStore } from '../stores';
   
   function arrayFrom(thing) {
     const arr = [];
@@ -44,14 +44,6 @@
         {#each arrayFrom(CasingType) as type}
           <option value={CasingType[type]}>{type}</option>
         {/each}
-      </select>
-    </div>
-
-    <div class="input">
-      <label>Results Container</label>
-      <select bind:value={$resultsTypeStore}>
-        <option value={0}>Table</option>
-        <option value={1}>Grid</option>
       </select>
     </div>
 
