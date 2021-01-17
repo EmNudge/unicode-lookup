@@ -15,7 +15,7 @@ import * as Comlink from 'comlink';
 // }
 
 currentQueryStore.subscribe(async val => {
-	if (val === null) return;
+	if (!val.length) return;
 	
 	const workerIsReady = get(workerIsReadyStore);
 	if (!workerIsReady) return;

@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import type { BoxSet } from './advancedSearch';
 
 // which type of search is currently in use
 export enum SearchMode {
@@ -8,9 +9,16 @@ export enum SearchMode {
 export const searchMode = writable<SearchMode>(SearchMode.SimpleSearch);
 
 export const resultsStore = writable<[number, string][]>([]);
-export const exactMatchStore = writable<[number, string]>(null);
+resultsStore.subscribe(results => {
+  if (!results.length) return;
+  console.log('results:\n', results);
+})
 
-export const currentQueryStore = writable(null);
+export const currentQueryStore = writable<BoxSet[]>([]);
+currentQueryStore.subscribe(query => {
+  if (!query.length) return;
+  console.log('query:\n', query);
+})
 
 export const workerStore = writable<Worker>(null);
 

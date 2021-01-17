@@ -4,7 +4,6 @@ import { PLANE_LENGTH } from '../utils/unicode';
 import { unicodeBlocksMap } from './index';
 
 export function* getIter(boxSets: BoxSet[], unicodeMap: Map<number, string>) {
-  console.log({ boxSets })
   for (const unicode of unicodeMap) {
     const shouldYield = shouldYieldCodepoint(boxSets, unicode);
     if (shouldYield) yield unicode;

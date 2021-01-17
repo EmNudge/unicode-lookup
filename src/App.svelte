@@ -8,7 +8,7 @@
 	import AdvancedSearch from './components/advanced-search/AdvancedSearch.svelte';
 
 	import type { BoxSet } from './stores';
-	let queryArr: BoxSet[] = null;
+	let queryArr: BoxSet[] = [];
 	$: {
 		currentQueryStore.set(queryArr);
 	}
