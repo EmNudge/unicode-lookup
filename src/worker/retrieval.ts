@@ -1,38 +1,5 @@
-import { split, filter, pipe } from '../utils/iterable'
+import { filter, map, pipe, collect } from '../utils/iterable'
 import { parseBlocks } from '../utils/unicode';
-
-// This gets AND sets local unicode maps
-export async function getUnicodeTable() {
-  // this is a massive file - over 33k lines
-  const res = await fetch('/DerivedName.txt');
-  const text = await res.text();
-
-  const unicodeMap: Map<number, string> = new Map();
-  const unicodeRangesMap: Map<number[], string> = new Map();
-
-  const lines = pipe(
-    split('\n'),
-    filter(line => !line.startsWith('#') && line.trim().length)
-  )(text);
-
-  for (const line of lines) {
-    const parsed = parseDerivedNameLine(line);
-
-    if (parsed.range) {
-      const { range, name } = parsed;
-      unicodeRangesMap.set(range, name);
-      continue;
-    }
-
-    const { codePoint, name } = parsed;
-    unicodeMap.set(codePoint, name);
-  }
-
-  return {
-    unicodeMap,
-    unicodeRangesMap,
-  };
-}
 
 export async function getUnicodeBlockMap() {
   const res = await fetch('/UnicodeBlocks.txt');
@@ -47,24 +14,88 @@ export async function getUnicodeBlockMap() {
   return blocksMap;
 }
 
-function parseDerivedNameLine(line: string) {
-  const [hex, n] = line.split(';');
+export async function getUnicodeMap() {
+  const res = await fetch('/UnicodeData.txt');
+  const text = await res.text();
   
-  if (!n) console.log(line)
-  // There is some space padding. We don't need to .trim() the hex
-  // since parseInt doesn't care about spaces after the hex 
-  const name = n.trim();
+  const unicodeArr: [number, UnicodeCharInfo][] = pipe(
+    filter(line => line.trim()),
+    map(line => getUnicodeData(line)),
+    map(data => [data.codepoint, data]),
+    collect,
+  )(text.split('\n'));
+  console.log(unicodeArr)
 
-  // This is a range
-  if (hex.includes('..')) {
-    const [start, end] = hex.split('..');
+  return new Map<number, UnicodeCharInfo>(unicodeArr);
+}
 
-    return {
-      range: [parseInt(start, 16), parseInt(end, 16)],
-      name
-    };
+function getDecompFromStr(decomp: string) {
+  const res = decomp.match(/<([a-zA-Z]+)> ([A-Z0-9 ]+)/);
+  if (!res) return null;
+
+  const { 1: type, 2: codepointsStr } = res;
+  const codepoints = codepointsStr.split(' ').map(codepoint => {
+    return parseInt(codepoint.trim(), 16);
+  });
+
+  return { type, codepoints };
+}
+
+export interface UnicodeCharInfo {
+  codepoint: number;
+  name: string;
+  category: string;
+  combiningClass: number;
+  bidiClass: string;
+  decomposition: {
+    type: string;
+    codepoints: number[];
+  } | null;
+  numberEquivalent: {
+    decimal: number | null;
+    digit: number | null;
+    numeric: string | null;
+  };
+  isBidiMirrored: boolean;
+  caseMapping: {
+    uppercase: string | null,
+    lowercase: string | null,
+    titlecase: string | null,
+  };
+  oldName: string | null;
+}
+
+function getUnicodeData(line: string): UnicodeCharInfo {
+  let [
+    codepointStr, label, category, combiningClass, bidiClass,
+    decompositionStr, decimalEquiv, digitEquiv, numericEquiv,
+    bidiMirrored, oldName, /* isoComment */, 
+    uppercaseMapping, lowercaseMapping, titlecaseMapping
+  ] = line.split(';');
+
+  const codepoint = parseInt(codepointStr, 16);
+  const name = label.includes('<') && oldName ? oldName : label;
+  const isBidiMirrored = bidiMirrored === 'Y';
+
+  const caseMapping = {
+    uppercase: uppercaseMapping || null,
+    lowercase: lowercaseMapping || null,
+    titlecase: titlecaseMapping || null,
+  };
+  const numberEquivalent = {
+    decimal: decimalEquiv ? Number(decimalEquiv) : null,
+    digit: digitEquiv ? Number(digitEquiv) : null,
+    numeric: numericEquiv || null,
   }
 
-  const codePoint = parseInt(hex, 16);
-  return { codePoint, name };
+  const decomposition = getDecompFromStr(decompositionStr);
+
+  return {
+    codepoint, name, category, 
+    combiningClass: Number(combiningClass), 
+    bidiClass, decomposition, numberEquivalent,
+    isBidiMirrored, 
+    caseMapping,
+    oldName: oldName || null, 
+  }
 }

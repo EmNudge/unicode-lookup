@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import type { BoxSet } from './advancedSearch';
+import type { UnicodeCharInfo } from '../worker/retrieval';
 
 // which type of search is currently in use
 export enum SearchMode {
@@ -8,7 +9,7 @@ export enum SearchMode {
 }
 export const searchMode = writable<SearchMode>(SearchMode.SimpleSearch);
 
-export const resultsStore = writable<[number, string][]>([]);
+export const resultsStore = writable<[number, UnicodeCharInfo][]>([]);
 resultsStore.subscribe(results => {
   if (!results.length) return;
   console.log('results:\n', results);

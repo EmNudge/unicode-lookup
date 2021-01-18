@@ -32,8 +32,8 @@
   </thead>
 
   <tbody on:click={handleClick} on:contextmenu={handleRightClick}>
-    {#each $resultsStore as [codepoint, name], i}
-      <ResultsRow index={i} {codepoint} {name} />
+    {#each $resultsStore as [codepoint, info], i}
+      <ResultsRow index={i} {codepoint} name={info.name} />
     {/each}
   </tbody>
 </table>
