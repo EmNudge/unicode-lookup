@@ -7,6 +7,7 @@
 </script>
 
 {#if caseMappings.length}
+  <br />
   <table>
     <thead>
       <tr>

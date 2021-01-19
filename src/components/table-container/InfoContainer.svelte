@@ -13,16 +13,41 @@
 
   // @ts-ignore
   $: category = `${info.category} (${Catetegory[info.category]})`;
-
   $: charBlock = getCodepointBlock($blockLookupStore, codepoint);
-  $: charBlockName = `(${charBlock.range[0]}-${charBlock.range[1]}) ${charBlock.name}`;
-
   $: planeData = getPlaneForCodepoint(codepoint);
-  $: planeName = planeData.name ? `(${planeData.number}) ${planeData.name}` : planeData.number;
+
+  const getIf = (cond: boolean, value: any) => cond ? [value] : [];
+
+  $: decompText = info.decomposition != null 
+    ? `<${info.decomposition.type}> ${info.decomposition.codepoints.join(' ')}`
+    : '';
+  
+  $: baseInfo = [
+    ['Name', name],
+    ['Bidi Class', info.bidiClass],
+    ...getIf(
+      info.oldName && info.oldName !== name, 
+      ['Old Name', info.oldName]
+    ),
+    ['Codepoint', codepoint],
+    ['Category', category],
+    ...getIf(
+      info.decomposition != null,
+      ['Decomposition', decompText]
+    ),
+    [
+      'Plane', 
+      planeData.name ? `${planeData.name} (Plane ${planeData.number}) ` : `Plane ${planeData.number}`
+    ],
+    [
+      'Block', 
+      `${charBlock.name} (Range ${charBlock.range[0]}-${charBlock.range[1]}) `
+    ],
+  ]
 </script>
 
 <style>
-  div {
+  div.container {
     border-radius: 8px;
     padding: 20px;
   }
@@ -40,7 +65,8 @@
 		grid-template-columns: 1fr 1fr;
 		width: min-content;
 		gap: 5px 40px;
-		text-align: left;
+    text-align: left;    
+    padding-left: 8px;
   }
 
   h3 {
@@ -52,57 +78,20 @@
 <div class="container styled" style="--hue: 200">
   <table>
     <tbody>
-      <tr>
-        <td>Name</td>
-        <td>{name}</td>
-      </tr>
-
-      {#if info.oldName && info.oldName !== name}
+      {#each baseInfo as [name, value]}
         <tr>
-          <td>Old Name</td>
-          <td>{info.oldName}</td>
+          <td>{name}</td>
+          <td>{value}</td>
         </tr>
-      {/if}
-
-      <tr>
-        <td>Codepoint</td>
-        <td>{codepoint}</td>
-      </tr>
-      <tr>
-        <td>Category</td>
-        <td>{category}</td>
-      </tr>
-      
-      {#if info.decomposition}
-        <tr>
-          <td>Decomposition</td>
-          <td>&lt;{info.decomposition.type}&gt; {info.decomposition.codepoints.join(' ')}</td>
-        </tr>
-      {/if}
-      
-      <tr>
-        <td>Bidi Class</td>
-        <td>{info.bidiClass}</td>
-      </tr>
-      <tr>
-        <td>Plane</td>
-        <td>{planeName}</td>
-      </tr>
-      <tr>
-        <td>Block</td>
-        <td>{charBlockName}</td>
-      </tr>
+      {/each}
     </tbody>
   </table>
-
-  <br />
+  
   <CaseMapping caseMapping={info.caseMapping} />
-  <br />
   <NumberEquiv numberEquiv={info.numberEquivalent} />
-  <br /> 
   <Encoding {codepoint} />
+  
   <br />
-
   <h3>Properties</h3>
   <div class="properties">
     {#each getPropertiesForChar(String.fromCodePoint(codepoint)) as property}

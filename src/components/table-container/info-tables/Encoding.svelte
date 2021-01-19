@@ -19,6 +19,7 @@
   $: utf32 = codepoint;
 </script>
 
+<br />
 <table class="encoding-table">
   <thead>
     <tr>
