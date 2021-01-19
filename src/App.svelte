@@ -21,25 +21,15 @@
 	import { searchMode, SearchMode } from './stores'
 </script>
 
-<Header searchMode={$searchMode} />
+<Header />
 <GithubIcon href="https://github.com/EmNudge/unicode-lookup" />
 
 <main>
 	<div class="searchbox">
 		{#if $searchMode === SearchMode.SimpleSearch}
 			<EasySearch on:search={easySearch} />
-
-			<button 
-				class="underline-btn" 
-				on:click={() => $searchMode = SearchMode.AdvancedSearch}
-			>advanced search</button>
 		{:else}
 			<AdvancedSearch on:search={advancedSearch} />
-
-			<button 
-				class="underline-btn" 
-				on:click={() => $searchMode = SearchMode.SimpleSearch}
-			>simple search</button>
 		{/if}
 	</div>
 
@@ -60,10 +50,6 @@
 		
     width: 600px;
     max-width: 100%;
-	}
-
-	.searchbox {
-		margin: 0 auto;
 	}
 
 	@media (min-width: 640px) {

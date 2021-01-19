@@ -1,8 +1,18 @@
 <script lang="ts">
-  import { SearchMode } from '../stores';
-  export let searchMode: SearchMode;
+  import { SearchMode, searchMode } from '../stores';
 
   import { fly } from 'svelte/transition';
+  import FilterIcon from '../icons/filter.svelte';
+  
+  function toggleSearchMode() {
+    const currentSearchMode = $searchMode;
+
+    if (currentSearchMode === SearchMode.AdvancedSearch) {
+      $searchMode = SearchMode.SimpleSearch;
+    } else {
+      $searchMode = SearchMode.AdvancedSearch;
+    }
+  }
 </script>
 
 <style>
@@ -17,15 +27,35 @@
   h1 {
 		font-size: 1.7em;
   }
+
+  button {
+    cursor: pointer;
+  }
+  .active {
+    color: var(--hsl-bg);
+    background: var(--hsl);
+    transition: .25s;
+  }
+  button:focus {
+    border: 1px solid var(--hsl);
+  }
 </style>
 
 <header>
   <div class="text">
     <h1>Unicode Lookup</h1>
-    {#if searchMode === SearchMode.SimpleSearch}
+    {#if $searchMode === SearchMode.SimpleSearch}
       <h3 in:fly={{ x: -20 }}>Simple Search</h3>
     {:else}
       <h3 in:fly={{ x: -20 }}>Advanced Search</h3>
     {/if}
   </div>
+  
+  <button 
+    class="styled" 
+    class:active={$searchMode === SearchMode.AdvancedSearch} 
+    on:click={toggleSearchMode}
+  >
+    <FilterIcon active={$searchMode === SearchMode.AdvancedSearch} />
+  </button>
 </header>

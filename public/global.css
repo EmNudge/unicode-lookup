@@ -82,9 +82,6 @@ button.underline-btn {
 
 body {
 	--hue: 200;
-}
-
-.colorize {
 	--hsl: hsl(var(--hue), 66%, 39%);
 	--hsl-bg: hsl(var(--hue), 100%, 95%);
 }
