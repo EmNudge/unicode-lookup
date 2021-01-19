@@ -1,8 +1,4 @@
 <script lang="ts">
-  import { modalOpenStore } from "../stores";
-  import SettingsIcon from '../icons/settings.svelte'
-  import Settings from './Settings.svelte';
-
   import { SearchMode } from '../stores';
   export let searchMode: SearchMode;
 
@@ -23,11 +19,6 @@
   }
 </style>
 
-
-{#if $modalOpenStore}
-	<Settings />
-{/if}
-
 <header>
   <div class="text">
     <h1>Unicode Lookup</h1>
@@ -37,6 +28,4 @@
       <h3 in:fly={{ x: -20 }}>Advanced Search</h3>
     {/if}
   </div>
-
-  <SettingsIcon on:click={() => $modalOpenStore = !$modalOpenStore} active={$modalOpenStore} />
 </header>

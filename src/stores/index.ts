@@ -39,8 +39,5 @@ export const blockLookupStore = writable<Block[]>(null);
 
 export const encodingMode = writable<'hex' | 'bin' | 'dec'>('hex');
 
-// settings menu
-export * from './settings';
-
 // advanced search data
 export * from './advancedSearch';

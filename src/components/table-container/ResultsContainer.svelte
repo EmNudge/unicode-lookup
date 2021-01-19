@@ -20,6 +20,10 @@
 
     e.preventDefault();
   }
+
+  import { lastIntersect } from '../../actions/lastIntersect';
+  let resultsNum = 50;
+  $: shownResults = $resultsStore.slice(0, resultsNum);
 </script>
 
 <table class="results">
@@ -31,8 +35,13 @@
     </tr>
   </thead>
 
-  <tbody on:click={handleClick} on:contextmenu={handleRightClick}>
-    {#each $resultsStore as [codepoint, info], i}
+  <tbody 
+    on:click={handleClick} 
+    on:contextmenu={handleRightClick} 
+    use:lastIntersect 
+    on:intersect={() => resultsNum += 50}
+  >
+    {#each shownResults as [codepoint, info], i}
       <ResultsRow index={i} {codepoint} {info} />
     {/each}
   </tbody>

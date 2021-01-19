@@ -23,16 +23,9 @@ class Querier {
     return { unicodeDataMap };
   }
 
-  async query(itersArr: BoxSet[], resultsNum: number) {
-    const arr = [];
-    let index = 0;
-
-    for (const item of getIter(itersArr, unicodeDataMap)) {
-      arr.push(item);
-      if (++index > resultsNum) break;
-    }
-
-    return arr;
+  async query(itersArr: BoxSet[]) {
+    const iter = getIter(itersArr, unicodeDataMap);
+    return [...iter];
   }
 }
 

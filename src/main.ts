@@ -1,7 +1,7 @@
 import App from './App.svelte';
 import { 
 	resultsStore, currentQueryStore, workerStore, 
-	workerIsReadyStore, resultsNumStore, blockLookupStore 
+	workerIsReadyStore, blockLookupStore 
 } from './stores';
 import { parseBlocks } from './utils/unicode';
 
@@ -20,7 +20,7 @@ currentQueryStore.subscribe(async val => {
 	const workerIsReady = get(workerIsReadyStore);
 	if (!workerIsReady) return;
 
-	const results = await get(workerStore).query(val, get(resultsNumStore));
+	const results = await get(workerStore).query(val);
 	resultsStore.set(results);
 });
 
