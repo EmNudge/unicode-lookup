@@ -35,7 +35,7 @@ It allows us to create a series of filters, called "rules". These rules can be o
 
 The following example excludes characters in the BMP and then requires the character to either have the unicode property XID_Start or the property White_Space:
 
-![advanced search](https://i.imgur.com/cUE1Zp9.png)
+![advanced search](https://i.imgur.com/XkplKrW.png)
 
 *Simple Search* will execute while we type. *Advanced Search* will only execute once pressing the `Search` button. 
 *Simple Search* will also execute if we press enter focusing the box.
@@ -51,17 +51,3 @@ The following example excludes characters in the BMP and then requires the chara
   - Change the amount of results shown before searching is stopped.
   - Default is 50.
   - This may be obsolete in the future. 
-# Roadmap
-- [x] add advanced search
-- [ ] remove "results number" and move into a streamable output
-- [ ] fix codepoints skipping massive ranges or control codes
-- [ ] make ugly UI/UX a bit prettier
-- [x] add more data to results
-  - [x] block (e.g. `'Basic Latin'`)
-  - [x] plane (e.g. `'Basic Multilingual Plane'`)
-  - [x] encoding (UTF-8, UTF-16, and UTF-32)
-  - [x] matching Unicode properties
-    - [tool for that here](https://svelte.dev/repl/853ca8e17da544308cbb5c081ad56a6d?version=3.31.2)
-  - [ ] Bidirectional Class
-  - [ ] Combining Class
-  - [ ] Misc info
