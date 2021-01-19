@@ -55,10 +55,7 @@ export type Plane = {
   number: number, 
   name?: PlaneName;
 };
-export function getPlaneForChar(char: string): Plane {
-  if ([...char].length > 1) throw new Error('Cannot get plane on string with length over 1');
-
-  const codepoint = char.codePointAt(0);
+export function getPlaneForCodepoint(codepoint: number): Plane {
   const plane = Math.floor(codepoint / PLANE_LENGTH);
 
   if (planeMap.has(plane)) {
@@ -85,4 +82,51 @@ export function getCodepointBlock(blocks: Block[], codepoint: number) {
   }
 
   throw new Error('codepoint does not match any block');
+}
+
+export enum Catetegory {
+  // Letters
+  Lu = "Uppercase_Letter",
+  Ll = "Lowercase_Letter",
+  Lt = "Titlecase_Letter",
+  LC = "Cased_Letter",
+  Lm = "Modifier_Letter",
+  Lo = "Other_Letter",
+
+  // Mark
+  Mn = "Nonspacing_Mark",
+  Mc = "Spacing_Mark",
+  Me = "Enclosing_Mark",
+
+  // Number
+  Nd = "Decimal_Number",
+  Nl = "Letter_Number",
+  No = "Other_Number",
+
+  // Punctuation
+  Pc = "Connector_Punctuation",
+  Pd = "Dash_Punctuation",
+  Ps = "Open_Punctuation",
+  Pe = "Close_Punctuation",
+  Pi = "Initial_Punctuation",
+  Pf = "Final_Punctuation",
+  Po = "Other_Punctuation",
+
+  // Symbol
+  Sm = "Math_Symbol",
+  Sc = "Currency_Symbol",
+  Sk = "Modifier_Symbol",
+  So = "Other_Symbol",
+
+  // Separator
+  Zs = "Space_Separator",
+  Zl = "Line_Separator",
+  Zp = "Paragraph_Separator",
+
+  // Other
+  Cc = "Control",
+  Cf = "Format",
+  Cs = "Surrogate",
+  Co = "Private_Use",
+  Cn = "Unassigned",
 }

@@ -2,12 +2,13 @@
   import { codepointTypeStore, nameCasingStore, CasingType, activeIndex } from '../../stores';
   import { getNum } from '../../utils/char';
   import InfoContainer from './InfoContainer.svelte';
+  import type { UnicodeCharInfo } from '../../worker/retrieval'
 
   export let codepoint: number;
-  export let name: string;
+  export let info: UnicodeCharInfo;
   export let index: number;
 
-  $: nameStr = getName(name, $nameCasingStore);
+  $: nameStr = getName(info.name, $nameCasingStore);
   $: numStr = getNum(codepoint, $codepointTypeStore);
   $: char = String.fromCodePoint(codepoint);
 
@@ -44,7 +45,7 @@
   <tr>
     <td colspan="3">
       <div transition:expand={{ duration: 500, height: 300 }} class="info-cell">
-        <InfoContainer {codepoint} name={nameStr} />
+        <InfoContainer {codepoint} name={nameStr} {info} />
       </div>
     </td>
   </tr>

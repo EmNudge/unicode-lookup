@@ -58,9 +58,9 @@ export interface UnicodeCharInfo {
   };
   isBidiMirrored: boolean;
   caseMapping: {
-    uppercase: string | null,
-    lowercase: string | null,
-    titlecase: string | null,
+    uppercase: number | null,
+    lowercase: number | null,
+    titlecase: number | null,
   };
   oldName: string | null;
 }
@@ -78,9 +78,9 @@ function getUnicodeData(line: string): UnicodeCharInfo {
   const isBidiMirrored = bidiMirrored === 'Y';
 
   const caseMapping = {
-    uppercase: uppercaseMapping || null,
-    lowercase: lowercaseMapping || null,
-    titlecase: titlecaseMapping || null,
+    uppercase: uppercaseMapping ? parseInt(uppercaseMapping, 16) : null,
+    lowercase: lowercaseMapping ? parseInt(uppercaseMapping, 16) : null,
+    titlecase: titlecaseMapping ? parseInt(uppercaseMapping, 16) : null,
   };
   const numberEquivalent = {
     decimal: decimalEquiv ? Number(decimalEquiv) : null,
