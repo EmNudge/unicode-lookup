@@ -42,8 +42,13 @@
 </style>
 
 <form on:submit|preventDefault={trySearch}>
-  <input type="text" bind:value={$easySearchStore} on:input={trySearch}>
-  <!-- <button type="submit">Submit</button> -->
+  <input 
+    type="text"
+    placeholder="Search..."
+    class="styled" 
+    bind:value={$easySearchStore} 
+    on:input={trySearch} />
+  
   {#if error}
     <br>
     <span style="color: red">{error}</span>

@@ -23,7 +23,6 @@
 
 <style>
   div {
-    background: #a4b1c838;
     border-radius: 8px;
     padding: 20px;
   }
@@ -50,7 +49,7 @@
   }
 </style>
 
-<div class="container">
+<div class="container styled" style="--hue: 200">
   <table>
     <tbody>
       <tr>

@@ -35,11 +35,14 @@ label {
 input, button, select, textarea {
 	font-family: inherit;
 	font-size: inherit;
-	padding: 0.4em;
+	padding: 0.4em 1em;
 	margin: 0 0 0.5em 0;
 	box-sizing: border-box;
 	border: 1px solid #ccc;
 	border-radius: 2px;
+}
+input::placeholder {
+	color: inherit;
 }
 
 input:disabled {
@@ -78,12 +81,21 @@ button.underline-btn {
 }
 
 body {
-	--hue: 100;
+	--hue: 200;
+}
+
+.colorize {
+	--hsl: hsl(var(--hue), 66%, 39%);
+	--hsl-bg: hsl(var(--hue), 100%, 95%);
 }
 
 .styled {
 	--hsl: hsl(var(--hue), 66%, 39%);
 	color: var(--hsl);
+	
+	--hsl-bg: hsl(var(--hue), 100%, 95%);
+	background: var(--hsl-bg);
+	
 	border: 1px solid var(--hsl);
-	background: hsl(var(--hue), 100%, 95%);
+	border-radius: 3px;
 }

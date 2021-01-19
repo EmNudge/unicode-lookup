@@ -32,13 +32,14 @@
 	});
 </script>
 
-<tr class:highlight={index % 2 === 0}>
+<tr style="--hue: 200">
   <td 
-    class="symbol" 
+    class="symbol colorize" 
     data-index={index}
+    class:active={$activeIndex == index}
   >{char}</td>
   <td class="number styled" style="--hue: 35">{numStr}</td>
-  <td>{nameStr}</td>
+  <td class="styled">{nameStr}</td>
 </tr>
 
 {#if $activeIndex == index}
@@ -62,20 +63,28 @@
   }
   .number {
     font-family: 'Courier New', Courier, monospace;
-  }
-  .highlight {
-    background: #ffffffad;
+    text-align: right;
   }
   .symbol {
     padding: 5px;
     border-radius: 4px;
     text-align: center;
+    
+    color: var(--hsl);
+    border: 1px solid transparent;
   }
   .symbol:hover {
-    background: #47474714;
     cursor: pointer;
+    border: 1px solid var(--hsl);
+    background: var(--hsl-bg);
+    transition: .15s;
   }
   .symbol::after, .symbol::before {
     content: "\"";
+  }
+  .active {
+    box-shadow: 2px 2px 0px 0px var(--hsl);
+    border: 1px solid var(--hsl);
+    background: var(--hsl-bg);
   }
 </style>
