@@ -24,8 +24,14 @@
   import { lastIntersect } from '../../actions/lastIntersect';
   let resultsNum = 50;
   $: shownResults = $resultsStore.slice(0, resultsNum);
+  resultsStore.subscribe(() => {
+    resultsNum = 50;
+  });
 </script>
 
+<p>
+  {$resultsStore.length} result{$resultsStore.length > 1 ? 's' : ''}
+</p>
 <table class="results">
   <thead>
     <tr>
@@ -49,8 +55,6 @@
 
 <style>
   table {
-    padding: 20px;
-
     border-spacing: 5px;
 
     width: 100%;
@@ -64,5 +68,11 @@
     font-weight: bold;
     font-size: .8em;
     color: #4B558C;
+  }
+  p {
+    text-align: left;
+    margin: 0;
+    opacity: .7;
+    font-size: .8rem;
   }
 </style>
