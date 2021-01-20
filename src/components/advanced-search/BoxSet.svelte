@@ -9,6 +9,13 @@
 	export let boxes: Box[];
 
 	$: dropdownColor = type === BoxSetType.Require ? 111 : 0;
+	const flipType = () => {
+		if (type === BoxSetType.Require) {
+			type = BoxSetType.Exclude;
+		} else {
+			type = BoxSetType.Require
+		}
+	}
 	
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
@@ -43,17 +50,20 @@
 
 <div class="box">
 	<div class="dropdown-container">
-		<Dropdown 
-			options={['Require', 'Exclude']} 
+		<Button 
+			on:click={flipType}
 			hue={dropdownColor}
-			bind:value={type}
-			disabled={boxes.length > 1} />
+			disabled={boxes.length > 1}>
+			{type}
+		</Button>
+		
 	</div>
 
 	{#each boxes as { name, data }, i}
 		<BoxContent 
 			on:close={closeBox(i)}
-			bind:name bind:data />
+			bind:name bind:data 
+			hue={dropdownColor} />
 			
 		{#if boxes.length !== 1 && i < boxes.length}
 			<div class="or-container">

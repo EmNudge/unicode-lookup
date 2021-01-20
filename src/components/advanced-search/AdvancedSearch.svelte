@@ -18,13 +18,21 @@
 	<BoxSet bind:type bind:boxes on:close={onClose(i)} />
 {/each}
 
-<div>
+<div class="buttons">
 	<Button on:click={() => $boxSetsStore = [...$boxSetsStore, getNewBoxSet()]}>
 		Add Rule
 	</Button>	
+	<Button on:click={() => dispatch('search')} hue={200}>
+		Search
+	</Button>	
 </div>
 
-<button 
-	style="width: 100%; margin: 20px 0px;"
-	on:click={() => dispatch('search')}	
->Search</button>
+<style>
+	.buttons {
+		display: flex;
+		justify-content: flex-end;
+	}
+	.buttons :global(*) {
+		margin: 5px;
+	}
+</style>

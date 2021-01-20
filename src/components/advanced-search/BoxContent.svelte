@@ -8,6 +8,7 @@
 	
 	export let name: string;
 	export let data: any;
+	export let hue = 200;
 
 	import { boxTypeMap } from './box-types';
 	
@@ -42,7 +43,7 @@
 	}
 </style>
 
-<div class="content styled" style="--hue: 200">
+<div class="content styled" style="--hue: {hue}">
 	<button on:click={() => dispatch('close')}>
 		<CloseButton />
 	</button>
