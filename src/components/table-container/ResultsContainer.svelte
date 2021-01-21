@@ -1,7 +1,7 @@
 <script lang="ts">
   import ResultsRow from './ResultsRow.svelte';
 
-  import { resultsStore, activeIndex } from '../../stores';
+  import { resultsStore, activeIndex, clipboardNotifs } from '../../stores';
 
   const isSymbolEl = (el: EventTarget) => el instanceof HTMLElement && el.classList.contains('symbol');
   function handleClick(e: MouseEvent) {
@@ -18,6 +18,7 @@
     const char = String.fromCodePoint(codepoint);
     navigator.clipboard.writeText(char);
 
+    $clipboardNotifs = [...$clipboardNotifs, Symbol()];
     e.preventDefault();
   }
 

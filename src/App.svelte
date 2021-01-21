@@ -1,11 +1,17 @@
 <script lang="ts">
-	import { resultsStore, currentQueryStore, easySearchStore, boxSetsStore } from './stores';
-	import ResultsContainer from './components/table-container/ResultsContainer.svelte';
+	import { 
+		resultsStore, currentQueryStore, 
+		easySearchStore, boxSetsStore
+	} from './stores';
+
+	import GithubIcon from './icons/github.svelte';
 	import { getBoxSetsFromText } from './utils/query'
+
+	import ResultsContainer from './components/table-container/ResultsContainer.svelte';
 	import EasySearch from './components/EasySearch.svelte';
 	import Header from './components/Header.svelte';
-	import GithubIcon from './icons/github.svelte';
 	import AdvancedSearch from './components/advanced-search/AdvancedSearch.svelte';
+	import ClipboardNotif from './components/ClipboardNotif.svelte';
 
 	import type { BoxSet } from './stores';
 	let queryArr: BoxSet[] = [];
@@ -20,6 +26,8 @@
 
 	import { searchMode, SearchMode } from './stores'
 </script>
+
+<ClipboardNotif />
 
 <Header />
 <GithubIcon href="https://github.com/EmNudge/unicode-lookup" />
