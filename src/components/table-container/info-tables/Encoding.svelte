@@ -1,22 +1,24 @@
 <script lang="ts">
   import { encodingMode } from '../../../stores';
+  import { getEncodings } from '../../../utils/char';
   
   export let codepoint: number;
   
   type EncodingType = 'hex' | 'bin' | 'dec';
   let encodingTypes: EncodingType[] = ['hex', 'bin', 'dec'];
 
-  function getNumber(num: number, encoding: EncodingType) {
-    if (encoding === 'hex') return '0x' + num.toString(16);
-    if (encoding === 'bin') return '0b' + num.toString(2);
-    return String(num);
+  function getNumber(num: number, encoding: EncodingType, length: number) {
+    if (encoding === 'hex') return `0x<b>${num.toString(16).padStart(length/4, '0')}</b>`;
+    if (encoding === 'bin') return `0b<b>${num.toString(2).padStart(length, '0')}</b>`;
+    return `<b>${String(num)}</b>`;
   }
 
-  $: char = String.fromCodePoint(codepoint);
-
-  $: utf8 = new TextEncoder().encode(char);
-  $: utf16 = [char.charCodeAt(0), char.charCodeAt(1)].filter(n => !Number.isNaN(n));
-  $: utf32 = codepoint;
+  $: encodings = getEncodings(codepoint);
+  $: encodingsTable = [
+    ['UTF-8', encodings.utf8, 8],
+    ['UTF-16', encodings.utf16, 16],
+    ['UTF-32', encodings.utf32, 32],
+  ] as [string, Uint8Array | Uint16Array | Uint32Array, number][];
 </script>
 
 <br />
@@ -36,34 +38,25 @@
   </thead>
   
   <tbody>
-    <tr>
-      <td>UTF-8</td>
-      <td>
-        {#each utf8 as byte}
-          <span>{getNumber(byte, $encodingMode)}</span>
-        {/each}  
-      </td>
-    </tr>
-    <tr>
-      <td>UTF-16</td>
-      <td>
-        {#each utf16 as num}
-          <span>{getNumber(num, $encodingMode)}</span>
-        {/each}  
-      </td>
-    </tr>
-    <tr>
-      <td>UTF-32</td>
-      <td>
-        <span>{getNumber(utf32, $encodingMode)}</span>
-      </td>
-    </tr>
+    {#each encodingsTable as [name, bitSets, length]}
+      <tr>
+        <td>{name}</td>
+        <td>
+          {#each bitSets as bitSet}
+            <span>{@html getNumber(bitSet, $encodingMode, length)}</span>
+          {/each}
+        </td>
+      </tr>
+    {/each}
   </tbody>
 </table>
 
 <style>
   th {
     padding-right: 10px;
+  }
+  td:nth-child(2) {
+    font-family: 'Courier New', Courier, monospace;
   }
   .active {
     font-weight: bold;
