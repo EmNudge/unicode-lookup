@@ -31,7 +31,16 @@
     error = '';
 
     search();
-	}
+  }
+  
+  let inputEl: HTMLInputElement;
+  function handleKeyDown(e: KeyboardEvent) {
+    const inputIsFocused = document.activeElement === inputEl;
+    if (inputIsFocused) return;
+
+    if (e.key.length > 1 || /\p{C}/.test(e.key)) return;
+    inputEl.focus();
+  }
 </script>
 
 <style>
@@ -41,13 +50,16 @@
   }
 </style>
 
+<svelte:window on:keydown={handleKeyDown} />
+
 <form on:submit|preventDefault={trySearch}>
   <input 
     type="text"
     placeholder="Search..."
     class="styled" 
     bind:value={$easySearchStore} 
-    on:input={trySearch} />
+    on:input={trySearch}
+    bind:this={inputEl} />
   
   {#if error}
     <br>
