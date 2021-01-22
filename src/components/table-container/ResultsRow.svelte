@@ -65,6 +65,11 @@
   .symbol::after, .symbol::before {
     content: "\"";
   }
+  @media screen and (max-width: 600px) {
+    .symbol {
+      user-select: none;
+    }
+  }
   .active {
     box-shadow: 2px 2px 0px 0px var(--hsl);
     border: 1px solid var(--hsl);
