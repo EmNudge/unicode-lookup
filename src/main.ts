@@ -3,6 +3,8 @@ import {
 	resultsStore, currentQueryStore, workerStore, 
 	workerIsReadyStore, blockLookupStore 
 } from './stores';
+import { BoxSetType } from './stores';
+import type { BoxSet } from './stores';
 import { parseBlocks } from './utils/unicode';
 
 import { get } from 'svelte/store';
@@ -39,7 +41,15 @@ new ComWorker().then(async worker => {
 	
 	await worker.loadTable();
 
+	const getAllQuery: BoxSet[] = [{ 
+		type: BoxSetType.Require,
+		boxes: [
+			{name:'Name Includes', data:''}
+		]
+	}];
+
 	workerIsReadyStore.set(true);
+	currentQueryStore.set(getAllQuery);
 });
 
 const app = new App({ target: document.body });
