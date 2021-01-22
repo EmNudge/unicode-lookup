@@ -30,6 +30,9 @@
 
   button {
     cursor: pointer;
+    z-index: 2;
+    margin: 0;
+    padding: 10px 20px;
   }
   .active {
     color: var(--hsl-bg);
