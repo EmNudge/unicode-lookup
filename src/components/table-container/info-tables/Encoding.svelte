@@ -22,47 +22,44 @@
 </script>
 
 <br />
-<table class="encoding-table">
-  <thead>
-    <tr>
-      <th class="title">Encoding</th>
-      <th class="encoding-type">
-        {#each encodingTypes as encoding}
-          <span 
-            class:active={$encodingMode === encoding}
-            on:click={() => $encodingMode = encoding}
-          >{encoding}</span>
-        {/each}
-      </th>
-    </tr>
-  </thead>
-  
-  <tbody>
-    {#each encodingsTable as [name, bitSets, length]}
-      <tr>
-        <td>{name}</td>
-        <td>
-          {#each bitSets as bitSet}
-            <span>{@html getNumber(bitSet, $encodingMode, length)}</span>
-          {/each}
-        </td>
-      </tr>
+<div class="encoding-table">
+  <div class="title">Encoding</div>
+  <div class="encoding-type">
+    {#each encodingTypes as encoding}
+      <span 
+        class:active={$encodingMode === encoding}
+        on:click={() => $encodingMode = encoding}
+      >{encoding}</span>
     {/each}
-  </tbody>
-</table>
+  </div>
+
+  {#each encodingsTable as [name, bitSets, length]}
+    <div>{name}</div>
+    <div>
+      {#each bitSets as bitSet}
+        <span>{@html getNumber(bitSet, $encodingMode, length)}</span>
+      {/each}
+    </div>
+  {/each}
+</div>
 
 <style>
-  th {
-    padding-right: 10px;
-  }
-  td:nth-child(2) {
-    font-family: 'Courier New', Courier, monospace;
+  .encoding-table {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 10px;
   }
   .active {
     font-weight: bold;
   }
   .title {
     color: #4B558C;
+    font-weight: bold;
+  }
+  .encoding-type {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    grid-gap: 5px;
   }
   .encoding-type span {
     opacity: .6;
@@ -70,12 +67,5 @@
   }
   .encoding-type .active {
     opacity: .95;
-  }
-
-  .encoding-table td:last-child,  .encoding-table th:last-child {
-    display: flex;
-  }
-  .encoding-table td:last-child span, .encoding-table th:last-child span {
-    padding: 0 5px;
   }
 </style>

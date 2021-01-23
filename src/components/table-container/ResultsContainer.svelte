@@ -33,42 +33,39 @@
 <p>
   {$resultsStore.length} result{$resultsStore.length > 1 ? 's' : ''}
 </p>
-<table class="results">
-  <thead>
-    <tr>
-      <th>Character</th>
-      <th>Code point</th>
-      <th>Description</th>
-    </tr>
-  </thead>
 
-  <tbody 
-    on:click={handleClick} 
-    on:contextmenu={handleRightClick} 
-    use:lastIntersect 
-    on:intersect={() => resultsNum += 50}
-  >
-    {#each shownResults as [codepoint, info], i}
-      <ResultsRow index={i} {codepoint} {info} />
-    {/each}
-  </tbody>
-</table>
+<div class="table"
+  on:click={handleClick} 
+  on:contextmenu={handleRightClick} 
+  use:lastIntersect 
+  on:intersect={() => resultsNum += 50}
+>
+  <table-row class="table-head">
+    <table-cell>Character</table-cell>
+    <table-cell>Codepoint</table-cell>
+    <table-cell>Description</table-cell>
+  </table-row>
+
+  {#each shownResults as [codepoint, info], i}
+    <ResultsRow index={i} {codepoint} {info} />
+  {/each}
+</div>
 
 <style>
-  table {
-    border-spacing: 5px;
-
-    width: 100%;
-    margin: 0 auto;
+  .table {
+    display: grid;
     text-align: left;
   }
-  tr {
-    width: 100%;
-  }
-  th {
+  .table :global(table-row) {
+    display: grid;
+    grid-template-columns: 90px 90px 1fr;
+    grid-gap: 10px;
+  }  
+  .table-head {
     font-weight: bold;
     font-size: .8em;
     color: #4B558C;
+    padding: 10px 0;
   }
   p {
     text-align: left;

@@ -9,47 +9,63 @@
   export let index: number;
 
   import { quartInOut } from 'svelte/easing';
-	const expand = (_node: HTMLElement, { duration, height }: { duration: number, height: number }) => ({	
+  const cssProp = (_node: HTMLElement, { duration, goal, prop } = { duration: 500, goal: 10, prop: 'padding'}) => ({
     duration,
-    css: (t: number) => `height: ${Math.floor(quartInOut(t) * height)}px`
-	});
+    css: (t: number) => `${prop}: ${Math.floor(quartInOut(t) * goal)}px`
+  });
 </script>
 
-<tr style="--hue: 200">
-  <td 
+<table-row>
+  <table-cell 
     class="symbol colorize" 
     data-index={index}
     class:active={$activeIndex == index}
-  >{String.fromCodePoint(codepoint)}</td>
-  <td class="number styled" style="--hue: 35">{getNum(codepoint, 'hex')}</td>
-  <td class="styled">{info.name}</td>
-</tr>
+  >
+    {String.fromCodePoint(codepoint)}
+  </table-cell>
+
+  <table-cell class="number styled">
+      {getNum(codepoint, 'hex')}
+  </table-cell>
+
+  <table-cell class="styled">{info.name}</table-cell>
+</table-row>
 
 {#if $activeIndex == index}
-  <tr>
-    <td colspan="3">
-      <div transition:expand={{ duration: 500, height: 300 }} class="info-cell">
-        <InfoContainer {codepoint} name={info.name} {info} />
-      </div>
-    </td>
-  </tr>
+  <info-row transition:cssProp={{ duration: 500, prop: 'padding', goal: 10 }}>
+    <div transition:cssProp={{ duration: 500, prop: 'height', goal: 300 }} class="info-cell">
+      <InfoContainer {codepoint} name={info.name} {info} />
+    </div>
+  </info-row>
 {/if}
 
 <style>
-  td {
-    padding: 2px 10px;
+  table-row {
+    --hue: 200;
+    padding-bottom: 3px;
+  }
+  table-cell {
+    padding: 7px 10px;
     align-self: baseline;
+    box-sizing: border-box;
+    line-height: 1em;
+  }
+  info-row {
+    padding: 10px;
   }
   .info-cell {
     height: 300px;
     overflow: auto;
+    width: 100%;
   }
   .number {
     font-family: 'Courier New', Courier, monospace;
     text-align: right;
+    --hue: 35;
+    position: relative;
+    top: -2px;
   }
   .symbol {
-    padding: 5px;
     border-radius: 4px;
     text-align: center;
     

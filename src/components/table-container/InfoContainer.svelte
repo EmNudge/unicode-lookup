@@ -51,14 +51,14 @@
     border-radius: 8px;
     padding: 20px;
   }
-
-  td:first-child {
+  .basic-info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 10px;
+  }
+  .basic-info span:nth-child(odd) {
     font-weight: bold;
   }
-  td {
-    padding: 5px;
-  }
-
   .properties {
     display: grid;
 		grid-template-rows: repeat(7, 1fr);
@@ -76,16 +76,12 @@
 </style>
 
 <div class="container styled" style="--hue: 200">
-  <table>
-    <tbody>
-      {#each baseInfo as [name, value]}
-        <tr>
-          <td>{name}</td>
-          <td>{value}</td>
-        </tr>
-      {/each}
-    </tbody>
-  </table>
+  <div class="basic-info">
+    {#each baseInfo as [name, value]}
+      <span>{name}</span>
+      <span>{value}</span>
+    {/each}
+  </div>
   
   <CaseMapping caseMapping={info.caseMapping} />
   <NumberEquiv numberEquiv={info.numberEquivalent} />
