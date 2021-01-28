@@ -24,6 +24,7 @@ currentQueryStore.subscribe(query => {
 export const workerStore = writable<Worker>(null);
 
 export const workerIsReadyStore = writable(false);
+export const hasFirstLoadedStore = writable(false);
 
 // stores for searches. We want them to persist even when they're not visible
 export const easySearchStore = writable<string>('');

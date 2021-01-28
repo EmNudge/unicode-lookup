@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { 
 		resultsStore, currentQueryStore, 
-		easySearchStore, boxSetsStore
+		easySearchStore, boxSetsStore, hasFirstLoadedStore
 	} from './stores';
 
 	import GithubIcon from './icons/github.svelte';
@@ -12,6 +12,7 @@
 	import Header from './components/Header.svelte';
 	import AdvancedSearch from './components/advanced-search/AdvancedSearch.svelte';
 	import ClipboardNotif from './components/ClipboardNotif.svelte';
+	import Loader from './components/Loader.svelte';
 
 	import type { BoxSet } from './stores';
 	let queryArr: BoxSet[] = [];
@@ -43,11 +44,15 @@
 
 	<br>
 
-	{#if $resultsStore.length}
-		<ResultsContainer />
+	{#if $hasFirstLoadedStore}
+		{#if $resultsStore.length}
+			<ResultsContainer />
+		{:else}
+			<br>
+			<p>No results fit that query :/</p>
+		{/if}
 	{:else}
-		<br>
-		<p>No results fit that query :/</p>
+		<Loader />
 	{/if}
 </main>
 

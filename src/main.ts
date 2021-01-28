@@ -1,7 +1,7 @@
 import App from './App.svelte';
 import { 
 	resultsStore, currentQueryStore, workerStore, 
-	workerIsReadyStore, blockLookupStore 
+	workerIsReadyStore, blockLookupStore, hasFirstLoadedStore
 } from './stores';
 import { BoxSetType } from './stores';
 import type { BoxSet } from './stores';
@@ -23,6 +23,10 @@ currentQueryStore.subscribe(async val => {
 	if (!workerIsReady) return;
 
 	const results = await get(workerStore).query(val);
+	
+	const hasFirstLoaded = get(hasFirstLoadedStore);
+	if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
+
 	resultsStore.set(results);
 });
 
