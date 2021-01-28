@@ -35,7 +35,7 @@
 
   {#each encodingsTable as [name, bitSets, length]}
     <div>{name}</div>
-    <div>
+    <div class="bit-sets">
       {#each bitSets as bitSet}
         <span>{@html getNumber(bitSet, $encodingMode, length)}</span>
       {/each}
@@ -44,6 +44,9 @@
 </div>
 
 <style>
+  .bit-sets span {
+    padding: 0 3px;
+  }
   .encoding-table {
     display: grid;
     grid-template-columns: auto 1fr;
