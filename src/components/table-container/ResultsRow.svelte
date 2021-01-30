@@ -9,10 +9,20 @@
   export let index: number;
 
   import { quartInOut } from 'svelte/easing';
-  const cssProp = (_node: HTMLElement, { duration, goal, prop } = { duration: 500, goal: 10, prop: 'padding'}) => ({
+  const pad = (_node: Element, { duration, goal } = { duration: 500, goal: 10}) => ({
     duration,
-    css: (t: number) => `${prop}: ${Math.floor(quartInOut(t) * goal)}px`
+    css: (t: number) => `
+      padding: ${Math.floor(quartInOut(t) * goal)}px;
+      padding-right: 0;
+    `
   });
+  const expand = (node: HTMLElement, { duration } = { duration: 500 }) => {
+    const {height} = node.getBoundingClientRect();
+    return {
+      duration,
+      css: (t: number) => `height: ${Math.floor(quartInOut(t) * height)}px`
+    };
+  };
 </script>
 
 <table-row>
@@ -32,8 +42,8 @@
 </table-row>
 
 {#if $activeIndex == index}
-  <info-row transition:cssProp={{ duration: 500, prop: 'padding', goal: 10 }}>
-    <div transition:cssProp={{ duration: 500, prop: 'height', goal: 300 }} class="info-cell">
+  <info-row transition:pad={{ duration: 500, goal: 10 }}>
+    <div transition:expand={{ duration: 500 }} class="info-cell">
       <InfoContainer {codepoint} name={info.name} {info} />
     </div>
   </info-row>
@@ -52,10 +62,10 @@
   }
   info-row {
     padding: 10px;
+    padding-right: 0;
   }
   .info-cell {
-    height: 300px;
-    overflow: auto;
+    overflow: hidden;
     width: 100%;
   }
   .number {
