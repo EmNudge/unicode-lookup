@@ -38,7 +38,12 @@
     const inputIsFocused = document.activeElement === inputEl;
     if (inputIsFocused) return;
 
+    // for control codes or keys with large names, exit early
     if (e.key.length > 1 || /\p{C}/.test(e.key)) return;
+
+    // for modifier keys (other than shift), exit early
+    if (e.ctrlKey || e.altKey) return;
+    
     inputEl.focus();
   }
 </script>
