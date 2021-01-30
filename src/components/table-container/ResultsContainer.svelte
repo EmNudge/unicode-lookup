@@ -1,24 +1,40 @@
 <script lang="ts">
   import ResultsRow from './ResultsRow.svelte';
 
-  import { resultsStore, activeIndex, clipboardNotifs } from '../../stores';
+  import { resultsStore, activeIndex, copiedCodepoint } from '../../stores';
 
-  const isSymbolEl = (el: EventTarget) => el instanceof HTMLElement && el.classList.contains('symbol');
+  const getSymbolEl = (el: EventTarget) => {
+    if (!(el instanceof HTMLElement)) return null;
+    for (const element of [el, el.parentElement]) {
+      if (element.classList.contains('symbol')) return element;
+    }
+    return null;
+  };
+
   function handleClick(e: MouseEvent) {
-    if (!isSymbolEl(e.target)) return;
+    const el = getSymbolEl(e.target);
+    if (!el) return;
 
-    const index = Number((e.target as HTMLElement).dataset.index);
+    const index = Number(el.dataset.index);
     activeIndex.update(i => i === index ? -1 : index);
   }
-  function handleRightClick(e: MouseEvent) {
-    if (!isSymbolEl(e.target)) return;
 
-    const index = Number((e.target as HTMLElement).dataset.index);
+  let copyTextTimeoutId = -1;
+  function handleRightClick(e: MouseEvent) {
+    const el = getSymbolEl(e.target);
+    if (!el) return;
+
+    const index = Number(el.dataset.index);
     const [codepoint] = $resultsStore[index];
     const char = String.fromCodePoint(codepoint);
     navigator.clipboard.writeText(char);
 
-    $clipboardNotifs = [...$clipboardNotifs, Symbol()];
+    clearTimeout(copyTextTimeoutId);
+    $copiedCodepoint = codepoint;
+    copyTextTimeoutId = setTimeout(() => {
+      $copiedCodepoint = -1;
+    }, 1000);
+
     e.preventDefault();
   }
 

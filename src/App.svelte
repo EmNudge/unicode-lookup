@@ -11,7 +11,6 @@
 	import EasySearch from './components/EasySearch.svelte';
 	import Header from './components/Header.svelte';
 	import AdvancedSearch from './components/advanced-search/AdvancedSearch.svelte';
-	import ClipboardNotif from './components/ClipboardNotif.svelte';
 	import Loader from './components/Loader.svelte';
 
 	import type { BoxSet } from './stores';
@@ -27,8 +26,6 @@
 
 	import { searchMode, SearchMode } from './stores'
 </script>
-
-<ClipboardNotif />
 
 <Header />
 <GithubIcon href="https://github.com/EmNudge/unicode-lookup" />

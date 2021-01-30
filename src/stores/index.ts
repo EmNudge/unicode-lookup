@@ -35,25 +35,12 @@ export const categorySearchStore = writable<Pattern[]>([]);
 export const activeIndex = writable(-1);
 resultsStore.subscribe(() => activeIndex.set(-1));
 
+export const copiedCodepoint = writable(-1);
+
 export type Block = { range: [number, number], name: string };
 export const blockLookupStore = writable<Block[]>(null);
 
 export const encodingMode = writable<'hex' | 'bin' | 'dec'>('hex');
-
-let clipboardNotifLen = 0;
-export const clipboardNotifs = writable<Symbol[]>([]);
-clipboardNotifs.subscribe(notifs => {
-  if (notifs.length < clipboardNotifLen) {
-    clipboardNotifLen = notifs.length;
-    return;
-  }
-  // remove the notif after a second
-  setTimeout(() => {
-    const notifs = get(clipboardNotifs);
-    clipboardNotifs.set([...notifs.slice(1)]);
-  }, 1000);
-  clipboardNotifLen++;
-})
 
 // advanced search data
 export * from './advancedSearch';

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { activeIndex } from '../../stores';
+  import { activeIndex, copiedCodepoint } from '../../stores';
   import { getNum } from '../../utils/char';
   import InfoContainer from './InfoContainer.svelte';
   import type { UnicodeCharInfo } from '../../worker/retrieval'
@@ -8,6 +8,7 @@
   export let info: UnicodeCharInfo;
   export let index: number;
 
+  import { fade } from 'svelte/transition';
   import { quartInOut } from 'svelte/easing';
   const pad = (_node: Element, { duration, goal } = { duration: 500, goal: 10}) => ({
     duration,
@@ -23,15 +24,22 @@
       css: (t: number) => `height: ${Math.floor(quartInOut(t) * height)}px`
     };
   };
+
+  $: isCopied = $copiedCodepoint === codepoint;
 </script>
 
 <table-row>
   <table-cell 
     class="symbol colorize" 
     data-index={index}
-    class:active={$activeIndex == index}
+    class:active={$activeIndex === index}
+    class:copy={isCopied}
   >
-    {String.fromCodePoint(codepoint)}
+    {#if isCopied}
+      <span in:fade>copied</span>
+    {:else}
+      <span>{String.fromCodePoint(codepoint)}</span>
+    {/if}
   </table-cell>
 
   <table-cell class="number styled">
@@ -100,5 +108,11 @@
     box-shadow: 2px 2px 0px 0px var(--hsl);
     border: 1px solid var(--hsl);
     background: var(--hsl-bg);
+  }
+  .copy::before {
+    content: '';
+  }
+  .copy::after {
+    content: '';
   }
 </style>
