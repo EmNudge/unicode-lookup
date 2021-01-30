@@ -8,11 +8,22 @@ html, body {
 	--hue: 200;
 	--hsl: hsl(var(--hue), 66%, 39%);
 	--hsl-bg: hsl(var(--hue), 100%, 95%);
+
+	--color: #30354B;
+	--bg-col: #E0E9F8;
+}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		--bg-col: #19191c;
+		filter: invert(1) hue-rotate(180deg);
+	}
 }
 
 body {
-	color: #30354B;
-	background: #E0E9F8;
+	color: var(--color);
+	background: var(--bg-col);
+
 	margin: 0;
 	padding: 8px;
 	box-sizing: border-box;
@@ -101,9 +112,8 @@ button.underline-btn {
 
 .styled {
 	--hsl: hsl(var(--hue), 66%, 39%);
-	color: var(--hsl);
-	
 	--hsl-bg: hsl(var(--hue), 100%, 95%);
+	color: var(--hsl);
 	background: var(--hsl-bg);
 	
 	border: 1px solid var(--hsl);
