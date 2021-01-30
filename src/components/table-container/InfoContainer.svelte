@@ -43,7 +43,9 @@
       'Block', 
       `${charBlock.name} (Range ${charBlock.range[0]}-${charBlock.range[1]}) `
     ],
-  ]
+  ];
+
+  $: properties = getPropertiesForChar(String.fromCodePoint(codepoint));
 </script>
 
 <style>
@@ -61,7 +63,7 @@
   }
   .properties {
     display: grid;
-		grid-template-rows: repeat(7, 1fr);
+		grid-template-rows: repeat(var(--item-num), 1fr);
 		grid-template-columns: 1fr 1fr;
 		width: min-content;
 		gap: 5px 40px;
@@ -75,7 +77,7 @@
   }
 </style>
 
-<div class="container styled" style="--hue: 200">
+<div class="container styled" style="--hue: 200; --item-num: {Math.ceil(properties.length / 2)}">
   <div class="basic-info">
     {#each baseInfo as [name, value]}
       <span>{name}</span>
@@ -90,7 +92,7 @@
   <br />
   <h3>Properties</h3>
   <div class="properties">
-    {#each getPropertiesForChar(String.fromCodePoint(codepoint)) as property}
+    {#each properties as property}
       <span>{property}</span>
     {/each}
   </div>
