@@ -40,14 +40,7 @@ The following example excludes characters in the BMP and then requires the chara
 *Simple Search* will execute while we type. *Advanced Search* will only execute once pressing the `Search` button. 
 *Simple Search* will also execute if we press enter focusing the box.
 
-### Settings
-- Codepoint Format
-  - Show codepoints in Hexidecimal, Octal, or Decimal.
-  - Default is Hexidecimal
-- Title Casing 
-  - Change titles to UPPERCASE, TitleCase, or lowercase
-  - Default is UPPERCASE
-- Results Amount
-  - Change the amount of results shown before searching is stopped.
-  - Default is 50.
-  - This may be obsolete in the future. 
+### Known Bugs/Limitations
+- Safari does not support any regex unicode property where `Script` equals one of `"Chorasmian"`, `"Dives_Akuru"`, `"Elymaic"`, `"Khitan_Small_Script"`, `"Nandinagari"`, `"Nyiakeng_Puachue_Hmong"`, `"Wancho"`, or `"Yezidi"`.
+  - e.g. `/\p{Script=Wancho}/u` will throw an error on Safari and is therefore not supported on that browser.
+- Chromium does not support a grid row size of over 1000. Flex is an easy fill in, but both are extremely slow at large sizes regardless. Moving to `display: block`.
