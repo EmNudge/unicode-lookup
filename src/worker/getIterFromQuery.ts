@@ -26,42 +26,65 @@ function shouldYieldCodepoint(boxSets: BoxSet[], unicode: [number, UnicodeCharIn
 const numInRange = (num: number, range: [number, number]) =>
   range[0] < num && num < range[1];
 
+type BoxMatcher = (unicodeInfo: UnicodeCharInfo, data: Box["data"]) => boolean;
+const boxMatcherMap = new Map<string, BoxMatcher>([
+  [
+    'Codepoint Range', 
+    (unicodeInfo: UnicodeCharInfo, data: { from: number, to: number }) => 
+      numInRange(unicodeInfo.codepoint, [data.from, data.to])
+  ],
+  [
+    'Unicode Plane', 
+    (unicodeInfo: UnicodeCharInfo, data: number) =>
+      numInRange(unicodeInfo.codepoint, [PLANE_LENGTH * data, PLANE_LENGTH * data + PLANE_LENGTH]),
+  ],
+  [
+    'Is Near Char', 
+    (unicodeInfo: UnicodeCharInfo, { char, distance }: { char: string, distance: number }) =>
+      Math.abs(char.codePointAt(0) - unicodeInfo.codepoint) <= distance
+  ],
+  [
+    'Name Includes', 
+    (unicodeInfo: UnicodeCharInfo, data: string) => 
+      unicodeInfo.name.toLowerCase().includes(data.toLowerCase())
+  ],
+  [
+    'Unicode Property',
+    (unicodeInfo: UnicodeCharInfo, data: string) => {
+      const regex = new RegExp(`\\p{${data}}`, 'u');
+      return regex.test(String.fromCodePoint(unicodeInfo.codepoint));
+    }
+  ],
+  [
+    'Regex Match',
+    (unicodeInfo: UnicodeCharInfo, { regex, matchOn }: { regex: RegExp, matchOn: 'Character' | 'Name'}) => 
+      matchOn === 'Character'
+        ? regex.test(String.fromCodePoint(unicodeInfo.codepoint))
+        : regex.test(unicodeInfo.name)
+  ],
+  [
+    'Unicode Block',
+    (unicodeInfo: UnicodeCharInfo, data: string) => 
+      numInRange(unicodeInfo.codepoint, unicodeBlocksMap.get(data))
+  ],
+  [
+    'Bidi Class',
+    (unicodeInfo: UnicodeCharInfo, data: string) => 
+      unicodeInfo.bidiClass === data
+  ]
+]);
+
 function matchesBoxes(boxes: Box[], unicode: [number, UnicodeCharInfo]) {
   const [codepoint, unicodeInfo] = unicode;
-  const { name } = unicodeInfo;
 
   for (const box of boxes) {
-    // for Okku:
-  /*} else*/if(box.name === 'Codepoint Range') {
-      const { from, to } = box.data;
-      if (numInRange(codepoint, [from, to])) return true;
-    } else if (box.name === 'Unicode Plane') {
-      const from = PLANE_LENGTH * box.data;
-      const to = from + PLANE_LENGTH;
-      if (numInRange(codepoint, [from, to])) return true;
-    } else if (box.name === 'Is Near Char') {
-      const { char, distance } = box.data;
-      const nearChar = Math.abs(char.codePointAt(0) - codepoint) <= distance;
-      if (nearChar) return true;
-    } else if (box.name === 'Name Includes') {
-      const nameIncludes = name.toLowerCase().includes(box.data.toLowerCase());
-      if (nameIncludes) return true;
-    } else if (box.name === 'Unicode Property') {
-      const regex = new RegExp(`\\p{${box.data}}`, 'u');
-      const hasProperty = regex.test(String.fromCodePoint(codepoint));
-      if (hasProperty) return true;
-    } else if (box.name === 'Regex Match') {
-      const { regex, matchOn } = box.data;
-      const matches = matchOn === 'Character'
-        ? regex.test(String.fromCodePoint(codepoint))
-        : regex.test(name);
-      if (matches) return true;
-    } else if (box.name === 'Unicode Block') {
-      const range = unicodeBlocksMap.get(box.data);
-      if (numInRange(codepoint, range)) return true;
+    const boxMatcher = boxMatcherMap.get(box.name);
+    if (!boxMatcher) {
+      throw new Error(`box name of "${box.name}" does not match any boxes supported`);
     }
 
-    // unreachable code (theoretically)
+    const matches = boxMatcher(unicodeInfo, box.data);
+    if (matches) return true;
   }
 
   return false;

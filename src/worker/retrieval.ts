@@ -17,7 +17,7 @@ export async function getUnicodeBlockMap() {
 export async function getUnicodeMap() {
   const res = await fetch('/UnicodeData.txt');
   const text = await res.text();
-  
+
   const unicodeArr: [number, UnicodeCharInfo][] = pipe(
     filter(line => line.trim()),
     map(line => getUnicodeData(line)),
@@ -41,12 +41,42 @@ function getDecompFromStr(decomp: string) {
   return { type, codepoints };
 }
 
+export const BidiClassMap = new Map<BidiClass, string>([
+  ['L', 'Left-to-Right'],
+  ['R', 'Right-to-Left'],
+  ['AL', 'Arabic Letter'],
+  ['EN', 'European Number'],
+  ['ES', 'European Separator'],
+  ['ET', 'European Number Terminator'],
+  ['AN', 'Arabic Number'],
+  ['CS', 'Common Number Separator'],
+  ['NSM', 'Nonspacing Mark'],
+  ['BN', 'Boundary Neutral'],
+  ['B', 'Paragraph Separator'],
+  ['S', 'Segment Separator'],
+  ['WS', 'Whitespace'],
+  ['ON', 'Other Neutrals'],
+  ['LRE', 'Left-to-Right Embedding'],
+  ['LRO', 'Left-to-Right Override'],
+  ['RLE', 'Right-to-Left Embedding'],
+  ['RLO', 'Right-to-Left Override'],
+  ['PDF', 'Pop Directional Format'],
+  ['LRI', 'Left-to-Right Isolate'],
+  ['RLI', 'Right-to-Left Isolate'],
+  ['FSI', 'First Strong Isolate'],
+  ['PDI', 'Pop Directional Isolate']
+]);
+
+export type BidiClass =
+  | "L" | "R" | "AL" | "EN" | "ES" | "ET" | "AN" | "CS" | "NSM" | "BN" | "B" | "S" | "WS" | "ON"
+  | "LRE" | "LRO" | "RLE" | "RLO" | "PDF" | "LRI" | "RLI" | "FSI" | "PDI"
+
 export interface UnicodeCharInfo {
   codepoint: number;
   name: string;
   category: string;
   combiningClass: number;
-  bidiClass: string;
+  bidiClass: BidiClass;
   decomposition: {
     type: string;
     codepoints: number[];
@@ -69,7 +99,7 @@ function getUnicodeData(line: string): UnicodeCharInfo {
   let [
     codepointStr, label, category, combiningClass, bidiClass,
     decompositionStr, decimalEquiv, digitEquiv, numericEquiv,
-    bidiMirrored, oldName, /* isoComment */, 
+    bidiMirrored, oldName, /* isoComment */,
     uppercaseMapping, lowercaseMapping, titlecaseMapping
   ] = line.split(';');
 
@@ -91,11 +121,11 @@ function getUnicodeData(line: string): UnicodeCharInfo {
   const decomposition = getDecompFromStr(decompositionStr);
 
   return {
-    codepoint, name, category, 
-    combiningClass: Number(combiningClass), 
-    bidiClass, decomposition, numberEquivalent,
-    isBidiMirrored, 
+    codepoint, name, category,
+    combiningClass: Number(combiningClass),
+    bidiClass: bidiClass as BidiClass, decomposition, numberEquivalent,
+    isBidiMirrored,
     caseMapping,
-    oldName: oldName || null, 
+    oldName: oldName || null,
   }
 }

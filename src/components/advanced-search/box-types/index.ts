@@ -5,6 +5,7 @@ import RegexMatch from './RegexMatch.svelte';
 import UnicodeProperty from './UnicodeProperty.svelte';
 import UnicodePlane from './UnicodePlane.svelte';
 import UnicodeBlock from './UnicodeBlock.svelte';
+import BidiClass from './BidiClass.svelte';
 
 export const boxTypeMap = new Map([
   ['Codepoint Range', CodepointRange],
@@ -14,4 +15,5 @@ export const boxTypeMap = new Map([
   ['Unicode Property', UnicodeProperty],
   ['Unicode Plane', UnicodePlane],
   ['Unicode Block', UnicodeBlock],
+  ['Bidi Class', BidiClass],
 ]);
