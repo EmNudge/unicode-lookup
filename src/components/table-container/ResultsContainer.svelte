@@ -69,8 +69,6 @@
 
 <style>
   .table {
-    display: flex;
-    flex-direction: column;
     text-align: left;
   }
   .table :global(table-row) {

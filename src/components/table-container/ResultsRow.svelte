@@ -69,6 +69,7 @@
     line-height: 1em;
   }
   info-row {
+    display: flex;
     padding: 10px;
     padding-right: 0;
   }
