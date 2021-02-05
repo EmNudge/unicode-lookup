@@ -7,12 +7,16 @@ It turns out that it's super easy to use web workers and a massive text file to 
 That's what this is.
 
 A quick, easy, static unicode lookup web app.
+Try it at http://unicode.emnudge.dev/
+
 
 ![tool](https://user-images.githubusercontent.com/24513691/106977481-6f625480-6728-11eb-8e91-28fec4050f0a.jpg)
 
-Try it at https://unicode-lookup.netlify.app/
-
 # How To Use
+Right click a symbol to copy it to your clipboard.
+
+Left click to expand an info container to show more information.
+
 Currently there is "Simple Search" and "Advanced Search".
 
 For *Simple Search*, it accepts:
