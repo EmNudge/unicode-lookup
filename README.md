@@ -8,7 +8,7 @@ That's what this is.
 
 A quick, easy, static unicode lookup web app.
 
-![tool](https://i.imgur.com/XkplKrW.png)
+![tool](https://user-images.githubusercontent.com/24513691/106977481-6f625480-6728-11eb-8e91-28fec4050f0a.jpg)
 
 Try it at https://unicode-lookup.netlify.app/
 
@@ -35,7 +35,7 @@ It allows us to create a series of filters, called "rules". These rules can be o
 
 The following example excludes characters in the BMP and then requires the character to either have the unicode property XID_Start or the property White_Space:
 
-![advanced search](https://i.imgur.com/cUE1Zp9.png)
+![advanced search](https://user-images.githubusercontent.com/24513691/106977581-9d479900-6728-11eb-8e76-b152552ea71d.jpg)
 
 *Simple Search* will execute while we type. *Advanced Search* will only execute once pressing the `Search` button. 
 *Simple Search* will also execute if we press enter focusing the box.
