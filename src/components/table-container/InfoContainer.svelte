@@ -1,7 +1,9 @@
 <script lang="ts">  
   import { getPropertiesForChar, getPlaneForCodepoint, getCodepointBlock, Catetegory } from '../../utils/unicode';
   import { blockLookupStore } from '../../stores';
-  import type { UnicodeCharInfo } from '../../worker/retrieval'
+
+  import { BidiClassMap } from '../../worker/retrieval';
+  import type { UnicodeCharInfo } from '../../worker/retrieval';
 
   import CaseMapping from './info-tables/CaseMapping.svelte';
   import Encoding from './info-tables/Encoding.svelte';
@@ -21,10 +23,10 @@
   $: decompText = info.decomposition != null 
     ? `<${info.decomposition.type}> ${info.decomposition.codepoints.join(' ')}`
     : '';
-  
+
   $: baseInfo = [
     ['Name', name],
-    ['Bidi Class', info.bidiClass],
+    ['Bidi Class', `${info.bidiClass} (${BidiClassMap.get(info.bidiClass)})`],
     ...getIf(
       info.oldName && info.oldName !== name, 
       ['Old Name', info.oldName]
