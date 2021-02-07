@@ -28,7 +28,7 @@
     ['Name', name],
     ['Bidi Class', `${info.bidiClass} (${BidiClassMap.get(info.bidiClass)})`],
     ...getIf(
-      info.oldName && info.oldName !== name, 
+      Boolean(info.oldName && info.oldName !== name), 
       ['Old Name', info.oldName]
     ),
     ['Codepoint', codepoint],

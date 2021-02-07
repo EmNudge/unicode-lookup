@@ -6,13 +6,13 @@
   const getSymbolEl = (el: EventTarget) => {
     if (!(el instanceof HTMLElement)) return null;
     for (const element of [el, el.parentElement]) {
-      if (element.classList.contains('symbol')) return element;
+      if (element!.classList.contains('symbol')) return element;
     }
     return null;
   };
 
   function handleClick(e: MouseEvent) {
-    const el = getSymbolEl(e.target);
+    const el = getSymbolEl(e.target as EventTarget);
     if (!el) return;
 
     const index = Number(el.dataset.index);
@@ -21,7 +21,7 @@
 
   let copyTextTimeoutId = -1;
   function handleRightClick(e: MouseEvent) {
-    const el = getSymbolEl(e.target);
+    const el = getSymbolEl(e.target as EventTarget);
     if (!el) return;
 
     const index = Number(el.dataset.index);

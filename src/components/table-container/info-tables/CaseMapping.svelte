@@ -3,7 +3,7 @@
 
   export let caseMapping: UnicodeCharInfo["caseMapping"];
 
-  $: caseMappings = Object.entries(caseMapping).filter(([k,v]) => v);
+  $: caseMappings = Object.entries(caseMapping).filter(([_k,v]) => v) as [string, number][];
 </script>
 
 {#if caseMappings.length}

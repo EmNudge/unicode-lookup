@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Dropdown from './Dropdown.svelte';
 	import Button from './Button.svelte';
 	import BoxContent from './BoxContent.svelte';
 

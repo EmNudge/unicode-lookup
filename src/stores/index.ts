@@ -21,7 +21,7 @@ currentQueryStore.subscribe(query => {
   console.log('query:\n', query);
 })
 
-export const workerStore = writable<Worker>(null);
+export const workerStore = writable<Worker | null>(null);
 
 export const workerIsReadyStore = writable(false);
 export const hasFirstLoadedStore = writable(false);
@@ -38,7 +38,7 @@ resultsStore.subscribe(() => activeIndex.set(-1));
 export const copiedCodepoint = writable(-1);
 
 export type Block = { range: [number, number], name: string };
-export const blockLookupStore = writable<Block[]>(null);
+export const blockLookupStore = writable<Block[]>([]);
 
 export const encodingMode = writable<'hex' | 'bin' | 'dec'>('hex');
 

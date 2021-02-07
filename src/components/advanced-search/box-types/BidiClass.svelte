@@ -13,7 +13,7 @@
   let displayName: string = names[0];
 
   $: {
-    data = displayToBidiMap.get(displayName);
+    data = displayToBidiMap.get(displayName)!;
   }
 </script>
 

@@ -41,7 +41,7 @@ const boxMatcherMap = new Map<string, BoxMatcher>([
   [
     'Is Near Char', 
     (unicodeInfo: UnicodeCharInfo, { char, distance }: { char: string, distance: number }) =>
-      Math.abs(char.codePointAt(0) - unicodeInfo.codepoint) <= distance
+      Math.abs(char.codePointAt(0)! - unicodeInfo.codepoint) <= distance
   ],
   [
     'Name Includes', 
@@ -65,7 +65,7 @@ const boxMatcherMap = new Map<string, BoxMatcher>([
   [
     'Unicode Block',
     (unicodeInfo: UnicodeCharInfo, data: string) => 
-      numInRange(unicodeInfo.codepoint, unicodeBlocksMap.get(data))
+      numInRange(unicodeInfo.codepoint, unicodeBlocksMap.get(data)!)
   ],
   [
     'Bidi Class',

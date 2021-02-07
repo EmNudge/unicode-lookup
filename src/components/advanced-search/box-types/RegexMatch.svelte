@@ -6,10 +6,10 @@
   let matchOn: 'Character' | 'Name' = 'Character';
 
   type Data = { regex: RegExp, matchOn: 'Character' | 'Name' };
-	export let data: Data = { regex: getRegexFromString(regex), matchOn };
+	export let data: Data = { regex: getRegexFromString(regex)!, matchOn };
   
   $: {
-    data = { regex: getRegexFromString(regex), matchOn };
+    data = { regex: getRegexFromString(regex)!, matchOn };
   }
 
   function validateRegex(text: string) {

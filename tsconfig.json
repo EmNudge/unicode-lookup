@@ -3,6 +3,7 @@
   
   "compilerOptions": {
     "noImplicitAny": true,
+    "strictNullChecks": true,
     "resolveJsonModule": true,
   },
   "include": ["src/**/*", "src/node_modules"],

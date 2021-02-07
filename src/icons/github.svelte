@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
   export let size = 60;
-  export let href;
+  export let href: string;
 </script>
 
 <style>

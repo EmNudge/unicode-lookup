@@ -15,7 +15,7 @@
   let activeName = names[0];
 
   $: {
-    data = nameToNumMap.get(activeName)
+    data = nameToNumMap.get(activeName)!;
   }
 </script>
 

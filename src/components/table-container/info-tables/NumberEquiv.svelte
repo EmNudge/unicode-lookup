@@ -3,7 +3,7 @@
 
   export let numberEquiv: UnicodeCharInfo["numberEquivalent"];
 
-  $: caseMappings = Object.entries(numberEquiv).filter(([k,v]) => v);
+  $: caseMappings = Object.entries(numberEquiv).filter(([_k,v]) => v) as [string, number | string][];
 </script>
 
 {#if caseMappings.length}
