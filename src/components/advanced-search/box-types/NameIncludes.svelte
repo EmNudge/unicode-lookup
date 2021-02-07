@@ -9,8 +9,8 @@
 	}
 
 	function validator(text: string) {
-		if (/^[A-Za-z ]+$/.test(text)) return true;
-		return 'name must include letters A-Z only';
+		if (/^[A-Za-z0-9 ()<>,-]+$/.test(text)) return true;
+		return 'Impossible name';
 	}
 </script>
 
