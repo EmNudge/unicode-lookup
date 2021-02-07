@@ -20,13 +20,15 @@ Left click to expand an info container to show more information.
 Currently there is "Simple Search" and "Advanced Search".
 
 For *Simple Search*, it accepts:
-- character to find
+- character to find (simply type in a single character)
 - text to match against description
 - regex to match against *character* (in form `/regex/flags`)
+- glob pattern match against *names* (in form `latin * a`)
 - codepoint of character
   - decimal form
   - hexidecimal form (in form `0x[somenumber]` e.g. `0xfab23`)
   - binary form (in form `0b[somenumber]` e.g. `0b1101110`)
+- codepoint range (in form `num1-num2`, where `num1` and `num2` are in dec, hex, or bin form)
 
 *Advanced Search* is a bit more... advanced.
 It allows us to create a series of filters, called "rules". These rules can be of 2 types:
