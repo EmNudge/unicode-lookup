@@ -12,11 +12,29 @@
 			...$boxSetsStore.slice(index + 1),
 		];
 	}
+
+	// instead of bubbling up an event, we're going to create a central event listener.
+	// this will capture all child events
+	function handlePossibleFormSubmit(e: KeyboardEvent) {
+		if (e.key !== 'Enter') return;
+
+		const el = e.target as HTMLElement;
+		if (el.tagName !== 'INPUT') return;
+  
+		// it is possible for this to ACTUALLY trigger a submit event and we need to cancel that.
+		e.preventDefault();
+		dispatch('search');
+	}
 </script>
 
-{#each $boxSetsStore as { type, boxes }, i}
-	<BoxSet bind:type bind:boxes on:close={onClose(i)} />
-{/each}
+<form on:keydown={handlePossibleFormSubmit}>
+	{#each $boxSetsStore as { type, boxes }, i}
+		<BoxSet 
+			bind:type
+			bind:boxes 
+			on:close={onClose(i)} />
+	{/each}
+</form>
 
 <div class="buttons">
 	<Button on:click={() => $boxSetsStore = [...$boxSetsStore, getNewBoxSet()]}>
