@@ -27,7 +27,7 @@
 	}
 </script>
 
-<form on:keydown={handlePossibleFormSubmit}>
+<form on:keydown={handlePossibleFormSubmit} on:submit|preventDefault>
 	{#each $boxSetsStore as { type, boxes }, i}
 		<BoxSet 
 			bind:type
