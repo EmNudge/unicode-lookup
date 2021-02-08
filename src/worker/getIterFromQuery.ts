@@ -24,7 +24,7 @@ function shouldYieldCodepoint(boxSets: BoxSet[], unicode: [number, UnicodeCharIn
 }
 
 const numInRange = (num: number, range: [number, number]) =>
-  range[0] < num && num < range[1];
+  range[0] <= num && num <= range[1];
 
 type BoxMatcher = (unicodeInfo: UnicodeCharInfo, data: Box["data"]) => boolean;
 const boxMatcherMap = new Map<string, BoxMatcher>([
