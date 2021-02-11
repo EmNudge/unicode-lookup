@@ -8,6 +8,7 @@
   import CaseMapping from './info-tables/CaseMapping.svelte';
   import Encoding from './info-tables/Encoding.svelte';
   import NumberEquiv from './info-tables/NumberEquiv.svelte';
+  import HtmlEntities from './info-tables/HtmlEntities.svelte';
 
   export let codepoint: number;
   export let name: string;
@@ -87,6 +88,7 @@
     {/each}
   </div>
   
+  <HtmlEntities {codepoint} names={info.htmlEntityNames} />
   <CaseMapping caseMapping={info.caseMapping} />
   <NumberEquiv numberEquiv={info.numberEquivalent} />
   <Encoding {codepoint} />

@@ -1,6 +1,9 @@
 import { filter, map, pipe, collect } from '../utils/iterable'
 import { parseBlocks } from '../utils/unicode';
 
+// maps a codepoint onto html entity names
+let symbolHtmlNamesMap = new Map<number, string[]>();
+
 export async function getUnicodeBlockMap() {
   const res = await fetch('/UnicodeBlocks.txt');
   const text = await res.text();
@@ -15,6 +18,10 @@ export async function getUnicodeBlockMap() {
 }
 
 export async function getUnicodeMap() {
+  if (!symbolHtmlNamesMap.size) {
+    symbolHtmlNamesMap = await getSymbolHtmlNamesMap();
+  }
+
   const res = await fetch('/UnicodeData.txt');
   const text = await res.text();
 
@@ -24,9 +31,20 @@ export async function getUnicodeMap() {
     map(data => [data.codepoint, data]),
     collect,
   )(text.split('\n'));
-  console.log(unicodeArr)
 
   return new Map<number, UnicodeCharInfo>(unicodeArr);
+}
+
+export async function getSymbolHtmlNamesMap() {
+  const res = await fetch('/SymbolHtmlNames.txt');
+  const text = await res.text();
+
+  const symbolNamesMap = text.split('\n').map(line => {
+    const [numStr, names] = line.split(';');
+    return [parseInt(numStr, 16), names.split(',')] as [number, string[]];
+  });
+
+  return new Map<number, string[]>(symbolNamesMap)
 }
 
 function getDecompFromStr(decomp: string) {
@@ -92,6 +110,7 @@ export interface UnicodeCharInfo {
     lowercase: number | null,
     titlecase: number | null,
   };
+  htmlEntityNames: string[];
   oldName: string | null;
 }
 
@@ -126,6 +145,7 @@ function getUnicodeData(line: string): UnicodeCharInfo {
     bidiClass: bidiClass as BidiClass, decomposition, numberEquivalent,
     isBidiMirrored,
     caseMapping,
+    htmlEntityNames: symbolHtmlNamesMap.get(codepoint) ?? [],
     oldName: oldName || null,
   }
 }

@@ -1,4 +1,4 @@
-import { getUnicodeBlockMap, getUnicodeMap } from './retrieval';
+import { getUnicodeBlockMap, getUnicodeMap, getSymbolHtmlNamesMap } from './retrieval';
 import type { UnicodeCharInfo } from './retrieval';
 
 import * as Comlink from 'comlink';
@@ -7,7 +7,8 @@ import { getIter } from './getIterFromQuery';
 
 // maps a block name onto a codepoint range
 export let unicodeBlocksMap = new Map<string, [number, number]>();
-let unicodeDataMap = new Map<number, UnicodeCharInfo>()
+let unicodeDataMap = new Map<number, UnicodeCharInfo>();
+
 class Querier {
   queryId: Symbol;
 
