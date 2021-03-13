@@ -49,3 +49,5 @@ The following example excludes characters in the BMP and then requires the chara
 ### Known Bugs/Limitations
 - Safari does not support any regex unicode property where `Script` equals one of `"Chorasmian"`, `"Dives_Akuru"`, `"Elymaic"`, `"Khitan_Small_Script"`, `"Nandinagari"`, `"Nyiakeng_Puachue_Hmong"`, `"Wancho"`, or `"Yezidi"`.
   - e.g. `/\p{Script=Wancho}/u` will throw an error on Safari and is therefore not supported on that browser.
+- Anything typed into simple search before all unicode data has loaded will not be searched, even after the unicode data has loaded.
+  - Pressing enter while in the text box will perform a search after loading is complete.
