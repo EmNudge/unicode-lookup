@@ -42,7 +42,7 @@
     if (e.key.length > 1 || /\p{C}/.test(e.key)) return;
 
     // for modifier keys (other than shift), exit early
-    if (e.ctrlKey || e.altKey) return;
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
     
     inputEl.focus();
   }
