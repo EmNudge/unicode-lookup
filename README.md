@@ -26,8 +26,8 @@ For *Simple Search*, it accepts:
 - glob pattern match against *names* (in form `latin * a`)
 - codepoint of character
   - decimal form
-  - hexidecimal form (in form `0x[somenumber]` e.g. `0xfab23`)
-  - binary form (in form `0b[somenumber]` e.g. `0b1101110`)
+  - hexidecimal form (in form `0x[number]` or `U+[number]` e.g. `0xfab23` or `U+fab23`)
+  - binary form (in form `0b[number]` e.g. `0b1101110`)
 - codepoint range (in form `num1-num2`, where `num1` and `num2` are in dec, hex, or bin form)
 
 *Advanced Search* is a bit more... advanced.

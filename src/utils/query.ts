@@ -13,8 +13,9 @@ export function getBoxSetsFromText(text: string): BoxSet[] {
 
 function getNumFromText(text: string): number | null {
     if (/^[0-9]+$/.test(text)) return Number(text);
-    if (/^0x[0-9a-fA-F]+$/.test(text)) return Number(text);
+    if (/^(?:0x|U\+)[0-9a-f]+$/i.test(text)) return parseInt(text.slice(2), 16);
     if (/^0b[10]+$/.test(text)) return parseInt(text.slice(2), 2);
+    
     return null;
 }
 
