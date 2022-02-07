@@ -58,8 +58,8 @@
 		text-align: center;
 		margin: 0 auto;
 		
-    width: 600px;
-    max-width: 100%;
+		width: 600px;
+		max-width: 100%;
 	}
 
 	@media (min-width: 640px) {

@@ -1,8 +1,10 @@
 <script lang="ts">
   import { SearchMode, searchMode } from '../stores';
 
+  import { onMount } from 'svelte';
   import { fly } from 'svelte/transition';
   import FilterIcon from '../icons/filter.svelte';
+	import SunIcon from '../icons/sun.svelte';
   
   function toggleSearchMode() {
     const currentSearchMode = $searchMode;
@@ -12,6 +14,32 @@
     } else {
       $searchMode = SearchMode.AdvancedSearch;
     }
+  }
+
+  let curTheme = (() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme && ['dark', 'light'].includes(savedTheme)) return savedTheme;
+
+    const isDark = (
+      'matchMedia' in window
+      && window.matchMedia("(prefers-color-scheme: dark)")?.matches
+    );
+    return isDark ? 'dark' : 'light';
+  })();
+
+  function setTheme() {
+    const bg = `var(--${curTheme}-mode-bg-col)`;
+    const filter = `var(--${curTheme}-mode-filter)`;
+
+    document.body.style.setProperty('--bg-col', bg);
+    document.body.style.filter = filter;
+  }
+  onMount(setTheme);
+
+  function toggleTheme() {
+    curTheme = curTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', curTheme);
+    setTheme();
   }
 </script>
 
@@ -28,10 +56,15 @@
 		font-size: 1.7em;
   }
 
+  .buttons {
+    display: flex;
+  }
   button {
     cursor: pointer;
-    z-index: 2;
     margin: 0;
+  }
+  button.styled {
+    z-index: 2;
     padding: 10px 20px;
   }
   .active {
@@ -39,8 +72,17 @@
     background: var(--hsl);
     transition: .25s;
   }
-  button:focus {
+  button.styled:focus {
     border: 1px solid var(--hsl);
+  }
+  button.theme {
+    background: none;
+    border: none;
+    padding: 0 10px;
+    opacity: .6;
+  }
+  button.theme:active {
+    transform: scale(.9);
   }
 </style>
 
@@ -54,11 +96,16 @@
     {/if}
   </div>
   
-  <button 
-    class="styled" 
-    class:active={$searchMode === SearchMode.AdvancedSearch} 
-    on:click={toggleSearchMode}
-  >
-    <FilterIcon active={$searchMode === SearchMode.AdvancedSearch} />
-  </button>
+  <div class="buttons">
+    <button class="theme" on:click={toggleTheme}>
+      <SunIcon />
+    </button>
+    <button 
+      class="styled" 
+      class:active={$searchMode === SearchMode.AdvancedSearch} 
+      on:click={toggleSearchMode}
+    >
+      <FilterIcon active={$searchMode === SearchMode.AdvancedSearch} />
+    </button>
+  </div>
 </header>
