@@ -9,14 +9,19 @@ html, body {
 	--hsl: hsl(var(--hue), 66%, 39%);
 	--hsl-bg: hsl(var(--hue), 100%, 95%);
 
+	--light-mode-bg-col: #E0E9F8;
+	--dark-mode-bg-col: #19191c;
+	--light-mode-filter: invert(0);
+	--dark-mode-filter: invert(1) hue-rotate(180deg);
+
 	--color: #30354B;
-	--bg-col: #E0E9F8;
+	--bg-col: var(--light-mode-bg-col);
 }
 
 @media (prefers-color-scheme: dark) {
 	body {
-		--bg-col: #19191c;
-		filter: invert(1) hue-rotate(180deg);
+		--bg-col: var(--dark-mode-bg-col);
+		filter: var(--dark-mode-filter);
 	}
 }
 
