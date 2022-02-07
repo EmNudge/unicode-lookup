@@ -1,6 +1,6 @@
 <script lang="ts">
   import { activeIndex, copiedCodepoint } from '../../stores';
-  import { getNum } from '../../utils/char';
+  import { getCodepoint } from '../../utils/char';
   import InfoContainer from './InfoContainer.svelte';
   import type { UnicodeCharInfo } from '../../worker/retrieval'
 
@@ -43,7 +43,7 @@
   </table-cell>
 
   <table-cell class="number styled">
-      {getNum(codepoint, 'hex')}
+    {getCodepoint(codepoint)}
   </table-cell>
 
   <table-cell class="styled">{info.name}</table-cell>
@@ -79,7 +79,7 @@
   }
   .number {
     font-family: 'Courier New', Courier, monospace;
-    text-align: right;
+    text-align: center;
     --hue: 35;
     position: relative;
     top: -2px;
