@@ -79,7 +79,7 @@
   .table-head {
     font-weight: bold;
     font-size: .8em;
-    color: #4B558C;
+    color: var(--label-col);
     padding: 10px 0;
   }
   p {

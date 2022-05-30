@@ -6,23 +6,21 @@ html, body {
 
 :root {
 	--hue: 200;
-	--hsl: hsl(var(--hue), 66%, 39%);
-	--hsl-bg: hsl(var(--hue), 100%, 95%);
+    --hsl-lightness: 39%;
+    --hsl-bg-lightness: 95%;
+	--hsl: hsl(var(--hue), 66%, var(--hsl-lightness));
+	--hsl-bg: hsl(var(--hue), 100%, var(--hsl-bg-lightness));
 
-	--light-mode-bg-col: #E0E9F8;
-	--dark-mode-bg-col: #19191c;
-	--light-mode-filter: invert(0);
-	--dark-mode-filter: invert(1) hue-rotate(180deg);
-
-	--color: #30354B;
-	--bg-col: var(--light-mode-bg-col);
+    --bg-col: #E0E9F8;
+    --color: #30354B;
+    --label-color: #4B558C;
 }
-
-@media (prefers-color-scheme: dark) {
-	body {
-		--bg-col: var(--dark-mode-bg-col);
-		filter: var(--dark-mode-filter);
-	}
+:root.dark {
+    --bg-col: #19191c;
+    --color: #d3d6e3;
+    --label-color: #9da6dd;
+    --hsl-lightness: 50%;
+    --hsl-bg-lightness: 5%;
 }
 
 body {
@@ -116,8 +114,8 @@ button.underline-btn {
 }
 
 .styled {
-	--hsl: hsl(var(--hue), 66%, 39%);
-	--hsl-bg: hsl(var(--hue), 100%, 95%);
+	--hsl: hsl(var(--hue), 66%, var(--hsl-lightness));
+	--hsl-bg: hsl(var(--hue), 100%, var(--hsl-bg-lightness));
 	color: var(--hsl);
 	background: var(--hsl-bg);
 	

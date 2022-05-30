@@ -56,7 +56,7 @@
     font-weight: bold;
   }
   .title {
-    color: #4B558C;
+    color: var(--label-col);
     font-weight: bold;
   }
   .encoding-type {
