@@ -28,11 +28,11 @@
   })();
 
   function setTheme() {
-    const bg = `var(--${curTheme}-mode-bg-col)`;
-    const filter = `var(--${curTheme}-mode-filter)`;
-
-    document.body.style.setProperty('--bg-col', bg);
-    document.body.style.filter = filter;
+    if (curTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }
   onMount(setTheme);
 
@@ -98,7 +98,7 @@
   
   <div class="buttons">
     <button class="theme" on:click={toggleTheme}>
-      <SunIcon />
+      <SunIcon color={curTheme === 'light' ? 'black': 'white'} />
     </button>
     <button 
       class="styled" 
