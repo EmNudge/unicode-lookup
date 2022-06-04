@@ -1,6 +1,6 @@
-import { BoxSetType } from '../stores';
-import type { BoxSet, Box } from '../stores';
-import { PLANE_LENGTH } from '../utils/unicode';
+import { BoxSetType } from '$stores';
+import type { BoxSet, Box } from '$stores';
+import { PLANE_LENGTH } from '$utils/unicode';
 import { unicodeBlocksMap } from './index';
 import type { UnicodeCharInfo } from './retrieval';
 
