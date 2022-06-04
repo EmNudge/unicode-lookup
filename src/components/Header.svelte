@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { SearchMode, searchMode, themeStore } from '$stores';
+  import { SearchMode, searchMode } from '$stores';
+  import themeStore from "svelte-themes"
 
   import { fly } from 'svelte/transition';
   import FilterIcon from '$icons/filter.svelte';
-	import SunIcon from '$icons/sun.svelte';
+  import SunIcon from '$icons/sun.svelte';
   
   function toggleSearchMode() {
     const currentSearchMode = $searchMode;
@@ -16,7 +17,7 @@
   }
 
   function toggleTheme() {
-    themeStore.update(curTheme => curTheme === 'dark' ? 'light' : 'dark');
+	$themeStore.theme = $themeStore.theme === "dark" ? "light" : "dark"
   }
 </script>
 
@@ -75,7 +76,7 @@
   
   <div class="buttons">
     <button class="theme" on:click={toggleTheme}>
-      <SunIcon color={$themeStore === 'light' ? 'black': 'white'} />
+      <SunIcon />
     </button>
     <button 
       class="styled" 
