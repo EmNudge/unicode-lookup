@@ -16,9 +16,8 @@
 			"$utils/*": ["src/utils/*"],
 			"$stores": ["src/stores"],
 			"$stores/*": ["src/stores/*"],
-			"$icons/*": ["src/icon/*"],
-			"$src/*": ["src/*"],
+			"$icons/*": ["src/icons/*"],
+			"$src/*": ["src/*"]
 		}
 	}
-	
 }

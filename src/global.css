@@ -15,20 +15,22 @@ html, body {
     --color: #30354B;
     --label-color: #4B558C;
 }
-:root.light {
+:root[data-theme="light"] {
     --bg-col: #E0E9F8;
     --color: #30354B;
     --label-color: #4B558C;
     --hsl-lightness: 39%;
     --hsl-bg-lightness: 95%;
 }
-:root.dark {
+
+:root[data-theme="dark"] {
     --bg-col: #19191c;
     --color: #d3d6e3;
     --label-color: #9da6dd;
     --hsl-lightness: 50%;
     --hsl-bg-lightness: 5%;
 }
+
 @media (prefers-color-scheme: dark) {
     :root {
         --bg-col: #19191c;

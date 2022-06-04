@@ -1,3 +1,7 @@
+<script lang="ts" context="module">
+	export const prerender = true
+</script>
+
 <script lang="ts">
 	import { 
 		resultsStore, currentQueryStore, 
@@ -12,6 +16,7 @@
 	import Header from '$components/Header.svelte';
 	import AdvancedSearch from '$components/advanced-search/AdvancedSearch.svelte';
 	import Loader from '$components/Loader.svelte';
+	import "../global.css"
 
 	onMount(() => {
 		import('../queryProxy');
