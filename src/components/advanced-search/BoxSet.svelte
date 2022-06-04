@@ -2,8 +2,8 @@
 	import Button from './Button.svelte';
 	import BoxContent from './BoxContent.svelte';
 
-	import { getNewBox, BoxSetType } from '../../stores';
-	import type { Box } from '../../stores';
+	import { getNewBox, BoxSetType } from '$stores';
+	import type { Box } from '$stores';
 	export let type: BoxSetType;
 	export let boxes: Box[];
 

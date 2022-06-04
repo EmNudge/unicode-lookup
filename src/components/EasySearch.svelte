@@ -1,6 +1,6 @@
 <script lang="ts">  
-  import { easySearchStore } from '../stores';
-  import { debounce } from '../utils/debounce';
+  import { easySearchStore } from '$stores';
+  import { debounce } from '$utils/debounce';
   import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();

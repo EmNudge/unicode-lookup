@@ -1,6 +1,7 @@
-import { writable, get } from 'svelte/store';
+import { writable } from 'svelte/store';
 import type { BoxSet } from './advancedSearch';
-import type { UnicodeCharInfo } from '../worker/retrieval';
+import type { UnicodeCharInfo } from '$src/worker/retrieval';
+import { browser } from '$app/env';
 
 // which type of search is currently in use
 export enum SearchMode {
@@ -41,6 +42,29 @@ export type Block = { range: [number, number], name: string };
 export const blockLookupStore = writable<Block[]>([]);
 
 export const encodingMode = writable<'hex' | 'bin' | 'dec'>('hex');
+
+export const themeStore = writable<'dark' | 'light'>((() => {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme && ['dark', 'light'].includes(savedTheme)) {
+    return savedTheme as 'dark' | 'light'
+  };
+
+  const isDark = (
+    'matchMedia' in window
+    && window.matchMedia("(prefers-color-scheme: dark)")?.matches
+  );
+  
+  return isDark ? 'dark' : 'light';
+})());
+themeStore.subscribe(curTheme => {
+  if (curTheme === 'dark') {
+    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('light');
+  } else {
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.add('light');
+  }
+})
 
 // advanced search data
 export * from './advancedSearch';

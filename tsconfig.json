@@ -1,11 +1,24 @@
 {
-  "extends": "@tsconfig/svelte/tsconfig.json",
-  
-  "compilerOptions": {
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "resolveJsonModule": true,
-  },
-  "include": ["src/**/*", "src/node_modules"],
-  "exclude": ["node_modules/*", "__sapper__/*", "public/*"],
+	"extends": "./.svelte-kit/tsconfig.json",
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strictNullChecks": true,
+		"strict": true,
+		"baseUrl": ".",
+		"paths": {
+			"$components/*": ["src/components/*"],
+			"$utils/*": ["src/utils/*"],
+			"$stores": ["src/stores"],
+			"$stores/*": ["src/stores/*"],
+			"$icons/*": ["src/icon/*"],
+			"$src/*": ["src/*"],
+		}
+	}
+	
 }

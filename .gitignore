@@ -1,9 +1,8 @@
-/node_modules/
-/public/build/
-/public/worker.js
-/public/worker.js.map
-/public/pwa-worker.js
-/public/pwa-worker.js.map
-
 .DS_Store
-.vscode
+node_modules
+/build
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example

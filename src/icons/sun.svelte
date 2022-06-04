@@ -1,5 +1,5 @@
-<script>
-    export let color;
+<script lang="ts">
+    export let color: string;
 </script>
 
 <svg 

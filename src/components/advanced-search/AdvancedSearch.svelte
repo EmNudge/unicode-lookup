@@ -1,7 +1,7 @@
 <script lang="ts">
 	import BoxSet from './BoxSet.svelte';
 	import Button from './Button.svelte';
-	import { boxSetsStore, getNewBoxSet } from '../../stores';
+	import { boxSetsStore, getNewBoxSet } from '$stores';
   import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();

@@ -1,6 +1,6 @@
 <script lang="ts">  
   import { getPropertiesForChar, getPlaneForCodepoint, getCodepointBlock, Catetegory } from '../../utils/unicode';
-  import { blockLookupStore } from '../../stores';
+  import { blockLookupStore } from '$stores';
 
   import { BidiClassMap } from '../../worker/retrieval';
   import type { UnicodeCharInfo } from '../../worker/retrieval';

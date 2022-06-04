@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { UnicodeCharInfo } from '../../../worker/retrieval';
+  import type { UnicodeCharInfo } from '$src/worker/retrieval';
 
   export let caseMapping: UnicodeCharInfo["caseMapping"];
 
