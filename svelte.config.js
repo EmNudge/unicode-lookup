@@ -16,10 +16,6 @@ const config = {
 			$icons: 'src/icons',
 			$src: 'src',
 		},
-		prerender: {
-			// This can be false if you're using a fallback (i.e. SPA mode)
-			default: true
-		}
 	}
 };
 

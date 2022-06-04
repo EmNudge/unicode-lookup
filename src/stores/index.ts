@@ -1,7 +1,6 @@
 import { writable } from 'svelte/store';
 import type { BoxSet } from './advancedSearch';
 import type { UnicodeCharInfo } from '$src/worker/retrieval';
-// import { writable as writableStorage } from "svelte-local-storage-store"
 
 // which type of search is currently in use
 export enum SearchMode {
@@ -42,9 +41,6 @@ export type Block = { range: [number, number], name: string };
 export const blockLookupStore = writable<Block[]>([]);
 
 export const encodingMode = writable<'hex' | 'bin' | 'dec'>('hex');
-
-// type THEME = "light" | "dark"
-// export const themeStore = writableStorage<THEME>("theme", "light")
 
 // advanced search data
 export * from './advancedSearch';

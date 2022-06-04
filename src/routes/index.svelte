@@ -16,7 +16,7 @@
 	import Header from '$components/Header.svelte';
 	import AdvancedSearch from '$components/advanced-search/AdvancedSearch.svelte';
 	import Loader from '$components/Loader.svelte';
-	import "../global.css"
+	import '../global.css';
 
 	onMount(() => {
 		import('../queryProxy');

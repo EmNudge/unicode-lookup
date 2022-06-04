@@ -17,7 +17,7 @@
   }
 
   function toggleTheme() {
-	$themeStore.theme = $themeStore.theme === "dark" ? "light" : "dark"
+	  $themeStore.theme = $themeStore.theme === 'dark' ? 'light' : 'dark'
   }
 </script>
 

@@ -30,7 +30,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"comlink": "^4.3.1",
 		"svelte-themes": "^0.0.98"
 	}
 }
