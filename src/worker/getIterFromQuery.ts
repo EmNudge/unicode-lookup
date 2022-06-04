@@ -27,7 +27,7 @@ const numInRange = (num: number, range: [number, number]) =>
   range[0] <= num && num <= range[1];
 
 type BoxMatcher = (unicodeInfo: UnicodeCharInfo, data: Box["data"]) => boolean;
-const boxMatcherMap = new Map<string, BoxMatcher>([
+const boxMatcherMap = new Map([
   [
     'Codepoint Range', 
     (unicodeInfo: UnicodeCharInfo, data: { from: number, to: number }) => 
@@ -45,8 +45,11 @@ const boxMatcherMap = new Map<string, BoxMatcher>([
   ],
   [
     'Name Includes', 
-    (unicodeInfo: UnicodeCharInfo, data: string) => 
-      unicodeInfo.name.toLowerCase().includes(data.toLowerCase())
+    (unicodeInfo: UnicodeCharInfo, data: string) => {
+      if (unicodeInfo.name.toLowerCase().includes(data.toLowerCase())) return true;
+      if (!unicodeInfo.oldName || unicodeInfo.oldName === unicodeInfo.name) return false;
+      return unicodeInfo.oldName.toLowerCase().includes(data.toLowerCase());
+    }
   ],
   [
     'Unicode Property',
@@ -72,7 +75,7 @@ const boxMatcherMap = new Map<string, BoxMatcher>([
     (unicodeInfo: UnicodeCharInfo, data: string) => 
       unicodeInfo.bidiClass === data
   ]
-]);
+] as [string, BoxMatcher][]);
 
 function matchesBoxes(boxes: Box[], unicode: [number, UnicodeCharInfo]) {
   const [codepoint, unicodeInfo] = unicode;
