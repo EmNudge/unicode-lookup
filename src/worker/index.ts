@@ -1,7 +1,6 @@
-import { getUnicodeBlockMap, getUnicodeMap, getSymbolHtmlNamesMap } from './retrieval';
+import { getUnicodeBlockMap, getUnicodeMap } from './retrieval';
 import type { UnicodeCharInfo } from './retrieval';
 
-import * as Comlink from 'comlink';
 import type { BoxSet } from '../stores';
 import { getIter } from './getIterFromQuery';
 
@@ -9,25 +8,35 @@ import { getIter } from './getIterFromQuery';
 export let unicodeBlocksMap = new Map<string, [number, number]>();
 let unicodeDataMap = new Map<number, UnicodeCharInfo>();
 
-class Querier {
-  queryId: Symbol;
-
-  async loadTable() {
-    if (!unicodeBlocksMap.size) {
-      unicodeBlocksMap = await getUnicodeBlockMap();
-    }
-
-    if (!unicodeDataMap.size) {
-      unicodeDataMap = await getUnicodeMap();
-    }
-
-    return { unicodeDataMap };
+const loadTable = async () => {
+  if (!unicodeBlocksMap.size) {
+    unicodeBlocksMap = await getUnicodeBlockMap();
   }
 
-  async query(itersArr: BoxSet[]) {
-    const iter = getIter(itersArr, unicodeDataMap);
-    return [...iter];
+  if (!unicodeDataMap.size) {
+    unicodeDataMap = await getUnicodeMap();
   }
+
+  return { unicodeDataMap };
 }
 
-Comlink.expose(Querier);
+const query = async (itersArr: BoxSet[]) => {
+  const iter = getIter(itersArr, unicodeDataMap);
+  return [...iter];
+}
+
+addEventListener('message', async e => {
+  const { name, id, payload } = e.data as { name: string, id: string, payload: any }
+
+  if (name === 'loadTable') {
+    self.postMessage({ 
+      id, 
+      payload: await loadTable()
+    });
+  } else if (name === 'query') {
+    self.postMessage({ 
+      id, 
+      payload: await query(payload)
+    });
+  }
+});

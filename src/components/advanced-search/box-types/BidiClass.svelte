@@ -2,7 +2,7 @@
   export let data: string;
 
   import Dropdown from '../Dropdown.svelte';
-  import { BidiClassMap } from '../../../worker/retrieval';
+  import { BidiClassMap } from '$src/worker/retrieval';
 
 
   const displayToBidiMap = new Map([...BidiClassMap.entries()].map(([className, displayName]) => {

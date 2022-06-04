@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { encodingMode } from '../../../stores';
-  import { getEncodings } from '../../../utils/char';
+  import { encodingMode } from '$stores';
+  import { getEncodings } from '$utils/char';
   
   export let codepoint: number;
   

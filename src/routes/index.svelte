@@ -1,19 +1,28 @@
+<script lang="ts" context="module">
+	export const prerender = true
+</script>
+
 <script lang="ts">
 	import { 
 		resultsStore, currentQueryStore, 
 		easySearchStore, boxSetsStore, hasFirstLoadedStore
-	} from './stores';
+	} from '$stores';
 
-	import GithubIcon from './icons/github.svelte';
-	import { getBoxSetsFromText } from './utils/query'
+	import GithubIcon from '$icons/github.svelte';
+	import { getBoxSetsFromText } from '$utils/query'
 
-	import ResultsContainer from './components/table-container/ResultsContainer.svelte';
-	import EasySearch from './components/EasySearch.svelte';
-	import Header from './components/Header.svelte';
-	import AdvancedSearch from './components/advanced-search/AdvancedSearch.svelte';
-	import Loader from './components/Loader.svelte';
+	import ResultsContainer from '$components/table-container/ResultsContainer.svelte';
+	import EasySearch from '$components/EasySearch.svelte';
+	import Header from '$components/Header.svelte';
+	import AdvancedSearch from '$components/advanced-search/AdvancedSearch.svelte';
+	import Loader from '$components/Loader.svelte';
+	import '../global.css';
 
-	import type { BoxSet } from './stores';
+	onMount(() => {
+		import('../queryProxy');
+	});
+
+	import type { BoxSet } from '$stores';
 	let queryArr: BoxSet[] = [];
 	$: {
 		currentQueryStore.set(queryArr);
@@ -24,7 +33,8 @@
 	const advancedSearch = () => 
 		queryArr = $boxSetsStore;
 
-	import { searchMode, SearchMode } from './stores'
+	import { searchMode, SearchMode } from '$stores'
+import { onMount } from 'svelte';
 </script>
 
 <Header />

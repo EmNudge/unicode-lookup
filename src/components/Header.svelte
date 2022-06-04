@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { SearchMode, searchMode } from '../stores';
+  import { SearchMode, searchMode } from '$stores';
+  import themeStore from "svelte-themes"
 
-  import { onMount } from 'svelte';
   import { fly } from 'svelte/transition';
-  import FilterIcon from '../icons/filter.svelte';
-	import SunIcon from '../icons/sun.svelte';
+  import FilterIcon from '$icons/filter.svelte';
+  import SunIcon from '$icons/sun.svelte';
   
   function toggleSearchMode() {
     const currentSearchMode = $searchMode;
@@ -16,30 +16,8 @@
     }
   }
 
-  let curTheme = (() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme && ['dark', 'light'].includes(savedTheme)) return savedTheme;
-
-    const isDark = (
-      'matchMedia' in window
-      && window.matchMedia("(prefers-color-scheme: dark)")?.matches
-    );
-    return isDark ? 'dark' : 'light';
-  })();
-
-  function setTheme() {
-    if (curTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }
-  onMount(setTheme);
-
   function toggleTheme() {
-    curTheme = curTheme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('theme', curTheme);
-    setTheme();
+	  $themeStore.theme = $themeStore.theme === 'dark' ? 'light' : 'dark'
   }
 </script>
 
@@ -98,7 +76,7 @@
   
   <div class="buttons">
     <button class="theme" on:click={toggleTheme}>
-      <SunIcon color={curTheme === 'light' ? 'black': 'white'} />
+      <SunIcon />
     </button>
     <button 
       class="styled" 

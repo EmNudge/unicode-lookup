@@ -1,4 +1,3 @@
-import App from './App.svelte';
 import { 
 	resultsStore, currentQueryStore, workerStore, 
 	workerIsReadyStore, blockLookupStore, hasFirstLoadedStore
@@ -8,13 +7,10 @@ import type { BoxSet } from './stores';
 import { parseBlocks } from './utils/unicode';
 
 import { get } from 'svelte/store';
-import * as Comlink from 'comlink';
 
-// if('serviceWorker' in navigator) {
-// 	navigator.serviceWorker
-// 		.register('/pwa-worker.js')
-// 		.then(() => console.log('Service Worker Registered'));
-// }
+import QueryWorker from './worker?worker';
+import { sendMessage } from '$utils/worker';
+import type { UnicodeCharInfo } from './worker/retrieval';
 
 currentQueryStore.subscribe(async val => {
 	if (!val.length) return;
@@ -22,8 +18,8 @@ currentQueryStore.subscribe(async val => {
 	const workerIsReady = get(workerIsReadyStore);
 	if (!workerIsReady) return;
 
-	const results = await get(workerStore).query(val);
-	
+	const results = await sendMessage(get(workerStore)!, 'query', val) as [number, UnicodeCharInfo][];
+
 	const hasFirstLoaded = get(hasFirstLoadedStore);
 	if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
 
@@ -38,24 +34,16 @@ async function fetchBlocks() {
 }
 fetchBlocks();
 
-const ComWorker = Comlink.wrap(new Worker('./worker.js'));
-// @ts-ignore
-new ComWorker().then(async worker => {
-	workerStore.set(worker);
-	
-	await worker.loadTable();
-
+const worker = QueryWorker();
+workerStore.set(worker);
+sendMessage(worker, 'loadTable').then(() => {
 	const getAllQuery: BoxSet[] = [{ 
 		type: BoxSetType.Require,
 		boxes: [
-			{name:'Name Includes', data:''}
-		]
+			{ name: 'Name Includes', data: '' }
+		],
 	}];
-
+	
 	workerIsReadyStore.set(true);
 	currentQueryStore.set(getAllQuery);
 });
-
-const app = new App({ target: document.body });
-
-export default app;

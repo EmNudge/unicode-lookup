@@ -2,7 +2,7 @@
   export let data;
 
   import Dropdown from '../Dropdown.svelte';
-  import { properties, scripts } from '../../../utils/unicode';
+  import { properties, scripts } from '$utils/unicode';
 
   let activePropety = properties[0];
   let activeScript = scripts[0];

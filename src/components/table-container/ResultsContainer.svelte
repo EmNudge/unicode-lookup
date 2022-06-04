@@ -1,7 +1,7 @@
 <script lang="ts">
   import ResultsRow from './ResultsRow.svelte';
 
-  import { resultsStore, activeIndex, copiedCodepoint } from '../../stores';
+  import { resultsStore, activeIndex, copiedCodepoint } from '$stores';
 
   const getSymbolEl = (el: EventTarget) => {
     if (!(el instanceof HTMLElement)) return null;
@@ -19,7 +19,7 @@
     activeIndex.update(i => i === index ? -1 : index);
   }
 
-  let copyTextTimeoutId = -1;
+  let copyTextTimeoutId: ReturnType<typeof setTimeout>;
   function handleRightClick(e: MouseEvent) {
     const el = getSymbolEl(e.target as EventTarget);
     if (!el) return;
@@ -39,6 +39,7 @@
   }
 
   import { lastIntersect } from '../../actions/lastIntersect';
+
   let resultsNum = 50;
   $: shownResults = $resultsStore.slice(0, resultsNum);
   resultsStore.subscribe(() => {

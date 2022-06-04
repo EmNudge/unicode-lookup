@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CloseButton from '../../icons/close.svelte';
+	import CloseButton from '$icons/close.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();

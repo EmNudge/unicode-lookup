@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { activeIndex, copiedCodepoint } from '../../stores';
-  import { getCodepoint } from '../../utils/char';
+  import { activeIndex, copiedCodepoint } from '$stores';
+  import { getCodepoint } from '$utils/char';
   import InfoContainer from './InfoContainer.svelte';
   import type { UnicodeCharInfo } from '../../worker/retrieval'
 
@@ -49,13 +49,15 @@
   <table-cell class="styled">{info.name}</table-cell>
 </table-row>
 
-{#if $activeIndex == index}
-  <info-row transition:pad={{ duration: 500, goal: 10 }}>
-    <div transition:expand={{ duration: 500 }} class="info-cell">
-      <InfoContainer {codepoint} name={info.name} {info} />
-    </div>
-  </info-row>
-{/if}
+{#key $activeIndex}
+  {#if $activeIndex == index}
+    <info-row transition:pad={{ duration: 500, goal: 10 }}>
+      <div transition:expand={{ duration: 500 }} class="info-cell">
+        <InfoContainer {codepoint} name={info.name} {info} />
+      </div>
+    </info-row>
+  {/if}
+{/key}
 
 <style>
   table-row {

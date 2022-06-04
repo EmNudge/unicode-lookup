@@ -2,7 +2,7 @@
   export let data: number = 0;
 
   import Dropdown from '../Dropdown.svelte';
-  import { planeMap } from '../../../utils/unicode';
+  import { planeMap } from '$utils/unicode';
 
   const nameToNumMap = new Map<string, number>(Array
     .from({ length: 17 })
