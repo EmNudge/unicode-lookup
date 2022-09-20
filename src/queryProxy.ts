@@ -8,7 +8,7 @@ import { parseBlocks } from './utils/unicode';
 
 import { get } from 'svelte/store';
 
-import QueryWorker from './worker?worker';
+import QueryWorker from './worker?worker&inline';
 import { sendMessage } from '$utils/worker';
 import type { UnicodeCharInfo } from './worker/retrieval';
 
@@ -34,7 +34,7 @@ async function fetchBlocks() {
 }
 fetchBlocks();
 
-const worker = QueryWorker();
+const worker = new QueryWorker();
 workerStore.set(worker);
 sendMessage(worker, 'loadTable').then(() => {
 	const getAllQuery: BoxSet[] = [{ 

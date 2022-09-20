@@ -1,7 +1,3 @@
-<script lang="ts" context="module">
-	export const prerender = true
-</script>
-
 <script lang="ts">
 	import { 
 		resultsStore, currentQueryStore, 
@@ -34,7 +30,7 @@
 		queryArr = $boxSetsStore;
 
 	import { searchMode, SearchMode } from '$stores'
-import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 </script>
 
 <Header />
