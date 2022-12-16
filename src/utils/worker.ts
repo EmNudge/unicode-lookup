@@ -1,5 +1,5 @@
 export function sendMessage(worker: Worker, name: string, payload?: any) {
-    const id = Math.random().toString(36).slice(2);
+    const id = self.crypto.randomUUID();
     worker.postMessage({ name, id, payload });
 
     return new Promise(res => {
