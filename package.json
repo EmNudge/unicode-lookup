@@ -26,8 +26,5 @@
 		"typescript": "^4.9.4",
 		"vite": "^4.0.1"
 	},
-	"type": "module",
-	"dependencies": {
-		"svelte-themes": "^0.0.98"
-	}
+	"type": "module"
 }

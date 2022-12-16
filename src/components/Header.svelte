@@ -1,10 +1,9 @@
 <script lang="ts">
   import { SearchMode, searchMode } from '$stores';
-  import themeStore from "svelte-themes"
 
   import { fly } from 'svelte/transition';
   import FilterIcon from '$icons/filter.svelte';
-  import SunIcon from '$icons/sun.svelte';
+  import ThemeSwitcher from './ThemeSwitcher.svelte';
   
   function toggleSearchMode() {
     const currentSearchMode = $searchMode;
@@ -14,10 +13,6 @@
     } else {
       $searchMode = SearchMode.AdvancedSearch;
     }
-  }
-
-  function toggleTheme() {
-	  $themeStore.theme = $themeStore.theme === 'dark' ? 'light' : 'dark'
   }
 </script>
 
@@ -40,8 +35,6 @@
   button {
     cursor: pointer;
     margin: 0;
-  }
-  button.styled {
     z-index: 2;
     padding: 10px 20px;
   }
@@ -50,17 +43,8 @@
     background: var(--hsl);
     transition: .25s;
   }
-  button.styled:focus {
+  button:focus {
     border: 1px solid var(--hsl);
-  }
-  button.theme {
-    background: none;
-    border: none;
-    padding: 0 10px;
-    opacity: .6;
-  }
-  button.theme:active {
-    transform: scale(.9);
   }
 </style>
 
@@ -75,9 +59,7 @@
   </div>
   
   <div class="buttons">
-    <button class="theme" on:click={toggleTheme}>
-      <SunIcon />
-    </button>
+    <ThemeSwitcher />
     <button 
       class="styled" 
       class:active={$searchMode === SearchMode.AdvancedSearch} 

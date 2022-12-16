@@ -6,14 +6,14 @@ html, body {
 
 :root {
 	--hue: 200;
-    --hsl-lightness: 39%;
-    --hsl-bg-lightness: 95%;
+	--hsl-lightness: 39%;
+	--hsl-bg-lightness: 95%;
 	--hsl: hsl(var(--hue), 66%, var(--hsl-lightness));
 	--hsl-bg: hsl(var(--hue), 100%, var(--hsl-bg-lightness));
 
-    --bg-col: #E0E9F8;
-    --color: #30354B;
-    --label-color: #4B558C;
+	--bg-col: #E0E9F8;
+	--color: #30354B;
+	--label-color: #4B558C;
 }
 :root[data-theme="light"] {
     --bg-col: #E0E9F8;
@@ -44,6 +44,7 @@ html, body {
 body {
 	color: var(--color);
 	background: var(--bg-col);
+	transition: background 0.15s, color 0.05s;
 
 	margin: 0;
 	padding: 8px;
@@ -136,6 +137,7 @@ button.underline-btn {
 	--hsl-bg: hsl(var(--hue), 100%, var(--hsl-bg-lightness));
 	color: var(--hsl);
 	background: var(--hsl-bg);
+	transition: background 0.25s, color 0.05s;
 	
 	border: 1px solid var(--hsl);
 	border-radius: 3px;
