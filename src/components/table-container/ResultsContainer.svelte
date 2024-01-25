@@ -76,7 +76,7 @@
   }
   .table :global(.row) {
     display: grid;
-    grid-template-columns: 90px 90px 1fr 50px;
+    grid-template-columns: 80px 80px 1fr 50px;
     grid-gap: 10px;
     padding: 10px
   }
