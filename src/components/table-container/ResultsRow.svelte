@@ -97,6 +97,9 @@
     padding: 10px;
     padding-right: 0;
   }
+  .row-container:nth-child(even) .info-row{
+    --bg-offset: var(--bg-col);
+  }
   .info-cell {
     overflow: hidden;
     width: 100%;
