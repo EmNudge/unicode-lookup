@@ -34,7 +34,7 @@ async function fetchBlocks() {
 }
 fetchBlocks();
 
-const worker = QueryWorker();
+const worker = new QueryWorker();
 workerStore.set(worker);
 sendMessage(worker, 'loadTable').then(() => {
 	const getAllQuery: BoxSet[] = [{ 
