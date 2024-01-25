@@ -8,8 +8,8 @@
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
-		"strictNullChecks": true,
 		"strict": true,
+		"moduleResolution": "bundler",
 		"baseUrl": ".",
 		"paths": {
 			"$components/*": ["src/components/*"],
