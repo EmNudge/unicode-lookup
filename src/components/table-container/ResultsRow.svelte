@@ -28,76 +28,87 @@
   $: isCopied = $copiedCodepoint === codepoint;
 </script>
 
-<table-row>
-  <table-cell 
-    class="symbol colorize" 
-    data-index={index}
-    class:active={$activeIndex === index}
-    class:copy={isCopied}
-  >
-    {#if isCopied}
-      <span in:fade>copied</span>
-    {:else}
-      <span>{String.fromCodePoint(codepoint)}</span>
-    {/if}
-  </table-cell>
-
-  <table-cell class="number styled">
-    {getCodepoint(codepoint)}
-  </table-cell>
-
-  <table-cell class="styled">{info.name}</table-cell>
-</table-row>
-
-{#key $activeIndex}
-  {#if $activeIndex == index}
-    <info-row transition:pad={{ duration: 500, goal: 10 }}>
-      <div transition:expand={{ duration: 500 }} class="info-cell">
-        <InfoContainer {codepoint} name={info.name} {info} />
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<div class="row-container" tabindex="0">
+  <div class="row">
+    <div 
+      class="cell symbol" 
+      class:active={$activeIndex === index}
+      class:copy={isCopied}
+    >
+      {#if isCopied}
+        <span in:fade>copied</span>
+      {:else}
+        <span>{String.fromCodePoint(codepoint)}</span>
+      {/if}
+    </div>
+  
+    <div class="cell number">
+      <span> {getCodepoint(codepoint)} </span>
+    </div>
+  
+    <div class="cell name">
+      <span> {info.name} </span>
+    </div>
+  
+    <div class="cell info-icon">
+      <img src="/assets/info.svg" alt="info" data-index={index} />
+    </div>
+  </div>
+  {#key $activeIndex}
+    {#if $activeIndex == index}
+      <div class="info-row" transition:pad={{ duration: 500, goal: 10 }}>
+        <div transition:expand={{ duration: 500 }} class="info-cell">
+          <InfoContainer {codepoint} name={info.name} {info} />
+        </div>
       </div>
-    </info-row>
-  {/if}
-{/key}
+    {/if}
+  {/key}
+</div>
+
 
 <style>
-  table-row {
-    --hue: 200;
-    padding-bottom: 3px;
+  .row-container:nth-child(even) {
+    background-color: var(--bg-offset);
   }
-  table-cell {
-    padding: 7px 10px;
-    align-self: baseline;
-    box-sizing: border-box;
-    line-height: 1em;
+  .cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  info-row {
+  .name {
+    font-size: .8em;
+    justify-content: flex-start;
+  }
+  .info-icon img {
+    height: 24px;
+    opacity: .5;
+    transition: 0.15s;
+  }
+  .info-icon:hover img {
+    opacity: 1;
+    cursor: pointer;
+  }
+  :global(:root[data-theme=dark]) .info-icon {
+    filter: invert(1);
+  }
+  .info-row {
     display: flex;
     padding: 10px;
     padding-right: 0;
+  }
+  .row-container:nth-child(even) .info-row{
+    --bg-offset: var(--bg-col);
   }
   .info-cell {
     overflow: hidden;
     width: 100%;
   }
   .number {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: monospace;
     text-align: center;
-    --hue: 35;
     position: relative;
-    top: -2px;
-  }
-  .symbol {
-    border-radius: 4px;
-    text-align: center;
-    
-    color: var(--hsl);
-    border: 1px solid transparent;
-  }
-  .symbol:hover {
-    cursor: pointer;
-    border: 1px solid var(--hsl);
-    background: var(--hsl-bg);
-    transition: .15s;
+    opacity: .5;
   }
   .symbol::after, .symbol::before {
     content: "\"";
@@ -106,11 +117,6 @@
     .symbol {
       user-select: none;
     }
-  }
-  .active {
-    box-shadow: 2px 2px 0px 0px var(--hsl);
-    border: 1px solid var(--hsl);
-    background: var(--hsl-bg);
   }
   .copy::before {
     content: '';

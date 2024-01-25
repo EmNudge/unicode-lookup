@@ -26,7 +26,7 @@
     : '';
 
   $: baseInfo = [
-    ['Name', name],
+    // ['Name', name],
     ['Bidi Class', `${info.bidiClass} (${BidiClassMap.get(info.bidiClass)})`],
     ...getIf(
       Boolean(info.oldName && info.oldName !== name), 
@@ -58,11 +58,15 @@
   }
   .basic-info {
     display: grid;
-    grid-template-columns: auto 1fr;
-    grid-gap: 10px;
   }
-  .basic-info span:nth-child(odd) {
+  td {
+    padding: 5px;
+  }
+  td:nth-child(1) {
     font-weight: bold;
+  }
+  tr:nth-child(odd) {
+    background-color: var(--bg-offset);
   }
   .properties {
     display: grid;
@@ -80,13 +84,17 @@
   }
 </style>
 
-<div class="container styled" style="--hue: 200; --item-num: {Math.ceil(properties.length / 2)}">
-  <div class="basic-info">
-    {#each baseInfo as [name, value]}
-      <span>{name}</span>
-      <span>{value}</span>
-    {/each}
-  </div>
+<div class="container" style="--item-num: {Math.ceil(properties.length / 2)}">
+  <table class="basic-info">
+    <tbody>
+      {#each baseInfo as [name, value]}
+        <tr>
+          <td>{name}</td>
+          <td>{value}</td>
+        </tr>
+      {/each}
+    </tbody>
+    </table>
   
   <HtmlEntities {codepoint} names={info.htmlEntityNames} />
   <CaseMapping caseMapping={info.caseMapping} />

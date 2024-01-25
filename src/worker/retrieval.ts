@@ -115,7 +115,7 @@ export interface UnicodeCharInfo {
 }
 
 function getUnicodeData(line: string): UnicodeCharInfo {
-  let [
+  const [
     codepointStr, label, category, combiningClass, bidiClass,
     decompositionStr, decimalEquiv, digitEquiv, numericEquiv,
     bidiMirrored, oldName, /* isoComment */,

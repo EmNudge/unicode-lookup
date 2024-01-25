@@ -3,16 +3,17 @@
 
   import { resultsStore, activeIndex, copiedCodepoint } from '$stores';
 
-  const getSymbolEl = (el: EventTarget) => {
+  const getInfoIcon = (el: EventTarget) => {
     if (!(el instanceof HTMLElement)) return null;
     for (const element of [el, el.parentElement]) {
-      if (element!.classList.contains('symbol')) return element;
+      if (element instanceof HTMLImageElement && element.alt === 'info') return element;
+      if (element?.classList.contains('info-icon'))return element;
     }
     return null;
   };
 
   function handleClick(e: MouseEvent) {
-    const el = getSymbolEl(e.target as EventTarget);
+    const el = getInfoIcon(e.target as EventTarget);
     if (!el) return;
 
     const index = Number(el.dataset.index);
@@ -21,7 +22,7 @@
 
   let copyTextTimeoutId: ReturnType<typeof setTimeout>;
   function handleRightClick(e: MouseEvent) {
-    const el = getSymbolEl(e.target as EventTarget);
+    const el = getInfoIcon(e.target as EventTarget);
     if (!el) return;
 
     const index = Number(el.dataset.index);
@@ -51,17 +52,18 @@
   {$resultsStore.length} result{$resultsStore.length > 1 ? 's' : ''}
 </p>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="table"
   on:click={handleClick} 
   on:contextmenu={handleRightClick} 
   use:lastIntersect 
   on:intersect={() => resultsNum += 50}
 >
-  <table-row class="table-head">
-    <table-cell>Character</table-cell>
-    <table-cell>Codepoint</table-cell>
-    <table-cell>Description</table-cell>
-  </table-row>
+  <div class="table-head row">
+    <div>Character</div>
+    <div>Codepoint</div>
+    <div>Description</div>
+  </div>
 
   {#each shownResults as [codepoint, info], i}
     <ResultsRow index={i} {codepoint} {info} />
@@ -72,11 +74,12 @@
   .table {
     text-align: left;
   }
-  .table :global(table-row) {
+  .table :global(.row) {
     display: grid;
-    grid-template-columns: 90px 90px 1fr;
+    grid-template-columns: 80px 80px 1fr 50px;
     grid-gap: 10px;
-  }  
+    padding: 10px
+  }
   .table-head {
     font-weight: bold;
     font-size: .8em;

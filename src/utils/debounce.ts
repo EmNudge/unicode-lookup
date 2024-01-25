@@ -1,8 +1,8 @@
-export function debounce(func: Function, ms: number) {
+export function debounce(func: () => void, ms: number) {
   let timeoutId: number;
 
-  return function newFunc(...args: any[]) {
+  return function newFunc() {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(func, ms, ...args);
+    timeoutId = setTimeout(func, ms);
   }
 }

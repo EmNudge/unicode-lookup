@@ -43,6 +43,11 @@
 
     // for modifier keys (other than shift), exit early
     if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+    if (e.key === ' ') {
+      e.preventDefault();
+      return;
+    }
     
     inputEl.focus();
   }
@@ -52,6 +57,21 @@
   input {
     width: 90%;
     margin: 0 auto;
+    border: 1px solid transparent;
+    box-shadow: -3px 4px 2px #0000000f;
+  }
+  :global(:root[data-theme=dark]) input {
+    background-color: #151515;
+    color: white;
+    border: 1px solid #6b6b6b;
+    box-shadow: 1px 1px 1px 2px #0000006e;
+  }
+  input::-webkit-input-placeholder {
+    opacity: .5;
+  }
+  input:focus {
+    outline: 1px solid #a5b5ff;
+    box-shadow: -3px 4px 2px #894aff0f;
   }
 </style>
 
@@ -61,7 +81,6 @@
   <input 
     type="text"
     placeholder="Search..."
-    class="styled" 
     bind:value={$easySearchStore} 
     on:input={trySearch}
     bind:this={inputEl} />
