@@ -59,7 +59,7 @@
   use:lastIntersect 
   on:intersect={() => resultsNum += 50}
 >
-  <div class="table-head">
+  <div class="table-head row">
     <div>Character</div>
     <div>Codepoint</div>
     <div>Description</div>
@@ -74,7 +74,7 @@
   .table {
     text-align: left;
   }
-  .table > :global(div) {
+  .table :global(.row) {
     display: grid;
     grid-template-columns: 90px 90px 1fr 50px;
     grid-gap: 10px;

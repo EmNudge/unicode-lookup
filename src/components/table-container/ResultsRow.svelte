@@ -29,48 +29,47 @@
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-<div class="row" tabindex="0">
-  <div 
-    class="cell symbol" 
-    class:active={$activeIndex === index}
-    class:copy={isCopied}
-  >
-    {#if isCopied}
-      <span in:fade>copied</span>
-    {:else}
-      <span>{String.fromCodePoint(codepoint)}</span>
+<div class="row-container" tabindex="0">
+  <div class="row">
+    <div 
+      class="cell symbol" 
+      class:active={$activeIndex === index}
+      class:copy={isCopied}
+    >
+      {#if isCopied}
+        <span in:fade>copied</span>
+      {:else}
+        <span>{String.fromCodePoint(codepoint)}</span>
+      {/if}
+    </div>
+  
+    <div class="cell number">
+      <span> {getCodepoint(codepoint)} </span>
+    </div>
+  
+    <div class="cell name">
+      <span> {info.name} </span>
+    </div>
+  
+    <div class="cell info-icon">
+      <img src="/assets/info.svg" alt="info" data-index={index} />
+    </div>
+  </div>
+  {#key $activeIndex}
+    {#if $activeIndex == index}
+      <div class="info-row" transition:pad={{ duration: 500, goal: 10 }}>
+        <div transition:expand={{ duration: 500 }} class="info-cell">
+          <InfoContainer {codepoint} name={info.name} {info} />
+        </div>
+      </div>
     {/if}
-  </div>
-
-  <div class="cell number">
-    <span> {getCodepoint(codepoint)} </span>
-  </div>
-
-  <div class="cell name">
-    <span> {info.name} </span>
-  </div>
-
-  <div class="cell info-icon">
-    <img src="/assets/info.svg" alt="info" data-index={index} />
-  </div>
+  {/key}
 </div>
 
-{#key $activeIndex}
-  {#if $activeIndex == index}
-    <info-row transition:pad={{ duration: 500, goal: 10 }}>
-      <div transition:expand={{ duration: 500 }} class="info-cell">
-        <InfoContainer {codepoint} name={info.name} {info} />
-      </div>
-    </info-row>
-  {/if}
-{/key}
 
 <style>
-  .row:nth-child(even) {
-    background-color: white;
-  }
-  :global(:root[data-theme=dark]) .row:nth-child(even) {
-    background-color: #363343;
+  .row-container:nth-child(even) {
+    background-color: var(--bg-offset);
   }
   .cell {
     display: flex;
@@ -93,7 +92,7 @@
   :global(:root[data-theme=dark]) .info-icon {
     filter: invert(1);
   }
-  info-row {
+  .info-row {
     display: flex;
     padding: 10px;
     padding-right: 0;

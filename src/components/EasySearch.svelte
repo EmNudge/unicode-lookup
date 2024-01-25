@@ -60,6 +60,12 @@
     border: 1px solid transparent;
     box-shadow: -3px 4px 2px #0000000f;
   }
+  :global(:root[data-theme=dark]) input {
+    background-color: #151515;
+    color: white;
+    border: 1px solid #6b6b6b;
+    box-shadow: 1px 1px 1px 2px #0000006e;
+  }
   input::-webkit-input-placeholder {
     opacity: .5;
   }
