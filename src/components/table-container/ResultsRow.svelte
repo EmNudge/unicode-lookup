@@ -69,6 +69,9 @@
   .row:nth-child(even) {
     background-color: white;
   }
+  :global(:root[data-theme=dark]) .row:nth-child(even) {
+    background-color: #363343;
+  }
   .cell {
     display: flex;
     align-items: center;
@@ -81,10 +84,14 @@
   .info-icon img {
     height: 24px;
     opacity: .5;
+    transition: 0.15s;
   }
   .info-icon:hover img {
     opacity: 1;
     cursor: pointer;
+  }
+  :global(:root[data-theme=dark]) .info-icon {
+    filter: invert(1);
   }
   info-row {
     display: flex;
