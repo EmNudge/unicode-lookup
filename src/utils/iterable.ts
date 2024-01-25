@@ -1,11 +1,11 @@
 
-export const split = (delimeter: string) => function*(text: string) {
+export const split = (delimiter: string) => function*(text: string) {
   let start = 0;
 
   for (let i = 0; i < text.length; i++) {
-    const curr = text.slice(i, i + delimeter.length);
+    const curr = text.slice(i, i + delimiter.length);
 
-    if (curr !== delimeter) continue;
+    if (curr !== delimiter) continue;
     
     yield text.slice(start, i);
     start = i + 1;

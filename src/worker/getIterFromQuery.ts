@@ -78,7 +78,7 @@ const boxMatcherMap = new Map([
 ] as [string, BoxMatcher][]);
 
 function matchesBoxes(boxes: Box[], unicode: [number, UnicodeCharInfo]) {
-  const [codepoint, unicodeInfo] = unicode;
+  const [_codepoint, unicodeInfo] = unicode;
 
   for (const box of boxes) {
     const boxMatcher = boxMatcherMap.get(box.name);
