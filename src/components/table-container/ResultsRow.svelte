@@ -28,10 +28,10 @@
   $: isCopied = $copiedCodepoint === codepoint;
 </script>
 
-<table-row>
-  <table-cell 
-    class="symbol colorize" 
-    data-index={index}
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<div class="row" tabindex="0">
+  <div 
+    class="cell symbol" 
     class:active={$activeIndex === index}
     class:copy={isCopied}
   >
@@ -40,14 +40,20 @@
     {:else}
       <span>{String.fromCodePoint(codepoint)}</span>
     {/if}
-  </table-cell>
+  </div>
 
-  <table-cell class="number styled">
-    {getCodepoint(codepoint)}
-  </table-cell>
+  <div class="cell number">
+    <span> {getCodepoint(codepoint)} </span>
+  </div>
 
-  <table-cell class="styled">{info.name}</table-cell>
-</table-row>
+  <div class="cell name">
+    <span> {info.name} </span>
+  </div>
+
+  <div class="cell info-icon">
+    <img src="/assets/info.svg" alt="info" data-index={index} />
+  </div>
+</div>
 
 {#key $activeIndex}
   {#if $activeIndex == index}
@@ -60,15 +66,25 @@
 {/key}
 
 <style>
-  table-row {
-    --hue: 200;
-    padding-bottom: 3px;
+  .row:nth-child(even) {
+    background-color: white;
   }
-  table-cell {
-    padding: 7px 10px;
-    align-self: baseline;
-    box-sizing: border-box;
-    line-height: 1em;
+  .cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .name {
+    font-size: .8em;
+    justify-content: flex-start;
+  }
+  .info-icon img {
+    height: 24px;
+    opacity: .5;
+  }
+  .info-icon:hover img {
+    opacity: 1;
+    cursor: pointer;
   }
   info-row {
     display: flex;
@@ -80,24 +96,10 @@
     width: 100%;
   }
   .number {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: monospace;
     text-align: center;
-    --hue: 35;
     position: relative;
-    top: -2px;
-  }
-  .symbol {
-    border-radius: 4px;
-    text-align: center;
-    
-    color: var(--hsl);
-    border: 1px solid transparent;
-  }
-  .symbol:hover {
-    cursor: pointer;
-    border: 1px solid var(--hsl);
-    background: var(--hsl-bg);
-    transition: .15s;
+    opacity: .5;
   }
   .symbol::after, .symbol::before {
     content: "\"";
@@ -106,11 +108,6 @@
     .symbol {
       user-select: none;
     }
-  }
-  .active {
-    box-shadow: 2px 2px 0px 0px var(--hsl);
-    border: 1px solid var(--hsl);
-    background: var(--hsl-bg);
   }
   .copy::before {
     content: '';
