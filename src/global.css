@@ -11,6 +11,8 @@ html, body {
 	--hsl: hsl(var(--hue), 66%, var(--hsl-lightness));
 	--hsl-bg: hsl(var(--hue), 100%, var(--hsl-bg-lightness));
 
+	--primary-text: #584ca4;
+
 	--bg-col: #E0E9F8;
 	--color: #30354B;
 	--label-color: #4B558C;
@@ -23,6 +25,7 @@ html, body {
     --label-color: #4B558C;
     --hsl-lightness: 39%;
     --hsl-bg-lightness: 95%;
+		--primary-text: #584ca4;
 
 		--bg-offset: white;
 }
@@ -34,6 +37,7 @@ html, body {
     --hsl-lightness: 50%;
     --hsl-bg-lightness: 5%;
 		--bg-offset: #363343;
+		--primary-text: #a89ee6;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -44,6 +48,7 @@ html, body {
         --hsl-lightness: 50%;
         --hsl-bg-lightness: 5%;
 				--bg-offset: #363343;
+				--primary-text: #a89ee6;
     }
 }
 

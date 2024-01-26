@@ -95,11 +95,10 @@
 			grid-template-columns: minmax(500px, auto) 600px;
 		}
 	}
-	aside {
-		padding: 3em;
-	}
 	aside div {
 		position: fixed;
 		width: 400px;
+    overflow-y: auto;
+    height: 100vh;
 	}
 </style>

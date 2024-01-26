@@ -9,6 +9,7 @@
   import Encoding from './info-tables/Encoding.svelte';
   import NumberEquiv from './info-tables/NumberEquiv.svelte';
   import HtmlEntities from './info-tables/HtmlEntities.svelte';
+	import Properties from './info-tables/Properties.svelte';
 
   export let codepoint: number;
   export let name: string;
@@ -68,27 +69,10 @@
   tr:nth-child(odd) {
     background-color: var(--bg-offset);
   }
-  .properties {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-		gap: 5px;
-    text-align: left;    
-    padding-left: 8px;
-  }
-  .properties span {
-    background: var(--bg-offset);
-    padding: 2px 8px;
-    border-radius: 4px;
-  }
   h1 {
     text-align: center;
   }
-
-  h3 {
-    padding: 5px;
-    padding-bottom: 15px;
-  }
+  
   .display-box {
     background-color: var(--bg-offset);
     height: 64px;
@@ -133,10 +117,5 @@
   <Encoding {codepoint} />
   
   <br />
-  <h3>Properties</h3>
-  <div class="properties">
-    {#each properties as property}
-      <span>{property}</span>
-    {/each}
-  </div>
+  <Properties {properties} />
 </div>
