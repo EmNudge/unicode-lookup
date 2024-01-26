@@ -2,7 +2,7 @@
 	import { 
 		resultsStore, currentQueryStore, 
 		easySearchStore, boxSetsStore, hasFirstLoadedStore,
-		selectedCodepoint,
+		selectedCodepoint, searchMode, SearchMode
 	} from '$stores';
 
 	import GithubIcon from '$icons/github.svelte';
@@ -13,8 +13,10 @@
 	import Header from '$components/Header.svelte';
 	import AdvancedSearch from '$components/advanced-search/AdvancedSearch.svelte';
 	import Loader from '$components/Loader.svelte';
+	import InfoContainer from '$components/table-container/InfoContainer.svelte';
 	import '../global.css';
 
+	import { onMount } from 'svelte';
 	onMount(() => {
 		import('../queryProxy');
 	});
@@ -25,14 +27,8 @@
 		currentQueryStore.set(queryArr);
 	}
 
-	const easySearch = () =>
-		queryArr = getBoxSetsFromText($easySearchStore);
-	const advancedSearch = () => 
-		queryArr = $boxSetsStore;
-
-	import { searchMode, SearchMode } from '$stores'
-import { onMount } from 'svelte';
-	import InfoContainer from '$components/table-container/InfoContainer.svelte';
+	const easySearch = () => queryArr = getBoxSetsFromText($easySearchStore);
+	const advancedSearch = () => queryArr = $boxSetsStore;
 </script>
 
 <aside>
