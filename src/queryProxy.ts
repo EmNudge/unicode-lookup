@@ -10,7 +10,7 @@ import { get } from 'svelte/store';
 
 import QueryWorker from './worker?worker';
 import { sendMessage } from '$utils/worker';
-import type { UnicodeCharInfo } from './worker/retrieval';
+import type { UnicodeCharInfo } from '$utils/types';
 
 currentQueryStore.subscribe(async val => {
 	if (!val.length) return;

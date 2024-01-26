@@ -1,8 +1,8 @@
 import { BoxSetType } from '$stores';
 import type { BoxSet, Box } from '$stores';
+import type { UnicodeCharInfo } from '$utils/types';
 import { PLANE_LENGTH } from '$utils/unicode';
 import { unicodeBlocksMap } from './index';
-import type { UnicodeCharInfo } from './retrieval';
 
 export function shouldYieldCodepoint(boxSets: BoxSet[], unicode: [number, UnicodeCharInfo]) {
   for (const boxSet of boxSets) {

@@ -1,8 +1,8 @@
 import { getUnicodeBlockMap, getUnicodeMap } from './retrieval';
-import type { UnicodeCharInfo } from './retrieval';
 
 import type { BoxSet } from '../stores';
 import { shouldYieldCodepoint } from './getIterFromQuery';
+import type { UnicodeCharInfo } from '$utils/types';
 
 // maps a block name onto a codepoint range
 export let unicodeBlocksMap = new Map<string, [number, number]>();
