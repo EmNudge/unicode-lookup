@@ -1,5 +1,5 @@
 <script lang="ts">  
-  import { getPropertiesForChar, getPlaneForCodepoint, getCodepointBlock, Catetegory } from '../../utils/unicode';
+  import { getPropertiesForChar, getPlaneForCodepoint, getCodepointBlock, Category } from '../../utils/unicode';
   import { blockLookupStore } from '$stores';
 
   import { BidiClassMap } from '../../worker/retrieval';
@@ -9,13 +9,14 @@
   import Encoding from './info-tables/Encoding.svelte';
   import NumberEquiv from './info-tables/NumberEquiv.svelte';
   import HtmlEntities from './info-tables/HtmlEntities.svelte';
+	import Properties from './info-tables/Properties.svelte';
 
   export let codepoint: number;
   export let name: string;
   export let info: UnicodeCharInfo;
 
   // @ts-ignore
-  $: category = `${info.category} (${Catetegory[info.category]})`;
+  $: category = `${info.category} (${Category[info.category]})`;
   $: charBlock = getCodepointBlock($blockLookupStore, codepoint);
   $: planeData = getPlaneForCodepoint(codepoint);
 
@@ -68,23 +69,37 @@
   tr:nth-child(odd) {
     background-color: var(--bg-offset);
   }
-  .properties {
-    display: grid;
-		grid-template-rows: repeat(var(--item-num), 1fr);
-		grid-template-columns: 1fr 1fr;
-		width: min-content;
-		gap: 5px 40px;
-    text-align: left;    
-    padding-left: 8px;
+  h1 {
+    text-align: center;
   }
-
-  h3 {
-    padding: 5px;
-    padding-bottom: 15px;
+  
+  .display-box {
+    background-color: var(--bg-offset);
+    height: 64px;
+    width: 64px;
+    font-size: 3em;
+    border: 1px solid grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 12px 0;
+  }
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 </style>
 
 <div class="container" style="--item-num: {Math.ceil(properties.length / 2)}">
+  <header>
+    <h1>{name}</h1>
+    <div class="display-box">
+      <span>
+        {String.fromCodePoint(codepoint)}
+      </span>
+    </div>
+  </header>
   <table class="basic-info">
     <tbody>
       {#each baseInfo as [name, value]}
@@ -102,10 +117,5 @@
   <Encoding {codepoint} />
   
   <br />
-  <h3>Properties</h3>
-  <div class="properties">
-    {#each properties as property}
-      <span>{property}</span>
-    {/each}
-  </div>
+  <Properties {properties} />
 </div>

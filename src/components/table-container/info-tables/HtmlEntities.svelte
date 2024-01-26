@@ -29,6 +29,18 @@
 </table>
 
 <style>
+  th {
+    text-align: left; 
+    color: var(--primary-text);
+    font-weight: 400;
+    padding-bottom: 6px;
+  }
+  tbody tr:nth-child(odd) {
+    background-color: var(--bg-offset);
+  }
+  td {
+    padding: 6px;
+  }
   td:first-child {
     padding-right: 30px;
   }

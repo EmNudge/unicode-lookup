@@ -96,7 +96,7 @@ export function getCodepointBlock(blocks: Block[], codepoint: number) {
   throw new Error('codepoint does not match any block');
 }
 
-export enum Catetegory {
+export enum Category {
   // Letters
   Lu = "Uppercase_Letter",
   Ll = "Lowercase_Letter",

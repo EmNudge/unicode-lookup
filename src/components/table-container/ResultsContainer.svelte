@@ -12,12 +12,17 @@
     return null;
   };
 
-  function handleClick(e: MouseEvent) {
-    const el = getInfoIcon(e.target as EventTarget);
-    if (!el) return;
-
-    const index = Number(el.dataset.index);
-    activeIndex.update(i => i === index ? -1 : index);
+  function handleFocus(e: FocusEvent) {
+    const index = (e.target as Element).querySelector('img')?.dataset.index;
+    if (!index) return;
+    $activeIndex = Number(index);
+  }
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === 'ArrowDown' && $activeIndex < $resultsStore.length - 1) {
+      $activeIndex++;
+    } else if  (e.key === 'ArrowUp' && $activeIndex >= 0) {
+      $activeIndex--;
+    }
   }
 
   let copyTextTimeoutId: ReturnType<typeof setTimeout>;
@@ -55,10 +60,11 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="table"
-  on:click={handleClick} 
   on:contextmenu={handleRightClick} 
   use:lastIntersect 
   on:intersect={() => resultsNum += 50}
+  on:focusin={handleFocus}
+  on:keydown={handleKeydown}
 >
   <div class="table-head row">
     <div>Character</div>
