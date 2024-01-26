@@ -9,67 +9,51 @@
   export let index: number;
 
   import { fade } from 'svelte/transition';
-  import { quartInOut } from 'svelte/easing';
-  const pad = (_node: Element, { duration, goal } = { duration: 500, goal: 10}) => ({
-    duration,
-    css: (t: number) => `
-      padding: ${Math.floor(quartInOut(t) * goal)}px;
-      padding-right: 0;
-    `
-  });
-  const expand = (node: HTMLElement, { duration } = { duration: 500 }) => {
-    const {height} = node.getBoundingClientRect();
-    return {
-      duration,
-      css: (t: number) => `height: ${Math.floor(quartInOut(t) * height)}px`
-    };
-  };
 
   $: isCopied = $copiedCodepoint === codepoint;
+
+  let rowEl: HTMLDivElement | undefined;
+  $: if ($activeIndex === index) {
+    rowEl?.focus();
+  }
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-<div class="row-container" tabindex="0">
-  <div class="row">
-    <div 
-      class="cell symbol" 
-      class:active={$activeIndex === index}
-      class:copy={isCopied}
-    >
-      {#if isCopied}
-        <span in:fade>copied</span>
-      {:else}
-        <span>{String.fromCodePoint(codepoint)}</span>
-      {/if}
-    </div>
-  
-    <div class="cell number">
-      <span> {getCodepoint(codepoint)} </span>
-    </div>
-  
-    <div class="cell name">
-      <span> {info.name} </span>
-    </div>
-  
-    <div class="cell info-icon">
-      <img src="/assets/info.svg" alt="info" data-index={index} />
-    </div>
-  </div>
-  {#key $activeIndex}
-    {#if $activeIndex == index}
-      <div class="info-row" transition:pad={{ duration: 500, goal: 10 }}>
-        <div transition:expand={{ duration: 500 }} class="info-cell">
-          <InfoContainer {codepoint} name={info.name} {info} />
-        </div>
-      </div>
+<div class="row" class:active={$activeIndex === index} tabindex="0" bind:this={rowEl}>
+  <div 
+    class="cell symbol" 
+    class:copy={isCopied}
+  >
+    {#if isCopied}
+      <span in:fade>copied</span>
+    {:else}
+      <span>{String.fromCodePoint(codepoint)}</span>
     {/if}
-  {/key}
+  </div>
+
+  <div class="cell number">
+    <span> {getCodepoint(codepoint)} </span>
+  </div>
+
+  <div class="cell name">
+    <span> {info.name} </span>
+  </div>
+
+  <div class="cell info-icon">
+    <img src="/assets/info.svg" alt="info" data-index={index} />
+  </div>
 </div>
 
 
 <style>
-  .row-container:nth-child(even) {
-    background-color: var(--bg-offset);
+  .row {
+    border: 1px solid transparent;
+  }
+  .row:nth-child(even) {
+    background-color: var(--bg-offset);;
+  }
+  .row.active {
+    border: 1px solid blue;
   }
   .cell {
     display: flex;
@@ -91,18 +75,6 @@
   }
   :global(:root[data-theme=dark]) .info-icon {
     filter: invert(1);
-  }
-  .info-row {
-    display: flex;
-    padding: 10px;
-    padding-right: 0;
-  }
-  .row-container:nth-child(even) .info-row{
-    --bg-offset: var(--bg-col);
-  }
-  .info-cell {
-    overflow: hidden;
-    width: 100%;
   }
   .number {
     font-family: monospace;

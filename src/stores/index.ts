@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 import type { BoxSet } from './advancedSearch';
 import type { UnicodeCharInfo } from '$src/worker/retrieval';
 
@@ -34,6 +34,8 @@ export const categorySearchStore = writable<Pattern[]>([]);
 
 export const activeIndex = writable(-1);
 resultsStore.subscribe(() => activeIndex.set(-1));
+
+export const selectedCodepoint = derived([activeIndex, resultsStore], ([activeIndex, results]) => results?.[activeIndex]?.[1]);
 
 export const copiedCodepoint = writable(-1);
 

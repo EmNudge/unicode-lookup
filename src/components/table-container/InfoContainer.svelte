@@ -77,14 +77,41 @@
     text-align: left;    
     padding-left: 8px;
   }
+  h1 {
+    text-align: center;
+  }
 
   h3 {
     padding: 5px;
     padding-bottom: 15px;
   }
+  .display-box {
+    background-color: var(--bg-offset);
+    height: 64px;
+    width: 64px;
+    font-size: 3em;
+    border: 1px solid grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 12px 0;
+  }
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 </style>
 
 <div class="container" style="--item-num: {Math.ceil(properties.length / 2)}">
+  <header>
+    <h1>{name}</h1>
+    <div class="display-box">
+      <span>
+        {String.fromCodePoint(codepoint)}
+      </span>
+    </div>
+  </header>
   <table class="basic-info">
     <tbody>
       {#each baseInfo as [name, value]}
