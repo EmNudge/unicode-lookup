@@ -44,10 +44,9 @@ export type WorkerMessage =
 	| { name: 'loadTable'; id: string }
 	| { name: 'query'; id: string; payload: BoxSet[] }
 	| { name: 'simple-query'; id: string; payload: string };
-export type WorkerMessageWithoutId = 
-  | { name: 'loadTable' }
-  | { name: 'query'; payload: BoxSet[] }
-  | { name: 'simple-query'; payload: string };
+
+type RemoveId<T> = T extends { id: any } ? { [K in Exclude<keyof T, 'id'>]: T[K] } : T;
+export type WorkerMessageWithoutId = RemoveId<WorkerMessage>;
 
 export type WorkerMessageResponse =
 	| {
