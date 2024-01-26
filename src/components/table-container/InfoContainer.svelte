@@ -73,9 +73,14 @@
 		grid-template-rows: repeat(var(--item-num), 1fr);
 		grid-template-columns: 1fr 1fr;
 		width: min-content;
-		gap: 5px 40px;
+		gap: 5px;
     text-align: left;    
     padding-left: 8px;
+  }
+  .properties span {
+    background: var(--bg-offset);
+    padding: 2px 8px;
+    border-radius: 4px;
   }
   h1 {
     text-align: center;
