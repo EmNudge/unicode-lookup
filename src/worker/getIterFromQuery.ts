@@ -4,14 +4,7 @@ import { PLANE_LENGTH } from '$utils/unicode';
 import { unicodeBlocksMap } from './index';
 import type { UnicodeCharInfo } from './retrieval';
 
-export function* getIter(boxSets: BoxSet[], unicodeMap: Map<number, UnicodeCharInfo>) {
-  for (const unicode of unicodeMap) {
-    const shouldYield = shouldYieldCodepoint(boxSets, unicode);
-    if (shouldYield) yield unicode;
-  }
-}
-
-function shouldYieldCodepoint(boxSets: BoxSet[], unicode: [number, UnicodeCharInfo]) {
+export function shouldYieldCodepoint(boxSets: BoxSet[], unicode: [number, UnicodeCharInfo]) {
   for (const boxSet of boxSets) {
     const { boxes, type } = boxSet;
     const matches = matchesBoxes(boxes, unicode);

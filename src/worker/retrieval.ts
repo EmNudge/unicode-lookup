@@ -1,4 +1,3 @@
-import { filter, map, pipe, collect } from '../utils/iterable'
 import { parseBlocks } from '../utils/unicode';
 
 // maps a codepoint onto html entity names
@@ -25,12 +24,11 @@ export async function getUnicodeMap() {
   const res = await fetch('/UnicodeData.txt');
   const text = await res.text();
 
-  const unicodeArr: [number, UnicodeCharInfo][] = pipe(
-    filter(line => line.trim()),
-    map(line => getUnicodeData(line)),
-    map(data => [data.codepoint, data]),
-    collect,
-  )(text.split('\n'));
+  const unicodeArr: [number, UnicodeCharInfo][] = text
+    .split('\n')
+    .filter(line => line.trim())
+    .map(line => getUnicodeData(line))
+    .map(data => [data.codepoint, data]);
 
   return new Map<number, UnicodeCharInfo>(unicodeArr);
 }

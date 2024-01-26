@@ -2,7 +2,7 @@ import { getUnicodeBlockMap, getUnicodeMap } from './retrieval';
 import type { UnicodeCharInfo } from './retrieval';
 
 import type { BoxSet } from '../stores';
-import { getIter } from './getIterFromQuery';
+import { shouldYieldCodepoint } from './getIterFromQuery';
 
 // maps a block name onto a codepoint range
 export let unicodeBlocksMap = new Map<string, [number, number]>();
@@ -21,8 +21,8 @@ const loadTable = async () => {
 }
 
 const query = async (itersArr: BoxSet[]) => {
-  const iter = getIter(itersArr, unicodeDataMap);
-  return [...iter];
+  return [...unicodeDataMap.entries()]
+    .filter(unicode => shouldYieldCodepoint(itersArr, unicode))
 }
 
 addEventListener('message', async e => {
