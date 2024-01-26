@@ -42,8 +42,7 @@ export function advancedQuery(
           : val.bidiClass === filter.value;
       }
 
-      // @ts-ignore
-      throw new Error(`Unknown filter type: ${filter.type}`);
+      throw new Error(`Unknown filter type: ${(filter as any).type}`);
     });
   }
 
