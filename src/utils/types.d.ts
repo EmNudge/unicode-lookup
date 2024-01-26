@@ -39,3 +39,19 @@ export interface UnicodeCharInfo {
   htmlEntityNames: string[];
   oldName: string | null;
 }
+
+export type WorkerMessage =
+	| { name: 'loadTable'; id: string }
+	| { name: 'query'; id: string; payload: BoxSet[] }
+	| { name: 'simple-query'; id: string; payload: string };
+export type WorkerMessageWithoutId = 
+  | { name: 'loadTable' }
+  | { name: 'query'; payload: BoxSet[] }
+  | { name: 'simple-query'; payload: string };
+
+export type WorkerMessageResponse =
+	| {
+			unicodeDataMap: Map<number, UnicodeCharInfo>;
+	  }
+	| [number, UnicodeCharInfo][]
+	| void;

@@ -1,6 +1,10 @@
-import { 
-	resultsStore, currentQueryStore, workerStore, 
-	workerIsReadyStore, blockLookupStore, hasFirstLoadedStore
+import {
+	resultsStore,
+	currentQueryStore,
+	workerStore,
+	workerIsReadyStore,
+	blockLookupStore,
+	hasFirstLoadedStore
 } from './stores';
 import { BoxSetType } from './stores';
 import type { BoxSet } from './stores';
@@ -12,13 +16,16 @@ import QueryWorker from './worker?worker';
 import { sendMessage } from '$utils/worker';
 import type { UnicodeCharInfo } from '$utils/types';
 
-currentQueryStore.subscribe(async val => {
+currentQueryStore.subscribe(async (val) => {
 	if (!val.length) return;
-	
+
 	const workerIsReady = get(workerIsReadyStore);
 	if (!workerIsReady) return;
 
-	const results = await sendMessage(get(workerStore)!, 'query', val) as [number, UnicodeCharInfo][];
+	const results = (await sendMessage(get(workerStore)!, { name: 'query', payload: val })) as [
+		number,
+		UnicodeCharInfo
+	][];
 
 	const hasFirstLoaded = get(hasFirstLoadedStore);
 	if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
@@ -36,14 +43,14 @@ fetchBlocks();
 
 const worker = new QueryWorker();
 workerStore.set(worker);
-sendMessage(worker, 'loadTable').then(() => {
-	const getAllQuery: BoxSet[] = [{ 
-		type: BoxSetType.Require,
-		boxes: [
-			{ name: 'Name Includes', data: '' }
-		],
-	}];
-	
+sendMessage(worker, { name: 'loadTable' }).then(() => {
+	const getAllQuery: BoxSet[] = [
+		{
+			type: BoxSetType.Require,
+			boxes: [{ name: 'Name Includes', data: '' }]
+		}
+	];
+
 	workerIsReadyStore.set(true);
 	currentQueryStore.set(getAllQuery);
 });

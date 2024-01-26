@@ -1,8 +1,7 @@
 import { getUnicodeBlockMap, getUnicodeMap } from './retrieval';
 
-import type { BoxSet } from '../stores';
 import { shouldYieldCodepoint } from './getIterFromQuery';
-import type { UnicodeCharInfo } from '$utils/types';
+import type { UnicodeCharInfo, WorkerMessage, WorkerMessageResponse } from '$utils/types';
 import { simpleQuery } from './simpleQuery';
 
 // maps a block name onto a codepoint range
@@ -21,25 +20,13 @@ const loadTable = async () => {
 	return { unicodeDataMap };
 };
 
-type Message =
-	| { name: 'loadTable'; id: string }
-	| { name: 'query'; id: string; payload: BoxSet[] }
-	| { name: 'simple-query'; id: string; payload: string };
-
-type MessageResponse =
-	| {
-			unicodeDataMap: Map<number, UnicodeCharInfo>;
-	  }
-	| [number, UnicodeCharInfo][]
-	| void;
-
-const handleMessage = async (message: Message): Promise<MessageResponse> => {
+const handleMessage = async (message: WorkerMessage): Promise<WorkerMessageResponse> => {
 	const { name } = message;
 
 	if (name === 'loadTable') {
 		return await loadTable();
 	}
-  
+
   if (name === 'query') {
 		return [...unicodeDataMap.entries()].filter((unicode) =>
 			shouldYieldCodepoint(message.payload, unicode)
@@ -51,7 +38,7 @@ const handleMessage = async (message: Message): Promise<MessageResponse> => {
 	}
 };
 
-addEventListener('message', async (e: { data: Message }) => {
+addEventListener('message', async (e: { data: WorkerMessage }) => {
   self.postMessage({
     id: e.data.id,
     payload: await handleMessage(e.data)
