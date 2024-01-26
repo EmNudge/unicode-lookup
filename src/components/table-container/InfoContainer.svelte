@@ -1,5 +1,5 @@
 <script lang="ts">  
-  import { getPropertiesForChar, getPlaneForCodepoint, getCodepointBlock, Catetegory } from '../../utils/unicode';
+  import { getPropertiesForChar, getPlaneForCodepoint, getCodepointBlock, Category } from '../../utils/unicode';
   import { blockLookupStore } from '$stores';
 
   import { BidiClassMap } from '../../worker/retrieval';
@@ -16,7 +16,7 @@
   export let info: UnicodeCharInfo;
 
   // @ts-ignore
-  $: category = `${info.category} (${Catetegory[info.category]})`;
+  $: category = `${info.category} (${Category[info.category]})`;
   $: charBlock = getCodepointBlock($blockLookupStore, codepoint);
   $: planeData = getPlaneForCodepoint(codepoint);
 
