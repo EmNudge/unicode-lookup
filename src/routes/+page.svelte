@@ -25,7 +25,6 @@
 		currentQueryStore.set(queryArr);
 	}
 
-	const easySearch = () => queryArr = getBoxSetsFromText($easySearchStore);
 	const advancedSearch = () => queryArr = $boxSetsStore;
 </script>
 
@@ -44,7 +43,7 @@
 		<main>
 			<div class="searchbox">
 				{#if $searchMode === SearchMode.SimpleSearch}
-					<EasySearch on:search={easySearch} />
+					<EasySearch />
 				{:else}
 					<AdvancedSearch on:search={advancedSearch} />
 				{/if}

@@ -1,6 +1,6 @@
 import { writable, derived } from 'svelte/store';
 import type { BoxSet } from './advancedSearch';
-import type { UnicodeCharInfo } from '$src/worker/retrieval';
+import type { UnicodeCharInfo } from '$utils/types';
 
 // which type of search is currently in use
 export enum SearchMode {

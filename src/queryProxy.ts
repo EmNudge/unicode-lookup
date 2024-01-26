@@ -4,7 +4,8 @@ import {
 	workerStore,
 	workerIsReadyStore,
 	blockLookupStore,
-	hasFirstLoadedStore
+	hasFirstLoadedStore,
+	easySearchStore
 } from './stores';
 import { BoxSetType } from './stores';
 import type { BoxSet } from './stores';
@@ -15,6 +16,23 @@ import { get } from 'svelte/store';
 import QueryWorker from './worker?worker';
 import { sendMessage } from '$utils/worker';
 import type { UnicodeCharInfo } from '$utils/types';
+import { debounce } from '$utils/debounce';
+
+easySearchStore.subscribe(debounce(async (val: string) => {
+	const workerIsReady = get(workerIsReadyStore);
+	if (!workerIsReady) return;
+
+	console.log(val)
+	const results = (await sendMessage(get(workerStore)!, { name: 'simple-query', payload: val })) as [
+		number,
+		UnicodeCharInfo
+	][];
+
+	const hasFirstLoaded = get(hasFirstLoadedStore);
+	if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
+
+	resultsStore.set(results);
+}, 100))
 
 currentQueryStore.subscribe(async (val) => {
 	if (!val.length) return;

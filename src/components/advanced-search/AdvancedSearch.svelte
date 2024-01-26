@@ -10,19 +10,6 @@
 		$boxSetsStore = [...$boxSetsStore.slice(0, index), ...$boxSetsStore.slice(index + 1)];
 	};
 
-	// instead of bubbling up an event, we're going to create a central event listener.
-	// this will capture all child events
-	function handlePossibleFormSubmit(e: KeyboardEvent) {
-		if (e.key !== 'Enter') return;
-
-		const el = e.target as HTMLElement;
-		if (el.tagName !== 'INPUT') return;
-
-		// it is possible for this to ACTUALLY trigger a submit event and we need to cancel that.
-		e.preventDefault();
-		dispatch('search');
-	}
-
 	onMount(() => {
 		// If the user has previously deleted all boxSets, restore the default upon mounting again.
 		if ($boxSetsStore.length === 0) {
@@ -31,7 +18,7 @@
 	});
 </script>
 
-<form on:keydown={handlePossibleFormSubmit} on:submit|preventDefault>
+<form on:submit|preventDefault>
 	{#each $boxSetsStore as { type, boxes }, i}
 		<BoxSet bind:type bind:boxes on:close={onClose(i)} />
 	{/each}

@@ -66,6 +66,7 @@ export function simpleQuery(unicodeData: UnicodeData, text: string) {
   }
 
   // name includes match
+  const uppercaseText = text.toUpperCase();
   return [...unicodeData.values()]
-    .filter(({ name }) => name.includes(text))
+    .filter(({ name }) => name.includes(uppercaseText))
 }
