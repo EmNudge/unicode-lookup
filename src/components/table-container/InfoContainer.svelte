@@ -69,10 +69,9 @@
     background-color: var(--bg-offset);
   }
   .properties {
-    display: grid;
-		grid-template-rows: repeat(var(--item-num), 1fr);
-		grid-template-columns: 1fr 1fr;
-		width: min-content;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 		gap: 5px;
     text-align: left;    
     padding-left: 8px;

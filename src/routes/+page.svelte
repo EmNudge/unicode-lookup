@@ -17,9 +17,7 @@
 	import '../global.css';
 
 	import { onMount } from 'svelte';
-	onMount(() => {
-		import('../queryProxy');
-	});
+	onMount(() => import('../queryProxy'));
 
 	import type { BoxSet } from '$stores';
 	let queryArr: BoxSet[] = [];
@@ -31,41 +29,45 @@
 	const advancedSearch = () => queryArr = $boxSetsStore;
 </script>
 
-<aside>
+<div class="content" class:middle={$selectedCodepoint}>
+	{#if $selectedCodepoint}
+		<aside>
+			<div>
+				<InfoContainer codepoint={$selectedCodepoint.codepoint} info={$selectedCodepoint} name={$selectedCodepoint.name} />
+			</div>
+		</aside>
+	{/if}
 	<div>
-		{#if $selectedCodepoint}
-			<InfoContainer codepoint={$selectedCodepoint.codepoint} info={$selectedCodepoint} name={$selectedCodepoint.name} />
-		{/if}
+		<Header />
+		<GithubIcon href="https://github.com/EmNudge/unicode-lookup" />
+		
+		<main>
+			<div class="searchbox">
+				{#if $searchMode === SearchMode.SimpleSearch}
+					<EasySearch on:search={easySearch} />
+				{:else}
+					<AdvancedSearch on:search={advancedSearch} />
+				{/if}
+			</div>
+		
+			<br>
+		
+			{#if $hasFirstLoadedStore}
+				{#if $resultsStore.length}
+					<ResultsContainer />
+				{:else}
+					<br>
+					<p>No results fit that query :/</p>
+				{/if}
+			{:else}
+				<Loader />
+			{/if}
+		</main>
 	</div>
-</aside>
-<div>
-	<Header />
-	<GithubIcon href="https://github.com/EmNudge/unicode-lookup" />
-	
-	<main>
-		<div class="searchbox">
-			{#if $searchMode === SearchMode.SimpleSearch}
-				<EasySearch on:search={easySearch} />
-			{:else}
-				<AdvancedSearch on:search={advancedSearch} />
-			{/if}
-		</div>
-	
-		<br>
-	
-		{#if $hasFirstLoadedStore}
-			{#if $resultsStore.length}
-				<ResultsContainer />
-			{:else}
-				<br>
-				<p>No results fit that query :/</p>
-			{/if}
-		{:else}
-			<Loader />
-		{/if}
-	</main>
+	{#if $selectedCodepoint}
+		<aside></aside>
+	{/if}
 </div>
-<aside></aside>
 
 <style>
 	main {
@@ -82,9 +84,16 @@
 		}
 	}
 
-	:global(#app) {
+	.content.middle {
 		display: grid;
-		grid-template-columns: 500px 1fr 500px;
+		grid-template-columns: minmax(500px, auto) 600px 500px;
+		justify-content: center;
+	}
+	@media (max-width: 1600px) {
+		.content.middle {
+			display: grid;
+			grid-template-columns: minmax(500px, auto) 600px;
+		}
 	}
 	aside {
 		padding: 3em;
