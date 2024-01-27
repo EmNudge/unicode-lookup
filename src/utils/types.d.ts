@@ -1,5 +1,3 @@
-type UnicodeData = Map<number, UnicodeCharInfo>;
-
 type FilterData =
 	| { type: 'character'; value: RegExp }
 	| { type: 'name'; value: RegExp | string }
@@ -65,9 +63,7 @@ export type WorkerMessage =
 	| { name: 'simple-query'; id: string; payload: string }
 	| { name: 'advanced-query'; id: string; payload: Filter[] };
 
-type RemoveId<T> = T extends { id: any }
-	? { [K in Exclude<keyof T, 'id'>]: T[K] }
-	: T;
+type RemoveId<T> = T extends { id: any } ? { [K in Exclude<keyof T, 'id'>]: T[K] } : T;
 export type WorkerMessageWithoutId = RemoveId<WorkerMessage>;
 
 export type WorkerMessageResponse =
@@ -75,12 +71,10 @@ export type WorkerMessageResponse =
 			unicodeDataMap: Map<number, UnicodeCharInfo>;
 	  }
 	| [number, UnicodeCharInfo][]
-	| void;
+	| undefined;
 
-type WorkerResponseFromMessageName<T extends WorkerMessage['name']> =
-	T extends 'loadTable'
-		? { unicodeDataMap: Map<number, UnicodeCharInfo> }
-		: [number, UnicodeCharInfo][];
-export type WorkerResponseFromMessage<
-	T extends WorkerMessage | WorkerMessageWithoutId,
-> = WorkerResponseFromMessageName<T['name']>;
+type WorkerResponseFromMessageName<T extends WorkerMessage['name']> = T extends 'loadTable'
+	? { unicodeDataMap: Map<number, UnicodeCharInfo> }
+	: [number, UnicodeCharInfo][];
+export type WorkerResponseFromMessage<T extends WorkerMessage | WorkerMessageWithoutId> =
+	WorkerResponseFromMessageName<T['name']>;

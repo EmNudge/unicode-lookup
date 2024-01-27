@@ -7,5 +7,17 @@
 		"lineWidth": 80,
 		"lineEnding": "lf",
 		"ignore": []
-	}
+	},
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "suspicious": {
+        "noExplicitAny": "off"
+      },
+      "style": {
+        "noParameterAssign": "off",
+        "noNonNullAssertion": "off"
+      }
+    }
+  }
 }

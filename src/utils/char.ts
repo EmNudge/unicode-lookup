@@ -1,6 +1,6 @@
 export function getCodepoint(num: number) {
 	const str = num.toString(16).toLowerCase().padStart(4, '0');
-	return 'U+' + str;
+	return `U+${str}`;
 }
 
 export function getEncodings(codepoint: number) {
