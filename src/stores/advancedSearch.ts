@@ -1,11 +1,15 @@
-import { blockLookupStore, type Block } from '$stores';
+import { type Block, blockLookupStore } from '$stores';
 import type { BidiClass, Filter } from '$utils/types';
 import { PLANE_LENGTH } from '$utils/unicode';
 import { get, writable } from 'svelte/store';
 
 type MatchType = 'Require' | 'Exclude';
 export type Box =
-	| { name: 'Codepoint Range'; data: { from: number; to: number }; matchType: MatchType }
+	| {
+			name: 'Codepoint Range';
+			data: { from: number; to: number };
+			matchType: MatchType;
+	  }
 	| { name: 'Name Includes'; data: string; matchType: MatchType }
 	| { name: 'Bidi Class'; data: string; matchType: MatchType }
 	| {
@@ -20,7 +24,7 @@ export type Box =
 export const getNewBox = (): Box => ({
 	name: 'Codepoint Range',
 	data: { from: 0, to: 65535 },
-	matchType: 'Require'
+	matchType: 'Require',
 });
 
 export const convertBoxSetToFilters = (boxes: Box[]): Filter[] => {
@@ -65,7 +69,7 @@ export const convertBoxSetToFilters = (boxes: Box[]): Filter[] => {
 				return {
 					type: 'range',
 					negated,
-					value: [PLANE_LENGTH * data, PLANE_LENGTH * data + PLANE_LENGTH]
+					value: [PLANE_LENGTH * data, PLANE_LENGTH * data + PLANE_LENGTH],
 				};
 			}
 		});

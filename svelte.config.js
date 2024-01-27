@@ -16,7 +16,7 @@ const config = {
 			$icons: 'src/icons',
 			$src: 'src',
 		},
-	}
+	},
 };
 
 export default config;

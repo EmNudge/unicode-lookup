@@ -1,13 +1,13 @@
 import {
-	workerStore,
-	workerIsReadyStore,
 	blockLookupStore,
 	hasFirstLoadedStore,
+	workerIsReadyStore,
+	workerStore,
 } from './stores';
 import { parseBlocks } from './utils/unicode';
 
-import QueryWorker from './worker?worker';
 import { sendMessage } from '$utils/worker';
+import QueryWorker from './worker?worker';
 
 async function fetchBlocks() {
 	const res = await fetch('/UnicodeBlocks.txt');

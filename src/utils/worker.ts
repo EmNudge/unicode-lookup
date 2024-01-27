@@ -1,11 +1,11 @@
 import type {
 	WorkerMessageWithoutId,
-	WorkerResponseFromMessage
-} from './types';
+	WorkerResponseFromMessage,
+} from './types.d';
 
 export function sendMessage<T extends WorkerMessageWithoutId>(
 	worker: Worker,
-	message: T
+	message: T,
 ): Promise<WorkerResponseFromMessage<T>> {
 	const id = self.crypto.randomUUID();
 	worker.postMessage({ ...message, id });
