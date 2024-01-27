@@ -3,13 +3,13 @@
   import { blockLookupStore } from '$stores';
 
   import { BidiClassMap } from '../../worker/retrieval';
-  import type { UnicodeCharInfo } from '../../worker/retrieval';
 
   import CaseMapping from './info-tables/CaseMapping.svelte';
   import Encoding from './info-tables/Encoding.svelte';
   import NumberEquiv from './info-tables/NumberEquiv.svelte';
   import HtmlEntities from './info-tables/HtmlEntities.svelte';
 	import Properties from './info-tables/Properties.svelte';
+	import type { UnicodeCharInfo } from '$utils/types';
 
   export let codepoint: number;
   export let name: string;
