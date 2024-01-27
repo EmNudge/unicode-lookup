@@ -10,7 +10,14 @@
 	export let data: any;
 	export let hue = 200;
 
+	const localNameSt = writable(name);
+	localNameSt.subscribe(localName => {
+		name = localName;
+		data = undefined;
+	});
+
 	import { boxTypeMap } from './box-types';
+	import { writable } from 'svelte/store';
 	
 	$: componentNames = [...boxTypeMap.keys()];
 	$: component = boxTypeMap.get(name);
@@ -50,7 +57,7 @@
 	
 	<Dropdown 
 		options={componentNames} 
-		bind:value={name} 
+		bind:value={$localNameSt} 
 		hue={35} />
 	
 	<hr>

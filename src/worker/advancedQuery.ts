@@ -6,10 +6,11 @@ export function advancedQuery(unicodeData: UnicodeData, filters: Filter[]) {
 	// fix regex not passing through worker
 	filters = filters.map((filter) => {
 		if (filter.type !== 'name' && filter.type !== 'character') return filter;
-		if (!(filter.value as string).startsWith('/') || !(filter.value as string).endsWith('/'))
-			return filter;
 
-		const regex = new RegExp((filter.value as string).slice(1, -1), 'ui');
+		const match = (filter.value as string)?.match(/^\/(.+)\/[a-z]*$/);
+		if (!match) return filter;
+
+		const regex = new RegExp(match[1], 'ui');
 		return { ...filter, value: regex };
 	});
 
