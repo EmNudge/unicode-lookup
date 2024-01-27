@@ -43,7 +43,8 @@ export interface UnicodeCharInfo {
 export type WorkerMessage =
 	| { name: 'loadTable'; id: string }
 	| { name: 'query'; id: string; payload: BoxSet[] }
-	| { name: 'simple-query'; id: string; payload: string };
+	| { name: 'simple-query'; id: string; payload: string }
+	| { name: 'advanced-query'; id: string; payload: Filter[] };
 
 type RemoveId<T> = T extends { id: any } ? { [K in Exclude<keyof T, 'id'>]: T[K] } : T;
 export type WorkerMessageWithoutId = RemoveId<WorkerMessage>;

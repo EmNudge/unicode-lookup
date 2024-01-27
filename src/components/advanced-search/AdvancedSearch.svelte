@@ -1,10 +1,12 @@
 <script lang="ts">
 	import BoxSet from './BoxSet.svelte';
 	import Button from './Button.svelte';
-	import { boxSetsStore, getNewBoxSet } from '$stores';
+	import { boxSetsStore, currentQueryStore, getNewBoxSet } from '$stores';
 	import { createEventDispatcher, onMount } from 'svelte';
 
 	const dispatch = createEventDispatcher();
+
+	$: currentQueryStore.set($boxSetsStore);
 
 	const onClose = (index: number) => () => {
 		$boxSetsStore = [...$boxSetsStore.slice(0, index), ...$boxSetsStore.slice(index + 1)];
@@ -26,7 +28,9 @@
 
 <div class="buttons">
 	<Button on:click={() => ($boxSetsStore = [...$boxSetsStore, getNewBoxSet()])}>Add Rule</Button>
-	<Button on:click={() => dispatch('search')} hue={200}>Search</Button>
+	{#if false} <!-- TODO: Add setting for toggle -->
+		<Button on:click={() => dispatch('search')} hue={200}>Search</Button>
+	{/if}
 </div>
 
 <style>

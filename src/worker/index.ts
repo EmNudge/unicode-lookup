@@ -3,6 +3,7 @@ import { getUnicodeBlockMap, getUnicodeMap } from './retrieval';
 import { shouldYieldCodepoint } from './getIterFromQuery';
 import type { UnicodeCharInfo, WorkerMessage, WorkerMessageResponse } from '$utils/types';
 import { simpleQuery } from './simpleQuery';
+import { advancedQuery } from './advancedQuery';
 
 // maps a block name onto a codepoint range
 export let unicodeBlocksMap = new Map<string, [number, number]>();
@@ -36,6 +37,10 @@ const handleMessage = async (message: WorkerMessage): Promise<WorkerMessageRespo
   if (name === 'simple-query') {
 		return simpleQuery(unicodeDataMap, message.payload).map((data) => [data.codepoint, data]);
 	}
+
+  if (name === 'advanced-query') {
+    return advancedQuery(unicodeDataMap, message.payload).map((data) => [data.codepoint, data]);
+  }
 };
 
 addEventListener('message', async (e: { data: WorkerMessage }) => {
