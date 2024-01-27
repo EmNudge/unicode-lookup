@@ -9,13 +9,12 @@ That's what this is.
 A quick, easy, static unicode lookup web app.
 Try it at http://unicode.emnudge.dev/
 
-
-![tool](https://user-images.githubusercontent.com/24513691/106977481-6f625480-6728-11eb-8e91-28fec4050f0a.jpg)
+![tool](https://github.com/EmNudge/unicode-lookup/assets/24513691/3d0a3cff-7bc9-465c-9a6f-c6d86d434634)
 
 # How To Use
-Right click a symbol to copy it to your clipboard.
+Right click the info icon to copy it to your clipboard.
 
-Left click to expand an info container to show more information.
+Left click a row to bring up the info view.
 
 Currently there is "Simple Search" and "Advanced Search".
 
