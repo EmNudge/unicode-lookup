@@ -7,10 +7,7 @@
   const blockNames = $blockLookupStore.map(block => block.name);
 
   let shouldSort = true;
-  $: console.log({ shouldSort })
-  $: blocks = shouldSort 
-    ? [...blockNames].sort()
-    : blockNames;
+  $: blocks = shouldSort ? [...blockNames].sort() : blockNames;
   
   let blockName: string = blockNames[0];
 

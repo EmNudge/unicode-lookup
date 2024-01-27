@@ -1,7 +1,7 @@
 <script lang="ts">
   import ResultsRow from './ResultsRow.svelte';
-
-  import { resultsStore, activeIndex, copiedCodepoint } from '$stores';
+  import { lastIntersect } from '../../actions/lastIntersect';
+  import { activeIndex, copiedCodepoint, resultsStore } from '$stores';
 
   const getInfoIcon = (el: EventTarget) => {
     if (!(el instanceof HTMLElement)) return null;
@@ -43,8 +43,6 @@
 
     e.preventDefault();
   }
-
-  import { lastIntersect } from '../../actions/lastIntersect';
 
   let resultsNum = 50;
   $: shownResults = $resultsStore.slice(0, resultsNum);

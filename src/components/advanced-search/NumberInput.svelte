@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 	export let value = 0;
-	export let type = 'dec';
+	export let type: 'dec' | 'hex' | 'bin' | undefined = 'dec';
 	
-	let currText = value;
+	let currText: number | string = value;
 	let errText = '';
 	
 	$: {
@@ -15,34 +15,34 @@
 		}
 	}
 	
-	function parseHex(hex) {
+	function parseHex(hex: string) {
 		if (!/^[A-Fa-f0-9]+$/.test(hex)) return NaN;
 		return parseInt(hex, 16);
 	}
-	function parseBin(bin) {
+	function parseBin(bin: string) {
 		if (!/^[01]+$/.test(bin)) return NaN;
 		return parseInt(bin, 2);
 	}
-	function getValue(type, text) {
-		if (type === 'hex') return parseHex(currText);
-		if (type === 'bin') return parseBin(currText);
+	function getValue(type: string | undefined, text: string | number) {
+		if (type === 'hex') return parseHex(String(currText));
+		if (type === 'bin') return parseBin(String(currText));
 		return Number(text);
 	}
 	
-	function getText(type, value) {
+	function getText(type: string | undefined, value: number) {
 		if (type === 'hex') return value.toString(16);
 		if (type === 'bin') return value.toString(2);
 		return value;
 	}
 	
-  function* cycle(arr) {
+  function* cycle<T>(arr: T[]) {
     while (true) {
       yield* arr;
     }
   }
-	const typeIter = cycle(['hex', 'bin', 'dec']);
+	const typeIter = cycle(['hex', 'bin', 'dec'] as const);
 	function changeType() {
-    type = typeIter.next().value;
+    type = typeIter.next().value ?? undefined;
     currText = getText(type, value);
 	}
 </script>

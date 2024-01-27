@@ -1,5 +1,4 @@
 // https://tc39.es/ecma262/#table-nonbinary-unicode-properties
-import { append, filter, map, collect, pipe } from './iterable.js';
 import type { Block } from '../stores';
 
 export const valueAliases = ["Cased_Letter","Close_Punctuation","Connector_Punctuation","Control","Currency_Symbol","Dash_Punctuation","Decimal_Number","Enclosing_Mark","Final_Punctuation","Format","Initial_Punctuation","Letter","Letter_Number","Line_Separator","Lowercase_Letter","Mark","Math_Symbol","Modifier_Letter","Modifier_Symbol","Nonspacing_Mark","Number","Open_Punctuation","Other","Other_Letter","Other_Number","Other_Punctuation","Other_Symbol","Paragraph_Separator","Private_Use","Punctuation","Separator","Space_Separator","Spacing_Mark","Surrogate","Symbol","Titlecase_Letter","Unassigned","Uppercase_Letter"];
@@ -22,25 +21,22 @@ export const binaryProperties = ["ASCII","ASCII_Hex_Digit","Alphabetic","Any","A
 
 export const properties = [...valueAliases, ...binaryProperties, 'Script'].sort();
 
-const allRegex = pipe(
-  filter(prop => prop !== 'Script'),
-  append(map(script => `Script=${script}`)(scripts)),
-  map(property => {
+const allRegex = [
+    ...valueAliases, 
+    ...binaryProperties, 
+    ...scripts.map(script => `Script=${script}`)
+  ].map(property => {
     const regexStr = String.raw`^\p{${property}}$`;
     const regex = new RegExp(regexStr, 'u');
-    return [property, regex];
-  }),
-  collect
-)(properties);
+    return [property, regex] as const;
+  });
 
 export function getPropertiesForChar(char: string) {
 	if ([...char].length > 1) throw new Error('Cannot match on string with length over 1');
   
-	return pipe(
-    filter(([,regex]) => regex.test(char)),
-		map(([property]) => property),
-		collect
-  )(allRegex);
+  return allRegex
+    .filter(([,regex]) => regex.test(char))
+    .map(([property]) => property);
 }
 
 export const PLANE_LENGTH = 2**16;

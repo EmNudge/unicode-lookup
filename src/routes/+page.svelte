@@ -1,12 +1,7 @@
 <script lang="ts">
-	import { 
-		resultsStore, currentQueryStore, 
-		easySearchStore, boxSetsStore, hasFirstLoadedStore,
-		selectedCodepoint, searchMode, SearchMode
-	} from '$stores';
+	import { hasFirstLoadedStore, selectedCodepoint, searchModeStore, resultsStore } from '$stores';
 
 	import GithubIcon from '$icons/github.svelte';
-	import { getBoxSetsFromText } from '$utils/query'
 
 	import ResultsContainer from '$components/table-container/ResultsContainer.svelte';
 	import EasySearch from '$components/EasySearch.svelte';
@@ -18,15 +13,6 @@
 
 	import { onMount } from 'svelte';
 	onMount(() => import('../queryProxy'));
-
-	import type { BoxSet } from '$stores';
-	let queryArr: BoxSet[] = [];
-	$: {
-		currentQueryStore.set(queryArr);
-	}
-
-	const easySearch = () => queryArr = getBoxSetsFromText($easySearchStore);
-	const advancedSearch = () => queryArr = $boxSetsStore;
 </script>
 
 <div class="content" class:middle={$selectedCodepoint}>
@@ -43,10 +29,10 @@
 		
 		<main>
 			<div class="searchbox">
-				{#if $searchMode === SearchMode.SimpleSearch}
-					<EasySearch on:search={easySearch} />
+				{#if $searchModeStore === 'simple'}
+					<EasySearch />
 				{:else}
-					<AdvancedSearch on:search={advancedSearch} />
+					<AdvancedSearch />
 				{/if}
 			</div>
 		

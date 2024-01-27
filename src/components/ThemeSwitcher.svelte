@@ -20,7 +20,6 @@
     colorSchemeMedia.addEventListener('change', onColorSchemeChange);
 
     const colorSchemeLS = getColorSchemeLS();
-    console.log({ colorSchemeLS })
     if (colorSchemeLS) {
       isDarkTheme = colorSchemeLS === 'dark';
     } else {

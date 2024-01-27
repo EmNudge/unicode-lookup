@@ -1,42 +1,51 @@
 import { getUnicodeBlockMap, getUnicodeMap } from './retrieval';
-import type { UnicodeCharInfo } from './retrieval';
 
-import type { BoxSet } from '../stores';
-import { getIter } from './getIterFromQuery';
+import { shouldYieldCodepoint } from './getIterFromQuery';
+import type { UnicodeCharInfo, WorkerMessage, WorkerMessageResponse } from '$utils/types';
+import { simpleQuery } from './simpleQuery';
+import { advancedQuery } from './advancedQuery';
 
 // maps a block name onto a codepoint range
 export let unicodeBlocksMap = new Map<string, [number, number]>();
 let unicodeDataMap = new Map<number, UnicodeCharInfo>();
 
 const loadTable = async () => {
-  if (!unicodeBlocksMap.size) {
-    unicodeBlocksMap = await getUnicodeBlockMap();
+	if (!unicodeBlocksMap.size) {
+		unicodeBlocksMap = await getUnicodeBlockMap();
+	}
+
+	if (!unicodeDataMap.size) {
+		unicodeDataMap = await getUnicodeMap();
+	}
+
+	return { unicodeDataMap };
+};
+
+const handleMessage = async (message: WorkerMessage): Promise<WorkerMessageResponse> => {
+	const { name } = message;
+
+	if (name === 'loadTable') {
+		return await loadTable();
+	}
+
+  if (name === 'query') {
+		return [...unicodeDataMap.entries()].filter((unicode) =>
+			shouldYieldCodepoint(message.payload, unicode)
+		);
+	} 
+  
+  if (name === 'simple-query') {
+		return simpleQuery(unicodeDataMap, message.payload).map((data) => [data.codepoint, data]);
+	}
+
+  if (name === 'advanced-query') {
+    return advancedQuery(unicodeDataMap, message.payload).map((data) => [data.codepoint, data]);
   }
+};
 
-  if (!unicodeDataMap.size) {
-    unicodeDataMap = await getUnicodeMap();
-  }
-
-  return { unicodeDataMap };
-}
-
-const query = async (itersArr: BoxSet[]) => {
-  const iter = getIter(itersArr, unicodeDataMap);
-  return [...iter];
-}
-
-addEventListener('message', async e => {
-  const { name, id, payload } = e.data as { name: string, id: string, payload: any }
-
-  if (name === 'loadTable') {
-    self.postMessage({ 
-      id, 
-      payload: await loadTable()
-    });
-  } else if (name === 'query') {
-    self.postMessage({ 
-      id, 
-      payload: await query(payload)
-    });
-  }
+addEventListener('message', async (e: { data: WorkerMessage }) => {
+  self.postMessage({
+    id: e.data.id,
+    payload: await handleMessage(e.data)
+  });
 });

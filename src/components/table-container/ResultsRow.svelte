@@ -1,8 +1,7 @@
 <script lang="ts">
   import { activeIndex, copiedCodepoint } from '$stores';
   import { getCodepoint } from '$utils/char';
-  import InfoContainer from './InfoContainer.svelte';
-  import type { UnicodeCharInfo } from '../../worker/retrieval'
+	import type { UnicodeCharInfo } from '$utils/types';
 
   export let codepoint: number;
   export let info: UnicodeCharInfo;

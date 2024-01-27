@@ -1,4 +1,4 @@
-import { filter, map, pipe, collect } from '../utils/iterable'
+import type { BidiClass, UnicodeCharInfo } from '$utils/types';
 import { parseBlocks } from '../utils/unicode';
 
 // maps a codepoint onto html entity names
@@ -25,12 +25,11 @@ export async function getUnicodeMap() {
   const res = await fetch('/UnicodeData.txt');
   const text = await res.text();
 
-  const unicodeArr: [number, UnicodeCharInfo][] = pipe(
-    filter(line => line.trim()),
-    map(line => getUnicodeData(line)),
-    map(data => [data.codepoint, data]),
-    collect,
-  )(text.split('\n'));
+  const unicodeArr: [number, UnicodeCharInfo][] = text
+    .split('\n')
+    .filter(line => line.trim())
+    .map(line => getUnicodeData(line))
+    .map(data => [data.codepoint, data]);
 
   return new Map<number, UnicodeCharInfo>(unicodeArr);
 }
@@ -85,34 +84,6 @@ export const BidiClassMap = new Map<BidiClass, string>([
   ['PDI', 'Pop Directional Isolate']
 ]);
 
-export type BidiClass =
-  | "L" | "R" | "AL" | "EN" | "ES" | "ET" | "AN" | "CS" | "NSM" | "BN" | "B" | "S" | "WS" | "ON"
-  | "LRE" | "LRO" | "RLE" | "RLO" | "PDF" | "LRI" | "RLI" | "FSI" | "PDI"
-
-export interface UnicodeCharInfo {
-  codepoint: number;
-  name: string;
-  category: string;
-  combiningClass: number;
-  bidiClass: BidiClass;
-  decomposition: {
-    type: string;
-    codepoints: number[];
-  } | null;
-  numberEquivalent: {
-    decimal: number | null;
-    digit: number | null;
-    numeric: string | null;
-  };
-  isBidiMirrored: boolean;
-  caseMapping: {
-    uppercase: number | null,
-    lowercase: number | null,
-    titlecase: number | null,
-  };
-  htmlEntityNames: string[];
-  oldName: string | null;
-}
 
 function getUnicodeData(line: string): UnicodeCharInfo {
   const [

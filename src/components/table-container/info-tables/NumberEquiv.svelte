@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { UnicodeCharInfo } from '$src/worker/retrieval';
+	import type { UnicodeCharInfo } from "$utils/types";
 
   export let numberEquiv: UnicodeCharInfo["numberEquivalent"];
 
