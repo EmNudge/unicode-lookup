@@ -1,16 +1,22 @@
-import type {  WorkerMessageResponse, WorkerMessageWithoutId } from "./types";
+import type {
+	WorkerMessageWithoutId,
+	WorkerResponseFromMessage
+} from './types';
 
-export function sendMessage(worker: Worker, message: WorkerMessageWithoutId) {
-    const id = self.crypto.randomUUID();
-    worker.postMessage({ ...message, id });
+export function sendMessage<T extends WorkerMessageWithoutId>(
+	worker: Worker,
+	message: T
+): Promise<WorkerResponseFromMessage<T>> {
+	const id = self.crypto.randomUUID();
+	worker.postMessage({ ...message, id });
 
-    return new Promise(res => {
-        const onMessage = (e: MessageEvent) => {
-            if (e.data.id !== id) return;
-    
-            res(e.data.payload as WorkerMessageResponse)
-            worker.removeEventListener('message', onMessage);
-        }
-        worker.addEventListener('message', onMessage);
-    });
+	return new Promise((res) => {
+		const onMessage = (e: MessageEvent) => {
+			if (e.data.id !== id) return;
+
+			res(e.data.payload);
+			worker.removeEventListener('message', onMessage);
+		};
+		worker.addEventListener('message', onMessage);
+	});
 }

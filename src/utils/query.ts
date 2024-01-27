@@ -1,14 +1,7 @@
-import type { Box, BoxSet } from '../stores/advancedSearch';
-import { BoxSetType } from '../stores/advancedSearch';
+import type { Box } from '../stores/advancedSearch';
 
-export function getBoxSetsFromText(text: string): BoxSet[] {
-    const box = getQueryFromText(text);
-    const query = {
-        type: BoxSetType.Require,
-        boxes: [box]
-    };
-
-    return [query];
+export function getBoxSetsFromText(text: string): Box[] {
+    return [getQueryFromText(text)];
 }
 
 function getNumFromText(text: string): number | null {
@@ -39,28 +32,13 @@ function getRegexFromGlob(text: string): RegExp | null {
 }
 
 export function getQueryFromText(text: string): Box {
-    const num = getNumFromText(text);
-    if (num !== null) {
-        const char = String.fromCodePoint(num);
-        return { 
-            name: 'Is Near Char',
-            data: { char, distance: 0 }
-        };
-    }
-
-    if ([...text].length === 1) {
-        return { 
-            name: 'Is Near Char',
-            data: { char: text, distance: 0 }
-        };
-    }
-
-    // allow ranges of codepoints using '-' as a separater
+    // allow ranges of codepoints using '-' as a separator
     const range = getNumRangeFromText(text);
     if (range) {
         return {
             name: 'Codepoint Range',
             data: { from: range[0], to: range[1] },
+            matchType: 'Require',
         }
     }
 
@@ -71,7 +49,8 @@ export function getQueryFromText(text: string): Box {
             data: {
                 regex: globRegex,
                 matchOn: 'Name',
-            }
+            },
+            matchType: 'Require',
         }
     }
 
@@ -84,12 +63,14 @@ export function getQueryFromText(text: string): Box {
             data: { 
                 regex: new RegExp(regex, flags), 
                 matchOn: 'Character'
-            }
+            },
+            matchType: 'Require',
         };
     }
 
     return {
         name: 'Name Includes',
-        data: text
+        data: text,
+        matchType: 'Require',
     };
 }

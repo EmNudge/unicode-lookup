@@ -1,4 +1,3 @@
-import { BoxSetType } from '$stores';
 import type { BoxSet, Box } from '$stores';
 import type { UnicodeCharInfo } from '$utils/types';
 import { PLANE_LENGTH } from '$utils/unicode';
@@ -9,8 +8,8 @@ export function shouldYieldCodepoint(boxSets: BoxSet[], unicode: [number, Unicod
     const { boxes, type } = boxSet;
     const matches = matchesBoxes(boxes, unicode);
     
-    if (!matches && type === BoxSetType.Require) return false;
-    if (matches && type === BoxSetType.Exclude) return false;
+    if (!matches && type === 'Require') return false;
+    if (matches && type === 'Exclude') return false;
   }
 
   return true;

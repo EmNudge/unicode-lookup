@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { 
-		resultsStore, hasFirstLoadedStore,
-		selectedCodepoint, searchMode, SearchMode
-	} from '$stores';
+	import { hasFirstLoadedStore, selectedCodepoint, searchModeStore, resultsStore } from '$stores';
 
 	import GithubIcon from '$icons/github.svelte';
 
@@ -32,7 +29,7 @@
 		
 		<main>
 			<div class="searchbox">
-				{#if $searchMode === SearchMode.SimpleSearch}
+				{#if $searchModeStore === 'simple'}
 					<EasySearch />
 				{:else}
 					<AdvancedSearch />
