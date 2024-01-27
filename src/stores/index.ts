@@ -1,6 +1,6 @@
-import { writable, derived, get } from 'svelte/store';
 import type { UnicodeCharInfo, WorkerMessageWithoutId } from '$utils/types';
 import { sendMessage } from '$utils/worker';
+import { derived, get, writable } from 'svelte/store';
 import { boxesStore, convertBoxSetToFilters } from './advancedSearch';
 
 export const workerStore = writable<Worker | null>(null);
@@ -12,10 +12,18 @@ export const hasFirstLoadedStore = writable(false);
 export const searchModeStore = writable<'simple' | 'advanced'>('simple');
 // stores for searches. We want them to persist even when they're not visible
 export const easySearchStore = writable<string>('');
-export const advancedSearchStore = derived((boxesStore), boxSets => convertBoxSetToFilters(boxSets));
+export const advancedSearchStore = derived(boxesStore, (boxSets) =>
+	convertBoxSetToFilters(boxSets),
+);
 
 export const resultsStore = derived(
-	[easySearchStore, advancedSearchStore, workerIsReadyStore, workerStore, searchModeStore],
+	[
+		easySearchStore,
+		advancedSearchStore,
+		workerIsReadyStore,
+		workerStore,
+		searchModeStore,
+	],
 	([text, filters, workerIsReady, worker, searchMode], set) => {
 		if (!workerIsReady || !worker) return;
 
@@ -31,7 +39,7 @@ export const resultsStore = derived(
 			set(results as [number, UnicodeCharInfo][]);
 		});
 	},
-	[] as [number, UnicodeCharInfo][]
+	[] as [number, UnicodeCharInfo][],
 );
 
 export type Pattern = { exclude: boolean; category: string };
@@ -42,7 +50,7 @@ resultsStore.subscribe(() => activeIndex.set(-1));
 
 export const selectedCodepoint = derived(
 	[activeIndex, resultsStore],
-	([activeIndex, results]) => results?.[activeIndex]?.[1]
+	([activeIndex, results]) => results?.[activeIndex]?.[1],
 );
 
 export const copiedCodepoint = writable(-1);

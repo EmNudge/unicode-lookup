@@ -25,12 +25,16 @@ export function advancedQuery(unicodeData: UnicodeData, filters: Filter[]) {
 						? !val.name.includes(filter.value)
 						: val.name.includes(filter.value);
 				}
-				return filter.negated ? !filter.value.test(val.name) : filter.value.test(val.name);
+				return filter.negated
+					? !filter.value.test(val.name)
+					: filter.value.test(val.name);
 			}
 
 			if (filter.type === 'character') {
 				const char = String.fromCodePoint(val.codepoint);
-				return filter.negated ? !filter.value.test(char) : filter.value.test(char);
+				return filter.negated
+					? !filter.value.test(char)
+					: filter.value.test(char);
 			}
 
 			if (filter.type === 'range') {
@@ -41,7 +45,9 @@ export function advancedQuery(unicodeData: UnicodeData, filters: Filter[]) {
 			}
 
 			if (filter.type === 'bidi') {
-				return filter.negated ? val.bidiClass !== filter.value : val.bidiClass === filter.value;
+				return filter.negated
+					? val.bidiClass !== filter.value
+					: val.bidiClass === filter.value;
 			}
 
 			throw new Error(`Unknown filter type: ${(filter as any).type}`);

@@ -1,140 +1,142 @@
 // https://tc39.es/ecma262/#table-nonbinary-unicode-properties
 import type { Block } from '../stores';
-
-export const valueAliases = ["Cased_Letter","Close_Punctuation","Connector_Punctuation","Control","Currency_Symbol","Dash_Punctuation","Decimal_Number","Enclosing_Mark","Final_Punctuation","Format","Initial_Punctuation","Letter","Letter_Number","Line_Separator","Lowercase_Letter","Mark","Math_Symbol","Modifier_Letter","Modifier_Symbol","Nonspacing_Mark","Number","Open_Punctuation","Other","Other_Letter","Other_Number","Other_Punctuation","Other_Symbol","Paragraph_Separator","Private_Use","Punctuation","Separator","Space_Separator","Spacing_Mark","Surrogate","Symbol","Titlecase_Letter","Unassigned","Uppercase_Letter"];
-
-const FULL_SCRIPTS = ["Adlam","Ahom","Anatolian_Hieroglyphs","Arabic","Armenian","Avestan","Balinese","Bamum","Bassa_Vah","Batak","Bengali","Bhaiksuki","Bopomofo","Brahmi","Braille","Buginese","Buhid","Canadian_Aboriginal","Carian","Caucasian_Albanian","Chakma","Cham","Chorasmian","Cherokee","Common","Coptic","Cuneiform","Cypriot","Cyrillic","Deseret","Devanagari","Dives_Akuru","Dogra","Duployan","Egyptian_Hieroglyphs","Elbasan","Elymaic","Ethiopic","Georgian","Glagolitic","Gothic","Grantha","Greek","Gujarati","Gunjala_Gondi","Gurmukhi","Han","Hangul","Hanifi_Rohingya","Hanunoo","Hatran","Hebrew","Hiragana","Imperial_Aramaic","Inherited","Inscriptional_Pahlavi","Inscriptional_Parthian","Javanese","Kaithi","Kannada","Katakana","Kayah_Li","Kharoshthi","Khitan_Small_Script","Khmer","Khojki","Khudawadi","Lao","Latin","Lepcha","Limbu","Linear_A","Linear_B","Lisu","Lycian","Lydian","Mahajani","Makasar","Malayalam","Mandaic","Manichaean","Marchen","Medefaidrin","Masaram_Gondi","Meetei_Mayek","Mende_Kikakui","Meroitic_Cursive","Meroitic_Hieroglyphs","Miao","Modi","Mongolian","Mro","Multani","Myanmar","Nabataean","Nandinagari","New_Tai_Lue","Newa","Nko","Nushu","Nyiakeng_Puachue_Hmong","Ogham","Ol_Chiki","Old_Hungarian","Old_Italic","Old_North_Arabian","Old_Permic","Old_Persian","Old_Sogdian","Old_South_Arabian","Old_Turkic","Oriya","Osage","Osmanya","Pahawh_Hmong","Palmyrene","Pau_Cin_Hau","Phags_Pa","Phoenician","Psalter_Pahlavi","Rejang","Runic","Samaritan","Saurashtra","Sharada","Shavian","Siddham","SignWriting","Sinhala","Sogdian","Sora_Sompeng","Soyombo","Sundanese","Syloti_Nagri","Syriac","Tagalog","Tagbanwa","Tai_Le","Tai_Tham","Tai_Viet","Takri","Tamil","Tangut","Telugu","Thaana","Thai","Tibetan","Tifinagh","Tirhuta","Ugaritic","Vai","Wancho","Warang_Citi","Yezidi","Yi","Zanabazar_Square"];
+import { FULL_SCRIPTS, binaryProperties, valueAliases } from './unicodeData';
 
 // As of 2/4/2020, Safari doesn't support a bunch of them unfortunately
 // this is an easy way to filter out bad scripts for any browser
-export const scripts = FULL_SCRIPTS.filter(script => {
-  const str = String.raw`^\p{Script=${script}}$`;
-  try {
-    new RegExp(str, 'u');
-  } catch(e) {
-    return false;
-  }
-  return true;
+export const scripts = FULL_SCRIPTS.filter((script) => {
+	const str = String.raw`^\p{Script=${script}}$`;
+	try {
+		new RegExp(str, 'u');
+	} catch (e) {
+		return false;
+	}
+	return true;
 });
 
-export const binaryProperties = ["ASCII","ASCII_Hex_Digit","Alphabetic","Any","Assigned","Bidi_Control","Bidi_Mirrored","Case_Ignorable","Cased","Changes_When_Casefolded","Changes_When_Casemapped","Changes_When_Lowercased","Changes_When_NFKC_Casefolded","Changes_When_Titlecased","Changes_When_Uppercased","Dash","Default_Ignorable_Code_Point","Deprecated","Diacritic","Emoji","Emoji_Component","Emoji_Modifier","Emoji_Modifier_Base","Emoji_Presentation","Extended_Pictographic","Extender","Grapheme_Base","Grapheme_Extend","Hex_Digit","IDS_Binary_Operator","IDS_Trinary_Operator","ID_Continue","ID_Start","Ideographic","Join_Control","Logical_Order_Exception","Lowercase","Math","Noncharacter_Code_Point","Pattern_Syntax","Pattern_White_Space","Quotation_Mark","Radical","Regional_Indicator","Sentence_Terminal","Soft_Dotted","Terminal_Punctuation","Unified_Ideograph","Uppercase","Variation_Selector","White_Space","XID_Continue","XID_Start"];
-
-export const properties = [...valueAliases, ...binaryProperties, 'Script'].sort();
+export const properties = [
+	...valueAliases,
+	...binaryProperties,
+	'Script',
+].sort();
 
 const allRegex = [
-    ...valueAliases, 
-    ...binaryProperties, 
-    ...scripts.map(script => `Script=${script}`)
-  ].map(property => {
-    const regexStr = String.raw`^\p{${property}}$`;
-    const regex = new RegExp(regexStr, 'u');
-    return [property, regex] as const;
-  });
+	...valueAliases,
+	...binaryProperties,
+	...scripts.map((script) => `Script=${script}`),
+].map((property) => {
+	const regexStr = String.raw`^\p{${property}}$`;
+	const regex = new RegExp(regexStr, 'u');
+	return [property, regex] as const;
+});
 
 export function getPropertiesForChar(char: string) {
-	if ([...char].length > 1) throw new Error('Cannot match on string with length over 1');
-  
-  return allRegex
-    .filter(([,regex]) => regex.test(char))
-    .map(([property]) => property);
+	if ([...char].length > 1)
+		throw new Error('Cannot match on string with length over 1');
+
+	return allRegex
+		.filter(([, regex]) => regex.test(char))
+		.map(([property]) => property);
 }
 
-export const PLANE_LENGTH = 2**16;
+export const PLANE_LENGTH = 2 ** 16;
 export enum PlaneName {
-  BasicMultilingual = 'Basic Multilingual Plane',
-  SupplementaryMultilingual = 'Supplementary Multilingual Plane',
-  SupplementaryIdeographic = 'Supplementary Ideographic Plane',
-  TertiaryIdeographic = 'Tertiary Ideographic Plane',
-  SupplementarySpecialPurpose = 'Supplementary Special-purpose Plane',
-  SupplementaryPrivateUseArea = 'Supplementary Private Use Area Plane',
-};
+	BasicMultilingual = 'Basic Multilingual Plane',
+	SupplementaryMultilingual = 'Supplementary Multilingual Plane',
+	SupplementaryIdeographic = 'Supplementary Ideographic Plane',
+	TertiaryIdeographic = 'Tertiary Ideographic Plane',
+	SupplementarySpecialPurpose = 'Supplementary Special-purpose Plane',
+	SupplementaryPrivateUseArea = 'Supplementary Private Use Area Plane',
+}
 
 export const planeMap = new Map<number, PlaneName>([
-  [0, PlaneName.BasicMultilingual],
-  [1, PlaneName.SupplementaryMultilingual],
-  [2, PlaneName.SupplementaryIdeographic],
-  [3, PlaneName.TertiaryIdeographic],
-  [14, PlaneName.SupplementarySpecialPurpose],
-  [15, PlaneName.SupplementaryPrivateUseArea],
-  [16, PlaneName.SupplementaryPrivateUseArea],
+	[0, PlaneName.BasicMultilingual],
+	[1, PlaneName.SupplementaryMultilingual],
+	[2, PlaneName.SupplementaryIdeographic],
+	[3, PlaneName.TertiaryIdeographic],
+	[14, PlaneName.SupplementarySpecialPurpose],
+	[15, PlaneName.SupplementaryPrivateUseArea],
+	[16, PlaneName.SupplementaryPrivateUseArea],
 ]);
 
-export type Plane = { 
-  number: number, 
-  name?: PlaneName;
+export type Plane = {
+	number: number;
+	name?: PlaneName;
 };
 export function getPlaneForCodepoint(codepoint: number): Plane {
-  const plane = Math.floor(codepoint / PLANE_LENGTH);
+	const plane = Math.floor(codepoint / PLANE_LENGTH);
 
-  if (planeMap.has(plane)) {
-    return { number: plane, name: planeMap.get(plane) };
-  }
-  
-  return { number: plane };
+	if (planeMap.has(plane)) {
+		return { number: plane, name: planeMap.get(plane) };
+	}
+
+	return { number: plane };
 }
 
 export function parseBlocks(textFile: string): Block[] {
-  return textFile.split('\n').map(row => {
-    const [rangeStr, name] = row.split(',');
-    const range = rangeStr.split('..').map(str => parseInt(str.slice(2), 16)) as [number, number];
-    return { range, name };
-  });
+	return textFile.split('\n').map((row) => {
+		const [rangeStr, name] = row.split(',');
+		const range = rangeStr
+			.split('..')
+			.map((str) => parseInt(str.slice(2), 16)) as [number, number];
+		return { range, name };
+	});
 }
 
 export function getCodepointBlock(blocks: Block[], codepoint: number) {
-  for (const block of blocks) {
-    const { range, name } = block;
-    if (codepoint > range[1]) continue;
+	for (const block of blocks) {
+		const { range, name } = block;
+		if (codepoint > range[1]) continue;
 
-    return { range: [...range], name };
-  }
+		return { range: [...range], name };
+	}
 
-  throw new Error('codepoint does not match any block');
+	throw new Error('codepoint does not match any block');
 }
 
 export enum Category {
-  // Letters
-  Lu = "Uppercase_Letter",
-  Ll = "Lowercase_Letter",
-  Lt = "Titlecase_Letter",
-  LC = "Cased_Letter",
-  Lm = "Modifier_Letter",
-  Lo = "Other_Letter",
+	// Letters
+	Lu = 'Uppercase_Letter',
+	Ll = 'Lowercase_Letter',
+	Lt = 'Titlecase_Letter',
+	LC = 'Cased_Letter',
+	Lm = 'Modifier_Letter',
+	Lo = 'Other_Letter',
 
-  // Mark
-  Mn = "Nonspacing_Mark",
-  Mc = "Spacing_Mark",
-  Me = "Enclosing_Mark",
+	// Mark
+	Mn = 'Nonspacing_Mark',
+	Mc = 'Spacing_Mark',
+	Me = 'Enclosing_Mark',
 
-  // Number
-  Nd = "Decimal_Number",
-  Nl = "Letter_Number",
-  No = "Other_Number",
+	// Number
+	Nd = 'Decimal_Number',
+	Nl = 'Letter_Number',
+	No = 'Other_Number',
 
-  // Punctuation
-  Pc = "Connector_Punctuation",
-  Pd = "Dash_Punctuation",
-  Ps = "Open_Punctuation",
-  Pe = "Close_Punctuation",
-  Pi = "Initial_Punctuation",
-  Pf = "Final_Punctuation",
-  Po = "Other_Punctuation",
+	// Punctuation
+	Pc = 'Connector_Punctuation',
+	Pd = 'Dash_Punctuation',
+	Ps = 'Open_Punctuation',
+	Pe = 'Close_Punctuation',
+	Pi = 'Initial_Punctuation',
+	Pf = 'Final_Punctuation',
+	Po = 'Other_Punctuation',
 
-  // Symbol
-  Sm = "Math_Symbol",
-  Sc = "Currency_Symbol",
-  Sk = "Modifier_Symbol",
-  So = "Other_Symbol",
+	// Symbol
+	Sm = 'Math_Symbol',
+	Sc = 'Currency_Symbol',
+	Sk = 'Modifier_Symbol',
+	So = 'Other_Symbol',
 
-  // Separator
-  Zs = "Space_Separator",
-  Zl = "Line_Separator",
-  Zp = "Paragraph_Separator",
+	// Separator
+	Zs = 'Space_Separator',
+	Zl = 'Line_Separator',
+	Zp = 'Paragraph_Separator',
 
-  // Other
-  Cc = "Control",
-  Cf = "Format",
-  Cs = "Surrogate",
-  Co = "Private_Use",
-  Cn = "Unassigned",
+	// Other
+	Cc = 'Control',
+	Cf = 'Format',
+	Cs = 'Surrogate',
+	Co = 'Private_Use',
+	Cn = 'Unassigned',
 }

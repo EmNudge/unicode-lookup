@@ -1,30 +1,30 @@
 export function lastIntersect(node: HTMLElement, { nth } = { nth: -2 }) {
-  const getNth = () => [...node.children].slice(nth)[0];
+	const getNth = () => [...node.children].slice(nth)[0];
 
-  let lastObservedEl = getNth();
+	let lastObservedEl = getNth();
 
-  const intObserver = new IntersectionObserver(
-    entries => {
-      const entry = entries[0];
-      if (!entry.isIntersecting) return;
-  
-      intObserver.unobserve(entry.target);
+	const intObserver = new IntersectionObserver(
+		(entries) => {
+			const entry = entries[0];
+			if (!entry.isIntersecting) return;
 
-      node.dispatchEvent(new CustomEvent('intersect'));
-    },
-    {
-      rootMargin: '0px',
-      threshold: .8
-    }
-  );
-  intObserver.observe(lastObservedEl);
-    
-  const mutObserver = new MutationObserver(mutations => {
-    if (lastObservedEl) intObserver.unobserve(lastObservedEl);
+			intObserver.unobserve(entry.target);
 
-    lastObservedEl = getNth();
-    intObserver.observe(lastObservedEl);
-  });
+			node.dispatchEvent(new CustomEvent('intersect'));
+		},
+		{
+			rootMargin: '0px',
+			threshold: 0.8,
+		},
+	);
+	intObserver.observe(lastObservedEl);
 
-  mutObserver.observe(node, { childList: true });
+	const mutObserver = new MutationObserver((mutations) => {
+		if (lastObservedEl) intObserver.unobserve(lastObservedEl);
+
+		lastObservedEl = getNth();
+		intObserver.observe(lastObservedEl);
+	});
+
+	mutObserver.observe(node, { childList: true });
 }

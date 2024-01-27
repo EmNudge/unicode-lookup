@@ -62,11 +62,12 @@ export interface UnicodeCharInfo {
 
 export type WorkerMessage =
 	| { name: 'loadTable'; id: string }
-	| { name: 'query'; id: string; payload: BoxSet[] }
 	| { name: 'simple-query'; id: string; payload: string }
 	| { name: 'advanced-query'; id: string; payload: Filter[] };
 
-type RemoveId<T> = T extends { id: any } ? { [K in Exclude<keyof T, 'id'>]: T[K] } : T;
+type RemoveId<T> = T extends { id: any }
+	? { [K in Exclude<keyof T, 'id'>]: T[K] }
+	: T;
 export type WorkerMessageWithoutId = RemoveId<WorkerMessage>;
 
 export type WorkerMessageResponse =
@@ -76,9 +77,10 @@ export type WorkerMessageResponse =
 	| [number, UnicodeCharInfo][]
 	| void;
 
-type WorkerResponseFromMessageName<T extends WorkerMessage['name']> = T extends 'loadTable'
-	? { unicodeDataMap: Map<number, UnicodeCharInfo> }
-	: [number, UnicodeCharInfo][];
-export type WorkerResponseFromMessage<T extends WorkerMessage | WorkerMessageWithoutId> = WorkerResponseFromMessageName<
-	T['name']
->;
+type WorkerResponseFromMessageName<T extends WorkerMessage['name']> =
+	T extends 'loadTable'
+		? { unicodeDataMap: Map<number, UnicodeCharInfo> }
+		: [number, UnicodeCharInfo][];
+export type WorkerResponseFromMessage<
+	T extends WorkerMessage | WorkerMessageWithoutId,
+> = WorkerResponseFromMessageName<T['name']>;
