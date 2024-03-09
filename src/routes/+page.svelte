@@ -56,6 +56,10 @@
 </div>
 
 <style>
+	:global(body) {
+		overflow-y: scroll;
+	}
+	
 	main {
 		text-align: center;
 		margin: 0 auto;
