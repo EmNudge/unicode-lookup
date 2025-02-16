@@ -49,7 +49,7 @@
     border: 1px solid transparent;
   }
   .row:nth-child(even) {
-    background-color: var(--bg-offset);;
+    background-color: var(--bg-offset);
   }
   .row.active {
     border: 1px solid blue;

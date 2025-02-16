@@ -4,7 +4,7 @@
 
   let isDarkTheme = false;
   const updateTheme = (darkTheme: boolean) => {
-    const newTheme = darkTheme ? 'dark' : 'light';;
+    const newTheme = darkTheme ? 'dark' : 'light';
     document.documentElement.dataset.theme = newTheme;
     localStorage.setItem('color-scheme', newTheme);
   }
