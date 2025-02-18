@@ -91,6 +91,6 @@
 	}
 	.encoding-type .active {
 		opacity: 0.95;
-		background-color: rgba(128, 128, 128, 0.097);;
+		background-color: rgba(128, 128, 128, 0.097);
 	}
 </style>
