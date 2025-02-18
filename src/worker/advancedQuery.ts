@@ -1,8 +1,9 @@
-import type { Filter, UnicodeData } from '$utils/types';
+import type { Filter } from '$utils/types';
+import type { UnicodeMappings } from '@emnudge/unicode-query';
 
 export const PLANE_LENGTH = 2 << 15;
 
-export function advancedQuery(unicodeData: UnicodeData, filters: Filter[]) {
+export function advancedQuery(unicodeData: UnicodeMappings, filters: Filter[]) {
 	// fix regex not passing through worker
 	filters = filters.map((filter) => {
 		if (filter.type !== 'name' && filter.type !== 'character') return filter;
@@ -14,7 +15,7 @@ export function advancedQuery(unicodeData: UnicodeData, filters: Filter[]) {
 		return { ...filter, value: regex };
 	});
 
-	let data = [...unicodeData.values()];
+	let data = [...unicodeData.unicodeData.values()]
 
 	for (const filter of filters) {
 		data = data.filter((val) => {
@@ -22,12 +23,12 @@ export function advancedQuery(unicodeData: UnicodeData, filters: Filter[]) {
 				if (typeof filter.value === 'string') {
 					// note: include oldName
 					return filter.negated
-						? !val.name.includes(filter.value)
-						: val.name.includes(filter.value);
+						? !val.label.includes(filter.value)
+						: val.label.includes(filter.value);
 				}
 				return filter.negated
-					? !filter.value.test(val.name)
-					: filter.value.test(val.name);
+					? !filter.value.test(val.label)
+					: filter.value.test(val.label);
 			}
 
 			if (filter.type === 'character') {

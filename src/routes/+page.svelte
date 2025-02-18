@@ -23,7 +23,7 @@
 	{#if $selectedCodepoint}
 		<aside>
 			<div>
-				<InfoContainer codepoint={$selectedCodepoint.codepoint} info={$selectedCodepoint} name={$selectedCodepoint.name} />
+				<InfoContainer codepoint={$selectedCodepoint.codepoint} info={$selectedCodepoint} name={$selectedCodepoint.label} />
 			</div>
 		</aside>
 	{/if}

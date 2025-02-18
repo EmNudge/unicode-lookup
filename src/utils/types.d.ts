@@ -1,80 +1,43 @@
+import type {
+	BidiClass,
+	UnicodeMapData,
+	UnicodeMappings,
+} from "@emnudge/unicode-query";
+
 type FilterData =
-	| { type: 'character'; value: RegExp }
-	| { type: 'name'; value: RegExp | string }
-	| { type: 'range'; value: [number, number] }
-	| { type: 'bidi'; value: BidiClass };
+	| { type: "character"; value: RegExp }
+	| { type: "name"; value: RegExp | string }
+	| { type: "range"; value: [number, number] }
+	| { type: "bidi"; value: BidiClass };
 
 export type Filter = FilterData & { negated?: boolean };
 
-export type UnicodeData = Map<number, UnicodeCharInfo>;
-
-export type BidiClass =
-	| 'L'
-	| 'R'
-	| 'AL'
-	| 'EN'
-	| 'ES'
-	| 'ET'
-	| 'AN'
-	| 'CS'
-	| 'NSM'
-	| 'BN'
-	| 'B'
-	| 'S'
-	| 'WS'
-	| 'ON'
-	| 'LRE'
-	| 'LRO'
-	| 'RLE'
-	| 'RLO'
-	| 'PDF'
-	| 'LRI'
-	| 'RLI'
-	| 'FSI'
-	| 'PDI';
-
-export interface UnicodeCharInfo {
-	codepoint: number;
-	name: string;
-	category: string;
-	combiningClass: number;
-	bidiClass: BidiClass;
-	decomposition: {
-		type: string;
-		codepoints: number[];
-	} | null;
-	numberEquivalent: {
-		decimal: number | null;
-		digit: number | null;
-		numeric: string | null;
+export type WorkerAPI = {
+	"load-table": {
+		request: {
+			id: string;
+		};
+		response: UnicodeMappings;
 	};
-	isBidiMirrored: boolean;
-	caseMapping: {
-		uppercase: number | null;
-		lowercase: number | null;
-		titlecase: number | null;
+	"simple-query": {
+		request: {
+			id: string;
+			payload: string;
+		};
+		response: [number, UnicodeMapData][];
 	};
-	htmlEntityNames: string[];
-	oldName: string | null;
-}
+	"advanced-query": {
+		request: {
+			id: string;
+			payload: Filter[];
+		};
+		response: [number, UnicodeMapData][];
+	};
+};
 
-export type WorkerMessage =
-	| { name: 'loadTable'; id: string }
-	| { name: 'simple-query'; id: string; payload: string }
-	| { name: 'advanced-query'; id: string; payload: Filter[] };
+export type WorkerMessageRequest<T extends keyof WorkerAPI = keyof WorkerAPI> =
+	& { name: T }
+	& WorkerAPI[T]["request"];
 
-type RemoveId<T> = T extends { id: any } ? { [K in Exclude<keyof T, 'id'>]: T[K] } : T;
-export type WorkerMessageWithoutId = RemoveId<WorkerMessage>;
-
-export type WorkerMessageResponse =
-	| {
-			unicodeDataMap: Map<number, UnicodeCharInfo>;
-	  }
-	| [number, UnicodeCharInfo][]
-	| undefined;
-
-type WorkerResponseFromMessageName<T extends WorkerMessage['name']> = T extends 'loadTable'
-	? { unicodeDataMap: Map<number, UnicodeCharInfo> }
-	: [number, UnicodeCharInfo][];
-export type WorkerResponseFromMessage<T extends WorkerMessage | WorkerMessageWithoutId> =
-	WorkerResponseFromMessageName<T['name']>;
+export type WorkerMessageResponse<T extends keyof WorkerAPI> =
+	WorkerAPI[T]["response"];

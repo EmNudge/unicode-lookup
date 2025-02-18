@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { activeIndex } from '$stores';
 	import { getCodepoint } from '$utils/char';
-	import type { UnicodeCharInfo } from '$utils/types';
+	import type { UnicodeMapData } from '@emnudge/unicode-query';
 	import toast from 'svelte-french-toast';
 
 	const {
@@ -10,7 +10,7 @@
 		index
 	}: {
 		codepoint: number;
-		info: UnicodeCharInfo;
+		info: UnicodeMapData;
 		index: number;
 	} = $props();
 
@@ -56,7 +56,7 @@
 		</div>
 
 		<div class="name">
-			<span>{info.name.toLowerCase()}</span>
+			<span>{info.label.toLowerCase()}</span>
 		</div>
 	</div>
 </button>

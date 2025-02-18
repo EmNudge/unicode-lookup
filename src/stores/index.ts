@@ -1,7 +1,7 @@
-import type { UnicodeCharInfo, WorkerMessageWithoutId } from '$utils/types';
 import { sendMessage } from '$utils/worker';
-import { derived, get, writable } from 'svelte/store';
+import { derived, get, writable, readable } from 'svelte/store';
 import { boxesStore, convertBoxSetToFilters } from './advancedSearch';
+import type { UnicodeMapData } from '@emnudge/unicode-query';
 
 export const workerStore = writable<Worker | null>(null);
 
@@ -27,19 +27,23 @@ export const resultsStore = derived(
 	([text, filters, workerIsReady, worker, searchMode], set) => {
 		if (!workerIsReady || !worker) return;
 
-		const message: WorkerMessageWithoutId =
-			searchMode === 'simple'
-				? { name: 'simple-query', payload: text }
-				: { name: 'advanced-query', payload: filters };
+		if (searchMode === 'simple') {
+			sendMessage(worker, { name: 'simple-query', payload: text }).then(results => {
+				const hasFirstLoaded = get(hasFirstLoadedStore);
+				if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
 
-		sendMessage(worker, message).then((results) => {
-			const hasFirstLoaded = get(hasFirstLoadedStore);
-			if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
+				set(results as [number, UnicodeMapData][]);
+			})
+		} else {
+			sendMessage(worker, { name: 'advanced-query', payload: filters }).then(results => {
+				const hasFirstLoaded = get(hasFirstLoadedStore);
+				if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
 
-			set(results as [number, UnicodeCharInfo][]);
-		});
+				set(results as [number, UnicodeMapData][]);
+			})
+		}
 	},
-	[] as [number, UnicodeCharInfo][],
+	[] as [number, UnicodeMapData][],
 );
 
 export type Pattern = { exclude: boolean; category: string };
@@ -60,3 +64,5 @@ export const encodingMode = writable<'hex' | 'bin' | 'dec'>('hex');
 
 // advanced search data
 export * from './advancedSearch';
+
+export const symbolHtmlNamesMap = writable(new Map<number, string[]>());

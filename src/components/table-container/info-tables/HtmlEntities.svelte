@@ -1,6 +1,5 @@
 <script lang="ts">
-  export let names: string[];
-  export let codepoint: number;
+  const { names, codepoint }: { names: string[], codepoint: number } = $props();
 </script>
 
 <br />
