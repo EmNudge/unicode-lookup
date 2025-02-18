@@ -94,49 +94,49 @@ export function getCodepointBlock(blocks: Block[], codepoint: number) {
 	throw new Error('codepoint does not match any block');
 }
 
-export enum Category {
+export const Category = {
 	// Letters
-	Lu = 'Uppercase_Letter',
-	Ll = 'Lowercase_Letter',
-	Lt = 'Titlecase_Letter',
-	LC = 'Cased_Letter',
-	Lm = 'Modifier_Letter',
-	Lo = 'Other_Letter',
+	Lu: 'Uppercase_Letter',
+	Ll: 'Lowercase_Letter',
+	Lt: 'Titlecase_Letter',
+	LC: 'Cased_Letter',
+	Lm: 'Modifier_Letter',
+	Lo: 'Other_Letter',
 
 	// Mark
-	Mn = 'Nonspacing_Mark',
-	Mc = 'Spacing_Mark',
-	Me = 'Enclosing_Mark',
+	Mn: 'Nonspacing_Mark',
+	Mc: 'Spacing_Mark',
+	Me: 'Enclosing_Mark',
 
 	// Number
-	Nd = 'Decimal_Number',
-	Nl = 'Letter_Number',
-	No = 'Other_Number',
+	Nd: 'Decimal_Number',
+	Nl: 'Letter_Number',
+	No: 'Other_Number',
 
 	// Punctuation
-	Pc = 'Connector_Punctuation',
-	Pd = 'Dash_Punctuation',
-	Ps = 'Open_Punctuation',
-	Pe = 'Close_Punctuation',
-	Pi = 'Initial_Punctuation',
-	Pf = 'Final_Punctuation',
-	Po = 'Other_Punctuation',
+	Pc: 'Connector_Punctuation',
+	Pd: 'Dash_Punctuation',
+	Ps: 'Open_Punctuation',
+	Pe: 'Close_Punctuation',
+	Pi: 'Initial_Punctuation',
+	Pf: 'Final_Punctuation',
+	Po: 'Other_Punctuation',
 
 	// Symbol
-	Sm = 'Math_Symbol',
-	Sc = 'Currency_Symbol',
-	Sk = 'Modifier_Symbol',
-	So = 'Other_Symbol',
+	Sm: 'Math_Symbol',
+	Sc: 'Currency_Symbol',
+	Sk: 'Modifier_Symbol',
+	So: 'Other_Symbol',
 
 	// Separator
-	Zs = 'Space_Separator',
-	Zl = 'Line_Separator',
-	Zp = 'Paragraph_Separator',
+	Zs: 'Space_Separator',
+	Zl: 'Line_Separator',
+	Zp: 'Paragraph_Separator',
 
 	// Other
-	Cc = 'Control',
-	Cf = 'Format',
-	Cs = 'Surrogate',
-	Co = 'Private_Use',
-	Cn = 'Unassigned',
+	Cc: 'Control',
+	Cf: 'Format',
+	Cs: 'Surrogate',
+	Co: 'Private_Use',
+	Cn: 'Unassigned',
 }

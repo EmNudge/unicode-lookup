@@ -11,6 +11,9 @@ dependencies:
   '@sveltejs/adapter-static':
     specifier: ^3.0.8
     version: 3.0.8(@sveltejs/kit@2.17.2)
+  svelte-french-toast:
+    specifier: ^1.2.0
+    version: 1.2.0(svelte@5.20.1)
 
 devDependencies:
   '@eslint/compat':
@@ -1619,6 +1622,23 @@ packages:
       postcss-scss: 4.0.9(postcss@8.5.2)
       svelte: 5.20.1
     dev: true
+
+  /svelte-french-toast@1.2.0(svelte@5.20.1):
+    resolution: {integrity: sha512-5PW+6RFX3xQPbR44CngYAP1Sd9oCq9P2FOox4FZffzJuZI2mHOB7q5gJBVnOiLF5y3moVGZ7u2bYt7+yPAgcEQ==}
+    peerDependencies:
+      svelte: ^3.57.0 || ^4.0.0
+    dependencies:
+      svelte: 5.20.1
+      svelte-writable-derived: 3.1.1(svelte@5.20.1)
+    dev: false
+
+  /svelte-writable-derived@3.1.1(svelte@5.20.1):
+    resolution: {integrity: sha512-w4LR6/bYZEuCs7SGr+M54oipk/UQKtiMadyOhW0PTwAtJ/Ai12QS77sLngEcfBx2q4H8ZBQucc9ktSA5sUGZWw==}
+    peerDependencies:
+      svelte: ^3.2.1 || ^4.0.0-next.1 || ^5.0.0-next.94
+    dependencies:
+      svelte: 5.20.1
+    dev: false
 
   /svelte@5.20.1:
     resolution: {integrity: sha512-aCARru2WTdzJl55Ws8SK27+kvQwd8tijl4kY7NoDUXUHtTHhxMa8Lf6QNZKmU7cuPu3jjFloDO1j5HgYJNIIWg==}
