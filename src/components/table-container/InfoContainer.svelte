@@ -15,8 +15,8 @@
   export let name: string;
   export let info: UnicodeCharInfo;
 
-  // @ts-ignore
-  $: category = `${info.category} (${Category[info.category]})`;
+
+  $: category = `${info.category} (${Category[info.category as keyof typeof Category]})`;
   $: charBlock = getCodepointBlock($blockLookupStore, codepoint);
   $: planeData = getPlaneForCodepoint(codepoint);
 

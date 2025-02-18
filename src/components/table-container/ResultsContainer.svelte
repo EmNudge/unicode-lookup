@@ -1,16 +1,6 @@
 <script lang="ts">
   import ResultsRow from './ResultsRow.svelte';
-  import { lastIntersect } from '../../actions/lastIntersect';
-  import { activeIndex, copiedCodepoint, resultsStore } from '$stores';
-
-  const getInfoIcon = (el: EventTarget) => {
-    if (!(el instanceof HTMLElement)) return null;
-    for (const element of [el, el.parentElement]) {
-      if (element instanceof HTMLImageElement && element.alt === 'info') return element;
-      if (element?.classList.contains('info-icon'))return element;
-    }
-    return null;
-  };
+  import { activeIndex, resultsStore } from '$stores';
 
   function handleFocus(e: FocusEvent) {
     const index = (e.target as Element).querySelector('img')?.dataset.index;
@@ -25,29 +15,48 @@
     }
   }
 
-  let copyTextTimeoutId: ReturnType<typeof setTimeout>;
-  function handleRightClick(e: MouseEvent) {
-    const el = getInfoIcon(e.target as EventTarget);
-    if (!el) return;
-
-    const index = Number(el.dataset.index);
-    const [codepoint] = $resultsStore[index];
-    const char = String.fromCodePoint(codepoint);
-    navigator.clipboard.writeText(char);
-
-    clearTimeout(copyTextTimeoutId);
-    $copiedCodepoint = codepoint;
-    copyTextTimeoutId = setTimeout(() => {
-      $copiedCodepoint = -1;
-    }, 1000);
-
-    e.preventDefault();
-  }
-
   let resultsNum = 50;
-  $: shownResults = $resultsStore.slice(0, resultsNum);
+  let shownResults = $derived($resultsStore.slice(0, resultsNum));
   resultsStore.subscribe(() => {
     resultsNum = 50;
+  });
+
+  function lastIntersect(node: HTMLElement, onIntersect: () => void) {
+    const getNth = () => [...node.children].slice(-2)[0];
+
+    let lastObservedEl = getNth();
+
+    const intObserver = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry.isIntersecting) return;
+
+        intObserver.unobserve(entry.target);
+
+        onIntersect();
+      },
+      {
+        rootMargin: '0px',
+        threshold: 0.8,
+      },
+    );
+    intObserver.observe(lastObservedEl);
+
+    const mutObserver = new MutationObserver((mutations) => {
+      if (lastObservedEl) intObserver.unobserve(lastObservedEl);
+
+      lastObservedEl = getNth();
+      intObserver.observe(lastObservedEl);
+    });
+
+    mutObserver.observe(node, { childList: true });
+  }
+
+  let table: HTMLDivElement | undefined;
+  $effect(() => {
+    if (!table) return;
+
+    lastIntersect(table, () => resultsNum += 50);
   });
 </script>
 
@@ -55,21 +64,12 @@
   {$resultsStore.length} result{$resultsStore.length > 1 ? 's' : ''}
 </p>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="table"
-  on:contextmenu={handleRightClick} 
-  use:lastIntersect 
-  on:intersect={() => resultsNum += 50}
-  on:focusin={handleFocus}
-  on:keydown={handleKeydown}
+  bind:this={table}
+  role="table"
+  onfocusin={handleFocus}
+  onkeydown={handleKeydown}
 >
-  <div class="table-head row">
-    <div>Character</div>
-    <div>Codepoint</div>
-    <div>Description</div>
-  </div>
-
   {#each shownResults as [codepoint, info], i}
     <ResultsRow index={i} {codepoint} {info} />
   {/each}
@@ -78,18 +78,6 @@
 <style>
   .table {
     text-align: left;
-  }
-  .table :global(.row) {
-    display: grid;
-    grid-template-columns: 80px 80px 1fr 50px;
-    grid-gap: 10px;
-    padding: 10px
-  }
-  .table-head {
-    font-weight: bold;
-    font-size: .8em;
-    color: var(--label-col);
-    padding: 10px 0;
   }
   p {
     text-align: left;

@@ -53,8 +53,6 @@ export const selectedCodepoint = derived(
 	([activeIndex, results]) => results?.[activeIndex]?.[1],
 );
 
-export const copiedCodepoint = writable(-1);
-
 export type Block = { range: [number, number]; name: string };
 export const blockLookupStore = writable<Block[]>([]);
 

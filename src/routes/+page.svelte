@@ -9,11 +9,15 @@
 	import AdvancedSearch from '$components/advanced-search/AdvancedSearch.svelte';
 	import Loader from '$components/Loader.svelte';
 	import InfoContainer from '$components/table-container/InfoContainer.svelte';
+	import { Toaster } from 'svelte-french-toast'
+
 	import '../global.css';
 
 	import { onMount } from 'svelte';
 	onMount(() => import('../queryProxy'));
 </script>
+
+<Toaster />
 
 <div class="content" class:middle={$selectedCodepoint}>
 	{#if $selectedCodepoint}
