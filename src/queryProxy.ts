@@ -1,6 +1,7 @@
 import {
 	blockLookupStore,
 	hasFirstLoadedStore,
+	symbolHtmlNamesMap,
 	workerIsReadyStore,
 	workerStore,
 } from './stores';
@@ -16,6 +17,18 @@ async function fetchBlocks() {
 	blockLookupStore.set(blocks);
 }
 fetchBlocks();
+
+async function fetchSymbolHtmlNamesMap() {
+	const text = await fetch('/SymbolHtmlNames.txt').then(res => res.text());
+
+	const symbolNamesMap = text.split('\n').map((line) => {
+		const [numStr, names] = line.split(';');
+		return [parseInt(numStr, 16), names.split(',')] as [number, string[]];
+	});
+
+	symbolHtmlNamesMap.set(new Map(symbolNamesMap));
+}
+fetchSymbolHtmlNamesMap();
 
 const worker = new QueryWorker();
 workerStore.set(worker);

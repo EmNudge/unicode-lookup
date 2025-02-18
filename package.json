@@ -37,6 +37,7 @@
 		]
 	},
 	"dependencies": {
+		"@emnudge/unicode-query": "^0.0.1",
 		"@sveltejs/adapter-static": "^3.0.8",
 		"svelte-french-toast": "^1.2.0"
 	}

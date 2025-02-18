@@ -2,23 +2,25 @@
 	import { encodingMode } from '$stores';
 	import { getEncodings } from '$utils/char';
 
-	export let codepoint: number;
+	const { codepoint }: { codepoint: number } = $props();
 
 	type EncodingType = 'hex' | 'bin' | 'dec';
 	let encodingTypes: EncodingType[] = ['hex', 'bin', 'dec'];
 
 	function getNumber(num: number, encoding: EncodingType, length: number) {
-		if (encoding === 'hex') return `0x<b>${num.toString(16).padStart(length / 4, '0')}</b>`;
-		if (encoding === 'bin') return `0b<b>${num.toString(2).padStart(length, '0')}</b>`;
+		if (encoding === 'hex')
+			return `0x<b>${num.toString(16).padStart(length / 4, '0')}</b>`;
+		if (encoding === 'bin')
+			return `0b<b>${num.toString(2).padStart(length, '0')}</b>`;
 		return `<b>${String(num)}</b>`;
 	}
 
-	$: encodings = getEncodings(codepoint);
-	$: encodingsTable = [
+	const encodings = $derived(getEncodings(codepoint));
+	const encodingsTable = $derived([
 		['UTF-8', encodings.utf8, 8],
 		['UTF-16', encodings.utf16, 16],
 		['UTF-32', encodings.utf32, 32]
-	] as [string, Uint8Array | Uint16Array | Uint32Array, number][];
+	] as [string, Uint8Array | Uint16Array | Uint32Array, number][]);
 </script>
 
 <br />
@@ -27,16 +29,16 @@
 		<tr>
 			<th class="title">Encoding</th>
 			<th>
-        <div class="encoding-type">
-          {#each encodingTypes as encoding}
-            <button
-              class:active={$encodingMode === encoding}
-              on:click={() => ($encodingMode = encoding)}
-            >
-              {encoding}
-            </button>
-          {/each}
-        </div>
+				<div class="encoding-type">
+					{#each encodingTypes as encoding}
+						<button
+							class:active={$encodingMode === encoding}
+							onclick={() => ($encodingMode = encoding)}
+						>
+							{encoding}
+						</button>
+					{/each}
+				</div>
 			</th>
 		</tr>
 	</thead>
@@ -63,27 +65,27 @@
 		color: var(--label-col);
 		font-weight: bold;
 	}
-  td {
-    padding: 5px;
-  }
+	td {
+		padding: 5px;
+	}
 	th:first-child {
 		color: var(--primary-text);
 		font-weight: 400;
 		padding-right: 1rem;
 	}
-  tbody tr:nth-child(odd) {
-    background-color: var(--bg-offset);
-  }
+	tbody tr:nth-child(odd) {
+		background-color: var(--bg-offset);
+	}
 	.encoding-type {
 		display: flex;
 	}
 	.encoding-type button {
 		opacity: 0.6;
 		cursor: pointer;
-    padding: 6px;
-    border: none;
-    background: 0;
-    margin: 0;
+		padding: 6px;
+		border: none;
+		background: 0;
+		margin: 0;
 		font-weight: 600;
 	}
 	.encoding-type button:focus {

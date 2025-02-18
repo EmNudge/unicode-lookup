@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let properties: string[];
+  const { properties }: { properties: string[] } = $props();
 </script>
 
 <h3>Properties</h3>
