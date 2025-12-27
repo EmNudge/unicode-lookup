@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -6,21 +7,21 @@ html, body {
 
 :root {
 	--hue: 200;
-    --hsl-lightness: 39%;
-    --hsl-bg-lightness: 95%;
+	--hsl-lightness: 39%;
+	--hsl-bg-lightness: 95%;
 	--hsl: hsl(var(--hue), 66%, var(--hsl-lightness));
 	--hsl-bg: hsl(var(--hue), 100%, var(--hsl-bg-lightness));
 
-    --bg-col: #E0E9F8;
-    --color: #30354B;
-    --label-color: #4B558C;
+	--bg-col: #e0e9f8;
+	--color: #30354b;
+	--label-color: #4b558c;
 }
 :root.dark {
-    --bg-col: #19191c;
-    --color: #d3d6e3;
-    --label-color: #9da6dd;
-    --hsl-lightness: 50%;
-    --hsl-bg-lightness: 5%;
+	--bg-col: #19191c;
+	--color: #d3d6e3;
+	--label-color: #9da6dd;
+	--hsl-lightness: 50%;
+	--hsl-bg-lightness: 5%;
 }
 
 body {
@@ -30,13 +31,17 @@ body {
 	margin: 0;
 	padding: 8px;
 	box-sizing: border-box;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-family:
+		-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu,
+		Cantarell, 'Helvetica Neue', sans-serif;
 }
 
-* { margin: 0; }
+* {
+	margin: 0;
+}
 
 a {
-	color: rgb(0,100,200);
+	color: rgb(0, 100, 200);
 	text-decoration: none;
 }
 
@@ -45,14 +50,17 @@ a:hover {
 }
 
 a:visited {
-	color: rgb(0,80,160);
+	color: rgb(0, 80, 160);
 }
 
 label {
 	display: block;
 }
 
-input, button, select, textarea {
+input,
+button,
+select,
+textarea {
 	font-family: inherit;
 	font-size: inherit;
 	padding: 0.4em 1em;
@@ -69,7 +77,7 @@ input:disabled {
 	color: #ccc;
 }
 
-input[type="range"] {
+input[type='range'] {
 	height: 0;
 }
 
@@ -105,7 +113,7 @@ button.underline-btn {
 	--hsl-bg: hsl(var(--hue), 100%, var(--hsl-bg-lightness));
 	color: var(--hsl);
 	background: var(--hsl-bg);
-	
+
 	border: 1px solid var(--hsl);
 	border-radius: 3px;
 }

@@ -1,10 +1,8 @@
-import type {
-	WorkerAPI,
-} from './types.d';
+import type { WorkerAPI } from './types.d';
 
 export function sendMessage<T extends keyof WorkerAPI>(
 	worker: Worker,
-	message: Omit<WorkerAPI[T]['request'], 'id'>,
+	message: Omit<WorkerAPI[T]['request'], 'id'>
 ): Promise<WorkerAPI[T]['response']> {
 	const id = self.crypto.randomUUID();
 	worker.postMessage({ ...message, id });

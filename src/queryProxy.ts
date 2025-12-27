@@ -3,7 +3,7 @@ import {
 	hasFirstLoadedStore,
 	symbolHtmlNamesMap,
 	workerIsReadyStore,
-	workerStore,
+	workerStore
 } from './stores';
 import { parseBlocks } from './utils/unicode';
 
@@ -19,7 +19,7 @@ async function fetchBlocks() {
 fetchBlocks();
 
 async function fetchSymbolHtmlNamesMap() {
-	const text = await fetch('/SymbolHtmlNames.txt').then(res => res.text());
+	const text = await fetch('/SymbolHtmlNames.txt').then((res) => res.text());
 
 	const symbolNamesMap = text.split('\n').map((line) => {
 		const [numStr, names] = line.split(';');

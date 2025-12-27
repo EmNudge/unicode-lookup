@@ -11,6 +11,6 @@ export function getEncodings(codepoint: number) {
 			codepoint > 0xffff
 				? new Uint16Array(2).map((_, i) => char.charCodeAt(i))
 				: Uint16Array.from([codepoint]),
-		utf32: Uint32Array.from([codepoint]),
+		utf32: Uint32Array.from([codepoint])
 	};
 }

@@ -1,27 +1,24 @@
 <script lang="ts">
-  export let data: string;
+	export let data: string;
 
-  import Dropdown from '../Dropdown.svelte';
-  import { blockLookupStore } from '../../../stores';
+	import Dropdown from '../Dropdown.svelte';
+	import { blockLookupStore } from '../../../stores';
 
-  const blockNames = $blockLookupStore.map(block => block.name);
+	const blockNames = $blockLookupStore.map((block) => block.name);
 
-  let shouldSort = true;
-  $: blocks = shouldSort ? [...blockNames].sort() : blockNames;
-  
-  let blockName: string = blockNames[0];
+	let shouldSort = true;
+	$: blocks = shouldSort ? [...blockNames].sort() : blockNames;
 
-  $: {
-    data = blockName;
-  }
+	let blockName: string = blockNames[0];
+
+	$: {
+		data = blockName;
+	}
 </script>
 
-<Dropdown 
-  options={blocks} 
-  hue={35} 
-  bind:value={blockName} />
+<Dropdown options={blocks} hue={35} bind:value={blockName} />
 
 <label>
-  <span>Sort Blocks Alphabetically</span>
-  <input type="checkbox" bind:checked={shouldSort} />
+	<span>Sort Blocks Alphabetically</span>
+	<input type="checkbox" bind:checked={shouldSort} />
 </label>

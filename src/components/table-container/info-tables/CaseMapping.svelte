@@ -16,7 +16,7 @@
 			titlecaseMapping,
 			uppercaseMapping,
 			lowercaseMapping
-		}).filter(([_k, v]) => v) as [string, number][]
+		}).filter(([, v]) => v) as [string, number][]
 	);
 </script>
 

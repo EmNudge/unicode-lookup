@@ -15,7 +15,7 @@ export function advancedQuery(unicodeData: UnicodeMappings, filters: Filter[]) {
 		return { ...filter, value: regex };
 	});
 
-	let data = [...unicodeData.unicodeData.values()]
+	let data = [...unicodeData.unicodeData.values()];
 
 	for (const filter of filters) {
 		data = data.filter((val) => {

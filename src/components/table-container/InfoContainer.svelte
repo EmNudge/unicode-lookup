@@ -61,9 +61,7 @@
 		getPropertiesForChar(String.fromCodePoint(codepoint))
 	);
 
-	const htmlEntityNames = $derived(
-		$symbolHtmlNamesMap.get(codepoint) ?? []
-	);
+	const htmlEntityNames = $derived($symbolHtmlNamesMap.get(codepoint) ?? []);
 </script>
 
 <div class="container" style="--item-num: {Math.ceil(properties.length / 2)}">

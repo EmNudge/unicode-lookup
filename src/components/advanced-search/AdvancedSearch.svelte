@@ -7,7 +7,10 @@
 	const dispatch = createEventDispatcher();
 
 	const onClose = (index: number) => () => {
-		$boxesStore = [...$boxesStore.slice(0, index), ...$boxesStore.slice(index + 1)];
+		$boxesStore = [
+			...$boxesStore.slice(0, index),
+			...$boxesStore.slice(index + 1)
+		];
 	};
 
 	onMount(() => {
@@ -25,8 +28,11 @@
 </form>
 
 <div class="buttons">
-	<Button on:click={() => ($boxesStore = [...$boxesStore, getNewBox()])}>Add Rule</Button>
-	{#if false} <!-- TODO: Add setting for toggle -->
+	<Button on:click={() => ($boxesStore = [...$boxesStore, getNewBox()])}
+		>Add Rule</Button
+	>
+	{#if false}
+		<!-- TODO: Add setting for toggle -->
 		<Button on:click={() => dispatch('search')} hue={200}>Search</Button>
 	{/if}
 </div>

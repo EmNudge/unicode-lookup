@@ -1,5 +1,5 @@
 import { sendMessage } from '$utils/worker';
-import { derived, get, writable, readable } from 'svelte/store';
+import { derived, get, writable } from 'svelte/store';
 import { boxesStore, convertBoxSetToFilters } from './advancedSearch';
 import type { UnicodeMapData } from '@emnudge/unicode-query';
 
@@ -13,7 +13,7 @@ export const searchModeStore = writable<'simple' | 'advanced'>('simple');
 // stores for searches. We want them to persist even when they're not visible
 export const easySearchStore = writable<string>('');
 export const advancedSearchStore = derived(boxesStore, (boxSets) =>
-	convertBoxSetToFilters(boxSets),
+	convertBoxSetToFilters(boxSets)
 );
 
 export const resultsStore = derived(
@@ -22,28 +22,32 @@ export const resultsStore = derived(
 		advancedSearchStore,
 		workerIsReadyStore,
 		workerStore,
-		searchModeStore,
+		searchModeStore
 	],
 	([text, filters, workerIsReady, worker, searchMode], set) => {
 		if (!workerIsReady || !worker) return;
 
 		if (searchMode === 'simple') {
-			sendMessage(worker, { name: 'simple-query', payload: text }).then(results => {
-				const hasFirstLoaded = get(hasFirstLoadedStore);
-				if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
+			sendMessage(worker, { name: 'simple-query', payload: text }).then(
+				(results) => {
+					const hasFirstLoaded = get(hasFirstLoadedStore);
+					if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
 
-				set(results as [number, UnicodeMapData][]);
-			})
+					set(results as [number, UnicodeMapData][]);
+				}
+			);
 		} else {
-			sendMessage(worker, { name: 'advanced-query', payload: filters }).then(results => {
-				const hasFirstLoaded = get(hasFirstLoadedStore);
-				if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
+			sendMessage(worker, { name: 'advanced-query', payload: filters }).then(
+				(results) => {
+					const hasFirstLoaded = get(hasFirstLoadedStore);
+					if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
 
-				set(results as [number, UnicodeMapData][]);
-			})
+					set(results as [number, UnicodeMapData][]);
+				}
+			);
 		}
 	},
-	[] as [number, UnicodeMapData][],
+	[] as [number, UnicodeMapData][]
 );
 
 export type Pattern = { exclude: boolean; category: string };
@@ -54,7 +58,7 @@ resultsStore.subscribe(() => activeIndex.set(-1));
 
 export const selectedCodepoint = derived(
 	[activeIndex, resultsStore],
-	([activeIndex, results]) => results?.[activeIndex]?.[1],
+	([activeIndex, results]) => results?.[activeIndex]?.[1]
 );
 
 export type Block = { range: [number, number]; name: string };

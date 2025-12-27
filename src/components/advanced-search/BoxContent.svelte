@@ -3,25 +3,37 @@
 
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
-	
-	import Dropdown from './Dropdown.svelte';
-	
+
+	import { Select } from '$lib/components';
+
 	export let name: string;
 	export let data: any;
 	export let hue = 200;
 
 	const localNameSt = writable(name);
-	localNameSt.subscribe(localName => {
+	localNameSt.subscribe((localName) => {
 		name = localName;
 		data = undefined;
 	});
 
 	import { boxTypeMap } from './box-types';
 	import { writable } from 'svelte/store';
-	
+
 	$: componentNames = [...boxTypeMap.keys()];
 	$: component = boxTypeMap.get(name);
 </script>
+
+<div class="content styled" style="--hue: {hue}">
+	<button on:click={() => dispatch('close')}>
+		<CloseButton />
+	</button>
+
+	<Select options={componentNames} bind:value={$localNameSt} hue={35} />
+
+	<hr />
+
+	<svelte:component this={component} bind:data />
+</div>
 
 <style>
 	.content {
@@ -39,28 +51,13 @@
 		border: none;
 		font-size: 2em;
 		padding: 3px;
-		line-height: .8em;
+		line-height: 0.8em;
 		margin: 0;
 		z-index: 2;
 		cursor: pointer;
 	}
 	hr {
 		margin: 10px -40px;
-    opacity: .4;
+		opacity: 0.4;
 	}
 </style>
-
-<div class="content styled" style="--hue: {hue}">
-	<button on:click={() => dispatch('close')}>
-		<CloseButton />
-	</button>
-	
-	<Dropdown 
-		options={componentNames} 
-		bind:value={$localNameSt} 
-		hue={35} />
-	
-	<hr>
-
-	<svelte:component this={component} bind:data={data} />
-</div>
