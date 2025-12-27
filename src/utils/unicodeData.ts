@@ -36,7 +36,7 @@ export const valueAliases = [
 	'Symbol',
 	'Titlecase_Letter',
 	'Unassigned',
-	'Uppercase_Letter',
+	'Uppercase_Letter'
 ];
 
 export const FULL_SCRIPTS = [
@@ -195,7 +195,7 @@ export const FULL_SCRIPTS = [
 	'Warang_Citi',
 	'Yezidi',
 	'Yi',
-	'Zanabazar_Square',
+	'Zanabazar_Square'
 ];
 
 export const binaryProperties = [
@@ -251,5 +251,5 @@ export const binaryProperties = [
 	'Variation_Selector',
 	'White_Space',
 	'XID_Continue',
-	'XID_Start',
+	'XID_Start'
 ];

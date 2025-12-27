@@ -12,24 +12,26 @@ Try it at http://unicode.emnudge.dev/
 ![tool](https://github.com/EmNudge/unicode-lookup/assets/24513691/3d0a3cff-7bc9-465c-9a6f-c6d86d434634)
 
 # How To Use
+
 Right click the info icon to copy it to your clipboard.
 
 Left click a row to bring up the info view.
 
 Currently there is "Simple Search" and "Advanced Search".
 
-For *Simple Search*, it accepts:
+For _Simple Search_, it accepts:
+
 - character to find (simply type in a single character)
 - text to match against description
-- regex to match against *character* (in form `/regex/flags`)
-- glob pattern match against *names* (in form `latin * a`)
+- regex to match against _character_ (in form `/regex/flags`)
+- glob pattern match against _names_ (in form `latin * a`)
 - codepoint of character
   - decimal form
   - hexidecimal form (in form `0x[number]` or `U+[number]` e.g. `0xfab23` or `U+fab23`)
   - binary form (in form `0b[number]` e.g. `0b1101110`)
 - codepoint range (in form `num1-num2`, where `num1` and `num2` are in dec, hex, or bin form)
 
-*Advanced Search* is a bit more... advanced.
+_Advanced Search_ is a bit more... advanced.
 It allows us to create a series of filters, called "rules". These rules can be of 2 types:
 
 - **Require**
@@ -42,10 +44,11 @@ The following example excludes characters in the BMP and then requires the chara
 
 ![advanced search](https://user-images.githubusercontent.com/24513691/106977581-9d479900-6728-11eb-8e76-b152552ea71d.jpg)
 
-*Simple Search* will execute while we type. *Advanced Search* will only execute once pressing the `Search` button. 
-*Simple Search* will also execute if we press enter focusing the box.
+_Simple Search_ will execute while we type. _Advanced Search_ will only execute once pressing the `Search` button.
+_Simple Search_ will also execute if we press enter focusing the box.
 
 ### Known Bugs/Limitations
+
 - Safari does not support any regex unicode property where `Script` equals one of `"Chorasmian"`, `"Dives_Akuru"`, `"Elymaic"`, `"Khitan_Small_Script"`, `"Nandinagari"`, `"Nyiakeng_Puachue_Hmong"`, `"Wancho"`, or `"Yezidi"`.
   - e.g. `/\p{Script=Wancho}/u` will throw an error on Safari and is therefore not supported on that browser.
 - Anything typed into simple search before all unicode data has loaded will not be searched, even after the unicode data has loaded.

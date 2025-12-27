@@ -2,9 +2,9 @@
 	let from = 0;
 	let to = 65535;
 
-	export let data: { from: number, to: number } = { from, to };
+	export let data: { from: number; to: number } = { from, to };
 	import NumberInput from '../NumberInput.svelte';
-	
+
 	$: {
 		data = { from, to };
 	}

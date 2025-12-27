@@ -1,0 +1,136 @@
+/* ==========================================
+   BASE ELEMENT STYLES
+   Global styles for HTML elements
+   ========================================== */
+
+html,
+body {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	color: var(--color-text);
+	background: var(--color-bg);
+	transition:
+		background var(--duration-base),
+		color var(--duration-fast);
+
+	margin: 0;
+	padding: var(--space-2);
+	box-sizing: border-box;
+	font-family: var(--font-family-base);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-normal);
+
+	overflow-y: scroll;
+}
+
+* {
+	margin: 0;
+}
+
+a {
+	color: rgb(0, 100, 200);
+	text-decoration: none;
+	transition: var(--transition-colors);
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:visited {
+	color: rgb(0, 80, 160);
+}
+
+label {
+	display: block;
+	color: var(--color-text-secondary);
+}
+
+input,
+button,
+select,
+textarea {
+	font-family: inherit;
+	font-size: inherit;
+	padding: 0.4em 1em;
+	margin: 0 0 0.5em 0;
+	box-sizing: border-box;
+	border: var(--border-width-1) solid var(--color-border);
+	border-radius: var(--radius-sm);
+	transition: var(--transition-colors);
+}
+
+input::placeholder {
+	color: inherit;
+	opacity: 0.5;
+}
+
+input:disabled {
+	color: #ccc;
+	opacity: 0.6;
+}
+
+input[type='range'] {
+	height: 0;
+}
+
+button {
+	color: var(--color-text);
+	background-color: #f4f4f4;
+	outline: none;
+	cursor: pointer;
+}
+
+button:disabled {
+	color: #999;
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+
+button:not(:disabled):active {
+	background-color: #ddd;
+}
+
+button:focus {
+	border-color: #666;
+}
+
+/* ==========================================
+   UTILITY CLASSES
+   ========================================== */
+
+/* Underline button variant */
+button.underline-btn {
+	border: none;
+	padding: 0;
+	margin: 0;
+	background: 0;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+/* Styled class for HSL-based components (backward compatibility) */
+.styled {
+	--hsl: hsl(var(--hue), 66%, var(--hsl-lightness));
+	--hsl-bg: hsl(var(--hue), 100%, var(--hsl-bg-lightness));
+	color: var(--hsl);
+	background: var(--hsl-bg);
+	transition:
+		background var(--duration-medium),
+		color var(--duration-fast);
+
+	border: var(--border-width-1) solid var(--hsl);
+	border-radius: var(--radius-base);
+}
+
+.styled:hover:not(:disabled) {
+	filter: brightness(0.95);
+}
+
+.styled:active:not(:disabled) {
+	transform: scale(0.98);
+}

@@ -10,13 +10,14 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		alias: {
+			$lib: 'src/lib',
 			$components: 'src/components',
 			$utils: 'src/utils',
 			$stores: 'src/stores',
 			$icons: 'src/icons',
-			$src: 'src',
-		},
-	},
+			$src: 'src'
+		}
+	}
 };
 
 export default config;

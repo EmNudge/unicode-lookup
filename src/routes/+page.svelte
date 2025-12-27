@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { hasFirstLoadedStore, selectedCodepoint, searchModeStore, resultsStore } from '$stores';
+	import {
+		hasFirstLoadedStore,
+		selectedCodepoint,
+		searchModeStore,
+		resultsStore
+	} from '$stores';
 
 	import GithubIcon from '$icons/github.svelte';
 
@@ -9,7 +14,7 @@
 	import AdvancedSearch from '$components/advanced-search/AdvancedSearch.svelte';
 	import Loader from '$components/Loader.svelte';
 	import InfoContainer from '$components/table-container/InfoContainer.svelte';
-	import { Toaster } from 'svelte-5-french-toast'
+	import { Toaster } from 'svelte-5-french-toast';
 
 	import '../global.css';
 
@@ -23,14 +28,18 @@
 	{#if $selectedCodepoint}
 		<aside>
 			<div>
-				<InfoContainer codepoint={$selectedCodepoint.codepoint} info={$selectedCodepoint} name={$selectedCodepoint.label} />
+				<InfoContainer
+					codepoint={$selectedCodepoint.codepoint}
+					info={$selectedCodepoint}
+					name={$selectedCodepoint.label}
+				/>
 			</div>
 		</aside>
 	{/if}
 	<div>
 		<Header />
 		<GithubIcon href="https://github.com/EmNudge/unicode-lookup" />
-		
+
 		<main>
 			<div class="searchbox">
 				{#if $searchModeStore === 'simple'}
@@ -39,14 +48,14 @@
 					<AdvancedSearch />
 				{/if}
 			</div>
-		
-			<br>
-		
+
+			<br />
+
 			{#if $hasFirstLoadedStore}
 				{#if $resultsStore.length}
 					<ResultsContainer />
 				{:else}
-					<br>
+					<br />
 					<p>No results fit that query :/</p>
 				{/if}
 			{:else}
@@ -63,11 +72,11 @@
 	:global(body) {
 		overflow-y: scroll;
 	}
-	
+
 	main {
 		text-align: center;
 		margin: 0 auto;
-		
+
 		width: 600px;
 		max-width: 100%;
 	}
@@ -92,7 +101,7 @@
 	aside div {
 		position: fixed;
 		width: 400px;
-    overflow-y: auto;
-    height: 100vh;
+		overflow-y: auto;
+		height: 100vh;
 	}
 </style>

@@ -11,11 +11,13 @@
 		decimalEquiv: UnicodeMapData['decimalEquiv'];
 	} = $props();
 
-	const numberMappings = $derived(Object.entries({
-		digitEquiv,
-		numericEquiv,
-		decimalEquiv
-	}).filter(([_, v]) => v))
+	const numberMappings = $derived(
+		Object.entries({
+			digitEquiv,
+			numericEquiv,
+			decimalEquiv
+		}).filter(([, v]) => v)
+	);
 </script>
 
 {#if numberMappings.length}

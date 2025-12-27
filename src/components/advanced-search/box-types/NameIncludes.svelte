@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Input from '../Input.svelte';
-	
+
 	export let data: string = '';
 
 	let text: string = 'symbol';
 	$: {
-		data = text
+		data = text;
 	}
 
 	function validator(text: string) {
@@ -14,7 +14,4 @@
 	}
 </script>
 
-<Input 
-	placeholder="text" 
-	validator={validator}
-	bind:value={text} />
+<Input placeholder="text" {validator} bind:value={text} />

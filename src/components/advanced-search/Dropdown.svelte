@@ -5,6 +5,12 @@
 	export let disabled = false;
 </script>
 
+<select {disabled} class="styled" style="--hue: {hue}" bind:value>
+	{#each options as option}
+		<option>{option}</option>
+	{/each}
+</select>
+
 <style>
 	select {
 		box-shadow: 0px 4px 3px 0px #00000017;
@@ -19,9 +25,3 @@
 		cursor: auto;
 	}
 </style>
-
-<select {disabled} class="styled" style="--hue: {hue}" bind:value>
-	{#each options as option}
-		<option>{option}</option>
-	{/each}
-</select>
