@@ -9,7 +9,7 @@
 	import AdvancedSearch from '$components/advanced-search/AdvancedSearch.svelte';
 	import Loader from '$components/Loader.svelte';
 	import InfoContainer from '$components/table-container/InfoContainer.svelte';
-	import { Toaster } from 'svelte-french-toast'
+	import { Toaster } from 'svelte-5-french-toast'
 
 	import '../global.css';
 

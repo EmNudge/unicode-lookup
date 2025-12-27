@@ -2,7 +2,7 @@
 	import { activeIndex } from '$stores';
 	import { getCodepoint } from '$utils/char';
 	import type { UnicodeMapData } from '@emnudge/unicode-query';
-	import toast from 'svelte-french-toast';
+	import toast from 'svelte-5-french-toast';
 
 	const {
 		codepoint,
