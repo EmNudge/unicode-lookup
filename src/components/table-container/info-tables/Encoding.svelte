@@ -16,11 +16,19 @@
 	}
 
 	const encodings = $derived(getEncodings(codepoint));
-	const encodingsTable = $derived([
-		['UTF-8', encodings.utf8, 8],
-		['UTF-16', encodings.utf16, 16],
-		['UTF-32', encodings.utf32, 32]
-	] as [string, Uint8Array | Uint16Array | Uint32Array, number][]);
+	// In decimal mode, BE/LE distinction doesn't apply - just show code unit values
+	const encodingsTable = $derived(
+		$encodingMode === 'dec'
+			? ([
+					['UTF-8', encodings.utf8, 8],
+					['UTF-16', encodings.utf16BE, 16]
+				] as [string, Uint8Array | Uint16Array, number][])
+			: ([
+					['UTF-8', encodings.utf8, 8],
+					['UTF-16 BE', encodings.utf16BE, 16],
+					['UTF-16 LE', encodings.utf16LE, 16]
+				] as [string, Uint8Array | Uint16Array, number][])
+	);
 </script>
 
 <br />
