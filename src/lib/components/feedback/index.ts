@@ -1,3 +1,3 @@
-export { default as Alert } from './Alert.svelte';
-export { default as Badge } from './Badge.svelte';
-export { default as Spinner } from './Spinner.svelte';
+export { Alert } from "./Alert";
+export { Badge } from "./Badge";
+export { Spinner } from "./Spinner";

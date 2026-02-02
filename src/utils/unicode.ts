@@ -1,182 +1,174 @@
 // https://tc39.es/ecma262/#table-nonbinary-unicode-properties
-import type { BidiClass } from '@emnudge/unicode-query';
-import type { Block } from '../stores';
-import { binaryProperties, FULL_SCRIPTS, valueAliases } from './unicodeData';
+import type { BidiClass } from "@emnudge/unicode-query";
+import type { Block } from "../stores";
+import { binaryProperties, FULL_SCRIPTS, valueAliases } from "./unicodeData";
 
 // As of 2/4/2020, Safari doesn't support a bunch of them unfortunately
 // this is an easy way to filter out bad scripts for any browser
 export const scripts = FULL_SCRIPTS.filter((script) => {
-	const str = String.raw`^\p{Script=${script}}$`;
-	try {
-		new RegExp(str, 'u');
-	} catch {
-		return false;
-	}
-	return true;
+  const str = String.raw`^\p{Script=${script}}$`;
+  try {
+    new RegExp(str, "u");
+  } catch {
+    return false;
+  }
+  return true;
 });
 
-export const properties = [
-	...valueAliases,
-	...binaryProperties,
-	'Script'
-].sort();
+export const properties = [...valueAliases, ...binaryProperties, "Script"].sort();
 
 const allRegex = [
-	...valueAliases,
-	...binaryProperties,
-	...scripts.map((script) => `Script=${script}`)
+  ...valueAliases,
+  ...binaryProperties,
+  ...scripts.map((script) => `Script=${script}`),
 ].map((property) => {
-	const regexStr = String.raw`^\p{${property}}$`;
-	const regex = new RegExp(regexStr, 'u');
-	return [property, regex] as const;
+  const regexStr = String.raw`^\p{${property}}$`;
+  const regex = new RegExp(regexStr, "u");
+  return [property, regex] as const;
 });
 
 export function getPropertiesForChar(char: string) {
-	if ([...char].length > 1) {
-		throw new Error('Cannot match on string with length over 1');
-	}
+  if ([...char].length > 1) {
+    throw new Error("Cannot match on string with length over 1");
+  }
 
-	return allRegex
-		.filter(([, regex]) => regex.test(char))
-		.map(([property]) => property);
+  return allRegex.filter(([, regex]) => regex.test(char)).map(([property]) => property);
 }
 
 export const PLANE_LENGTH = 2 ** 16;
 export enum PlaneName {
-	BasicMultilingual = 'Basic Multilingual Plane',
-	SupplementaryMultilingual = 'Supplementary Multilingual Plane',
-	SupplementaryIdeographic = 'Supplementary Ideographic Plane',
-	TertiaryIdeographic = 'Tertiary Ideographic Plane',
-	SupplementarySpecialPurpose = 'Supplementary Special-purpose Plane',
-	SupplementaryPrivateUseArea = 'Supplementary Private Use Area Plane'
+  BasicMultilingual = "Basic Multilingual Plane",
+  SupplementaryMultilingual = "Supplementary Multilingual Plane",
+  SupplementaryIdeographic = "Supplementary Ideographic Plane",
+  TertiaryIdeographic = "Tertiary Ideographic Plane",
+  SupplementarySpecialPurpose = "Supplementary Special-purpose Plane",
+  SupplementaryPrivateUseArea = "Supplementary Private Use Area Plane",
 }
 
 export const planeMap = new Map<number, PlaneName>([
-	[0, PlaneName.BasicMultilingual],
-	[1, PlaneName.SupplementaryMultilingual],
-	[2, PlaneName.SupplementaryIdeographic],
-	[3, PlaneName.TertiaryIdeographic],
-	[14, PlaneName.SupplementarySpecialPurpose],
-	[15, PlaneName.SupplementaryPrivateUseArea],
-	[16, PlaneName.SupplementaryPrivateUseArea]
+  [0, PlaneName.BasicMultilingual],
+  [1, PlaneName.SupplementaryMultilingual],
+  [2, PlaneName.SupplementaryIdeographic],
+  [3, PlaneName.TertiaryIdeographic],
+  [14, PlaneName.SupplementarySpecialPurpose],
+  [15, PlaneName.SupplementaryPrivateUseArea],
+  [16, PlaneName.SupplementaryPrivateUseArea],
 ]);
 
 export type Plane = {
-	number: number;
-	name?: PlaneName;
+  number: number;
+  name?: PlaneName;
 };
 export function getPlaneForCodepoint(codepoint: number): Plane {
-	const plane = Math.floor(codepoint / PLANE_LENGTH);
+  const plane = Math.floor(codepoint / PLANE_LENGTH);
 
-	if (planeMap.has(plane)) {
-		return { number: plane, name: planeMap.get(plane) };
-	}
+  if (planeMap.has(plane)) {
+    return { number: plane, name: planeMap.get(plane) };
+  }
 
-	return { number: plane };
+  return { number: plane };
 }
 
 export function parseBlocks(textFile: string): Block[] {
-	return textFile.split('\n').map((row) => {
-		const [rangeStr, name] = row.split(',');
-		const range = rangeStr
-			.split('..')
-			.map((str) => parseInt(str.slice(2), 16)) as [number, number];
-		return { range, name };
-	});
+  return textFile.split("\n").map((row) => {
+    const [rangeStr, name] = row.split(",");
+    const range = rangeStr.split("..").map((str) => parseInt(str.slice(2), 16)) as [number, number];
+    return { range, name };
+  });
 }
 
 export function getCodepointBlock(blocks: Block[], codepoint: number) {
-	for (const block of blocks) {
-		const { range, name } = block;
-		if (codepoint > range[1]) continue;
+  for (const block of blocks) {
+    const { range, name } = block;
+    if (codepoint > range[1]) continue;
 
-		return { range: [...range], name };
-	}
+    return { range: [...range], name };
+  }
 
-	throw new Error('codepoint does not match any block');
+  throw new Error("codepoint does not match any block");
 }
 
 export function getDecompFromStr(decomp: string) {
-	const res = decomp.match(/<([a-zA-Z]+)> ([A-Z0-9 ]+)/);
-	if (!res) return null;
+  const res = decomp.match(/<([a-zA-Z]+)> ([A-Z0-9 ]+)/);
+  if (!res) return null;
 
-	const { 1: type, 2: codepointsStr } = res;
-	const codepoints = codepointsStr.split(' ').map((codepoint) => {
-		return parseInt(codepoint.trim(), 16);
-	});
+  const { 1: type, 2: codepointsStr } = res;
+  const codepoints = codepointsStr.split(" ").map((codepoint) => {
+    return parseInt(codepoint.trim(), 16);
+  });
 
-	return { type, codepoints };
+  return { type, codepoints };
 }
 
 export const Category = {
-	// Letters
-	Lu: 'Uppercase_Letter',
-	Ll: 'Lowercase_Letter',
-	Lt: 'Titlecase_Letter',
-	LC: 'Cased_Letter',
-	Lm: 'Modifier_Letter',
-	Lo: 'Other_Letter',
+  // Letters
+  Lu: "Uppercase_Letter",
+  Ll: "Lowercase_Letter",
+  Lt: "Titlecase_Letter",
+  LC: "Cased_Letter",
+  Lm: "Modifier_Letter",
+  Lo: "Other_Letter",
 
-	// Mark
-	Mn: 'Nonspacing_Mark',
-	Mc: 'Spacing_Mark',
-	Me: 'Enclosing_Mark',
+  // Mark
+  Mn: "Nonspacing_Mark",
+  Mc: "Spacing_Mark",
+  Me: "Enclosing_Mark",
 
-	// Number
-	Nd: 'Decimal_Number',
-	Nl: 'Letter_Number',
-	No: 'Other_Number',
+  // Number
+  Nd: "Decimal_Number",
+  Nl: "Letter_Number",
+  No: "Other_Number",
 
-	// Punctuation
-	Pc: 'Connector_Punctuation',
-	Pd: 'Dash_Punctuation',
-	Ps: 'Open_Punctuation',
-	Pe: 'Close_Punctuation',
-	Pi: 'Initial_Punctuation',
-	Pf: 'Final_Punctuation',
-	Po: 'Other_Punctuation',
+  // Punctuation
+  Pc: "Connector_Punctuation",
+  Pd: "Dash_Punctuation",
+  Ps: "Open_Punctuation",
+  Pe: "Close_Punctuation",
+  Pi: "Initial_Punctuation",
+  Pf: "Final_Punctuation",
+  Po: "Other_Punctuation",
 
-	// Symbol
-	Sm: 'Math_Symbol',
-	Sc: 'Currency_Symbol',
-	Sk: 'Modifier_Symbol',
-	So: 'Other_Symbol',
+  // Symbol
+  Sm: "Math_Symbol",
+  Sc: "Currency_Symbol",
+  Sk: "Modifier_Symbol",
+  So: "Other_Symbol",
 
-	// Separator
-	Zs: 'Space_Separator',
-	Zl: 'Line_Separator',
-	Zp: 'Paragraph_Separator',
+  // Separator
+  Zs: "Space_Separator",
+  Zl: "Line_Separator",
+  Zp: "Paragraph_Separator",
 
-	// Other
-	Cc: 'Control',
-	Cf: 'Format',
-	Cs: 'Surrogate',
-	Co: 'Private_Use',
-	Cn: 'Unassigned'
+  // Other
+  Cc: "Control",
+  Cf: "Format",
+  Cs: "Surrogate",
+  Co: "Private_Use",
+  Cn: "Unassigned",
 };
 
 export const BidiClassMap = new Map<BidiClass, string>([
-	['L', 'Left-to-Right'],
-	['R', 'Right-to-Left'],
-	['AL', 'Arabic Letter'],
-	['EN', 'European Number'],
-	['ES', 'European Separator'],
-	['ET', 'European Number Terminator'],
-	['AN', 'Arabic Number'],
-	['CS', 'Common Number Separator'],
-	['NSM', 'Nonspacing Mark'],
-	['BN', 'Boundary Neutral'],
-	['B', 'Paragraph Separator'],
-	['S', 'Segment Separator'],
-	['WS', 'Whitespace'],
-	['ON', 'Other Neutrals'],
-	['LRE', 'Left-to-Right Embedding'],
-	['LRO', 'Left-to-Right Override'],
-	['RLE', 'Right-to-Left Embedding'],
-	['RLO', 'Right-to-Left Override'],
-	['PDF', 'Pop Directional Format'],
-	['LRI', 'Left-to-Right Isolate'],
-	['RLI', 'Right-to-Left Isolate'],
-	['FSI', 'First Strong Isolate'],
-	['PDI', 'Pop Directional Isolate']
+  ["L", "Left-to-Right"],
+  ["R", "Right-to-Left"],
+  ["AL", "Arabic Letter"],
+  ["EN", "European Number"],
+  ["ES", "European Separator"],
+  ["ET", "European Number Terminator"],
+  ["AN", "Arabic Number"],
+  ["CS", "Common Number Separator"],
+  ["NSM", "Nonspacing Mark"],
+  ["BN", "Boundary Neutral"],
+  ["B", "Paragraph Separator"],
+  ["S", "Segment Separator"],
+  ["WS", "Whitespace"],
+  ["ON", "Other Neutrals"],
+  ["LRE", "Left-to-Right Embedding"],
+  ["LRO", "Left-to-Right Override"],
+  ["RLE", "Right-to-Left Embedding"],
+  ["RLO", "Right-to-Left Override"],
+  ["PDF", "Pop Directional Format"],
+  ["LRI", "Left-to-Right Isolate"],
+  ["RLI", "Right-to-Left Isolate"],
+  ["FSI", "First Strong Isolate"],
+  ["PDI", "Pop Directional Isolate"],
 ]);

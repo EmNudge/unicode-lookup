@@ -1,72 +1,70 @@
-import { sendMessage } from '$utils/worker';
-import { derived, get, writable } from 'svelte/store';
-import { boxesStore, convertBoxSetToFilters } from './advancedSearch';
-import type { UnicodeMapData } from '@emnudge/unicode-query';
+import { sendMessage } from "$utils/worker";
+import { createSignal, createMemo, createEffect } from "solid-js";
+import { boxesSig, convertBoxSetToFilters } from "./advancedSearch";
+import type { UnicodeMapData } from "@emnudge/unicode-query";
 
-export const workerStore = writable<Worker | null>(null);
+export const [workerSig, setWorkerSig] = createSignal<Worker | null>(null);
 
-export const workerIsReadyStore = writable(false);
-export const hasFirstLoadedStore = writable(false);
+export const [workerIsReadySig, setWorkerIsReadySig] = createSignal(false);
+export const [hasFirstLoadedSig, setHasFirstLoadedSig] = createSignal(false);
 
 // which type of search is currently in use
-export const searchModeStore = writable<'simple' | 'advanced'>('simple');
+export const [searchModeSig, setSearchModeSig] = createSignal<"simple" | "advanced">("simple");
 // stores for searches. We want them to persist even when they're not visible
-export const easySearchStore = writable<string>('');
-export const advancedSearchStore = derived(boxesStore, (boxSets) =>
-	convertBoxSetToFilters(boxSets)
-);
+export const [easySearchSig, setEasySearchSig] = createSignal<string>("");
+export const advancedSearchSig = createMemo(() => convertBoxSetToFilters(boxesSig()));
 
-export const resultsStore = derived(
-	[
-		easySearchStore,
-		advancedSearchStore,
-		workerIsReadyStore,
-		workerStore,
-		searchModeStore
-	],
-	([text, filters, workerIsReady, worker, searchMode], set) => {
-		if (!workerIsReady || !worker) return;
+// Results signal that gets updated by an effect
+export const [resultsSig, setResultsSig] = createSignal<[number, UnicodeMapData][]>([]);
 
-		if (searchMode === 'simple') {
-			sendMessage(worker, { name: 'simple-query', payload: text }).then(
-				(results) => {
-					const hasFirstLoaded = get(hasFirstLoadedStore);
-					if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
+// Effect to fetch results when dependencies change
+createEffect(() => {
+  const text = easySearchSig();
+  const filters = advancedSearchSig();
+  const workerIsReady = workerIsReadySig();
+  const worker = workerSig();
+  const searchMode = searchModeSig();
 
-					set(results as [number, UnicodeMapData][]);
-				}
-			);
-		} else {
-			sendMessage(worker, { name: 'advanced-query', payload: filters }).then(
-				(results) => {
-					const hasFirstLoaded = get(hasFirstLoadedStore);
-					if (!hasFirstLoaded) hasFirstLoadedStore.set(true);
+  if (!workerIsReady || !worker) return;
 
-					set(results as [number, UnicodeMapData][]);
-				}
-			);
-		}
-	},
-	[] as [number, UnicodeMapData][]
-);
+  if (searchMode === "simple") {
+    sendMessage(worker, { name: "simple-query", payload: text }).then((results) => {
+      if (!hasFirstLoadedSig()) setHasFirstLoadedSig(true);
+      setResultsSig(results as [number, UnicodeMapData][]);
+    });
+  } else {
+    sendMessage(worker, { name: "advanced-query", payload: filters }).then((results) => {
+      if (!hasFirstLoadedSig()) setHasFirstLoadedSig(true);
+      setResultsSig(results as [number, UnicodeMapData][]);
+    });
+  }
+});
 
 export type Pattern = { exclude: boolean; category: string };
-export const categorySearchStore = writable<Pattern[]>([]);
+export const [categorySearchSig, setCategorySearchSig] = createSignal<Pattern[]>([]);
 
-export const activeIndex = writable(-1);
-resultsStore.subscribe(() => activeIndex.set(-1));
+export const [activeIndexSig, setActiveIndexSig] = createSignal(-1);
 
-export const selectedCodepoint = derived(
-	[activeIndex, resultsStore],
-	([activeIndex, results]) => results?.[activeIndex]?.[1]
-);
+// Reset activeIndex when results change
+createEffect(() => {
+  resultsSig(); // track results
+  setActiveIndexSig(-1);
+});
+
+export const selectedCodepointSig = createMemo(() => {
+  const index = activeIndexSig();
+  const results = resultsSig();
+  return results?.[index]?.[1];
+});
 
 export type Block = { range: [number, number]; name: string };
-export const blockLookupStore = writable<Block[]>([]);
+export const [blockLookupSig, setBlockLookupSig] = createSignal<Block[]>([]);
 
-export const encodingMode = writable<'hex' | 'bin' | 'dec'>('hex');
+export const [encodingModeSig, setEncodingModeSig] = createSignal<"hex" | "bin" | "dec">("hex");
 
 // advanced search data
-export * from './advancedSearch';
+export * from "./advancedSearch";
 
-export const symbolHtmlNamesMap = writable(new Map<number, string[]>());
+export const [symbolHtmlNamesMapSig, setSymbolHtmlNamesMapSig] = createSignal(
+  new Map<number, string[]>(),
+);
