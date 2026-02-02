@@ -1,7 +1,9 @@
-import { blockLookupSig } from "$stores";
 import type { BidiClass, Filter } from "$utils/types";
 import { PLANE_LENGTH } from "$utils/unicode";
 import { createSignal } from "solid-js";
+
+export type Block = { range: [number, number]; name: string };
+export const [blockLookupSig, setBlockLookupSig] = createSignal<Block[]>([]);
 
 type MatchType = "Require" | "Exclude";
 export type Box =

@@ -57,9 +57,6 @@ export const selectedCodepointSig = createMemo(() => {
   return results?.[index]?.[1];
 });
 
-export type Block = { range: [number, number]; name: string };
-export const [blockLookupSig, setBlockLookupSig] = createSignal<Block[]>([]);
-
 export const [encodingModeSig, setEncodingModeSig] = createSignal<"hex" | "bin" | "dec">("hex");
 
 // advanced search data

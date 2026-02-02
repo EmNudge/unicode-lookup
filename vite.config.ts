@@ -4,6 +4,7 @@ import solidStyled from "unplugin-solid-styled";
 import path from "path";
 
 export default defineConfig({
+	publicDir: "static",
 	resolve: {
 		alias: {
 			$lib: path.resolve(__dirname, "src/lib"),
