@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { hasFirstLoaded, selectedCodepoint, searchMode, results } from "$stores";
+import { useTheme, useGlobalKeyboard } from "$src/composables";
 
 import GitHubIcon from "$icons/GitHubIcon.vue";
 import ResultsContainer from "$components/table-container/ResultsContainer.vue";
@@ -9,6 +10,11 @@ import Header from "$components/Header.vue";
 import AdvancedSearch from "$components/advanced-search/AdvancedSearch.vue";
 import Loader from "$components/Loader.vue";
 import InfoContainer from "$components/table-container/InfoContainer.vue";
+import CommandPalette from "$components/CommandPalette.vue";
+
+// Initialize theme and global keyboard shortcuts
+useTheme();
+useGlobalKeyboard();
 
 onMounted(() => {
   import("./queryProxy");
@@ -50,6 +56,7 @@ onMounted(() => {
     </div>
     <aside v-if="selectedCodepoint" />
   </div>
+  <CommandPalette />
 </template>
 
 <style>
