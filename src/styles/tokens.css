@@ -59,6 +59,16 @@
   --color-border-focus: #a5b5ff;
   --color-border-error: var(--color-error);
 
+  /* Link Colors */
+  --color-link: hsl(210, 100%, 40%);
+  --color-link-visited: hsl(210, 100%, 32%);
+
+  /* Backdrop Colors */
+  --color-backdrop: rgba(0, 0, 0, 0.5);
+
+  /* Active/Selected State */
+  --color-bg-active: rgba(128, 128, 128, 0.1);
+
   /* Shadow Colors */
   --color-shadow: rgba(0, 0, 0, 0.09);
   --color-shadow-elevated: rgba(0, 0, 0, 0.12);
@@ -254,6 +264,11 @@
   --color-shadow: rgba(0, 0, 0, 0.43);
   --color-shadow-elevated: rgba(0, 0, 0, 0.6);
 
+  --color-link: hsl(210, 80%, 60%);
+  --color-link-visited: hsl(210, 70%, 52%);
+  --color-backdrop: rgba(0, 0, 0, 0.7);
+  --color-bg-active: rgba(128, 128, 128, 0.15);
+
   /* Adjusted state colors for dark mode */
   --color-success: hsl(140, 50%, 55%);
   --color-success-bg: hsl(140, 40%, 20%);
@@ -297,6 +312,11 @@
     --color-border-focus: #8a9aff;
     --color-shadow: rgba(0, 0, 0, 0.43);
     --color-shadow-elevated: rgba(0, 0, 0, 0.6);
+
+    --color-link: hsl(210, 80%, 60%);
+    --color-link-visited: hsl(210, 70%, 52%);
+    --color-backdrop: rgba(0, 0, 0, 0.7);
+    --color-bg-active: rgba(128, 128, 128, 0.15);
 
     --color-success: hsl(140, 50%, 55%);
     --color-success-bg: hsl(140, 40%, 20%);

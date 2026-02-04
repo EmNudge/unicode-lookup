@@ -83,6 +83,9 @@ function handleInput(e: Event) {
   gap: var(--space-1);
   width: auto;
 }
+.input-wrapper:has(.input--full-width) {
+  width: 100%;
+}
 .input {
   margin: 0;
   padding: var(--space-2) var(--space-4);

@@ -28,7 +28,7 @@ header {
   display: flex;
   justify-content: space-between;
   max-width: 600px;
-  margin: 20px auto;
+  margin: var(--space-5) auto;
   display: flex;
   align-items: center;
 }
@@ -42,7 +42,7 @@ button {
   cursor: pointer;
   margin: 0;
   z-index: 2;
-  padding: 10px 20px;
+  padding: var(--space-3) var(--space-5);
 }
 .active {
   color: var(--hsl-bg);
@@ -50,6 +50,7 @@ button {
   transition: 0.25s;
 }
 button:focus {
-  border: 1px solid var(--hsl);
+  outline: var(--border-width-2) solid var(--color-border-focus);
+  outline-offset: var(--border-width-2);
 }
 </style>

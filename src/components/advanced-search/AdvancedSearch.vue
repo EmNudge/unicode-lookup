@@ -10,13 +10,13 @@ interface Props {
 
 defineProps<Props>();
 
-const onClose = (index: number) => () => {
+function handleClose(index: number) {
   boxes.value = [...boxes.value.slice(0, index), ...boxes.value.slice(index + 1)];
-};
+}
 
-const updateBox = (index: number) => (box: Box) => {
+function handleBoxChange(index: number, box: Box) {
   boxes.value = [...boxes.value.slice(0, index), box, ...boxes.value.slice(index + 1)];
-};
+}
 
 onMounted(() => {
   if (boxes.value.length === 0) {
@@ -36,8 +36,8 @@ function addRule() {
         v-for="(box, i) in boxes"
         :key="i"
         :box="box"
-        @box-change="updateBox(i)"
-        @close="onClose(i)"
+        @boxChange="(b) => handleBoxChange(i, b)"
+        @close="() => handleClose(i)"
       />
     </form>
 
@@ -53,6 +53,6 @@ function addRule() {
   justify-content: flex-end;
 }
 .buttons :deep(*) {
-  margin: 5px;
+  margin: var(--space-1);
 }
 </style>

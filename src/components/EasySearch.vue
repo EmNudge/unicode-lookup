@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import { easySearch, isCommandPaletteOpen } from "$stores";
 import { debounce } from "$utils/debounce";
+import Input from "$lib/components/forms/Input.vue";
 
 interface Props {
   onSearch?: () => void;
@@ -10,7 +11,7 @@ interface Props {
 const props = defineProps<Props>();
 
 const error = ref("");
-const inputEl = ref<HTMLInputElement | null>(null);
+const inputEl = ref<InstanceType<typeof Input> | null>(null);
 
 const search = debounce(() => props.onSearch?.(), 100);
 
@@ -37,10 +38,15 @@ function trySearch() {
   search();
 }
 
+function getInputElement() {
+  return inputEl.value?.$el?.querySelector("input") as HTMLInputElement | null;
+}
+
 function handleKeyDown(e: KeyboardEvent) {
   if (isCommandPaletteOpen.value) return;
 
-  const inputIsFocused = document.activeElement === inputEl.value;
+  const input = getInputElement();
+  const inputIsFocused = document.activeElement === input;
   if (inputIsFocused) return;
 
   if (e.key.length > 1 || /\p{C}/u.test(e.key)) return;
@@ -51,7 +57,7 @@ function handleKeyDown(e: KeyboardEvent) {
     return;
   }
 
-  inputEl.value?.focus();
+  input?.focus();
 }
 
 onMounted(() => {
@@ -76,39 +82,20 @@ function handleSubmit(e: Event) {
 
 <template>
   <form @submit="handleSubmit">
-    <input
+    <Input
       ref="inputEl"
       type="text"
       placeholder="Search..."
-      :value="easySearch"
+      :model-value="easySearch"
+      :error="error"
+      full-width
       @input="handleInput"
     />
-
-    <template v-if="error">
-      <br />
-      <span style="color: red">{{ error }}</span>
-    </template>
   </form>
 </template>
 
 <style scoped>
-input {
-  width: 90%;
-  margin: 0 auto;
-  border: 1px solid transparent;
-  box-shadow: -3px 4px 2px #0000000f;
-}
-:root[data-theme="dark"] input {
-  background-color: #151515;
-  color: white;
-  border: 1px solid #6b6b6b;
-  box-shadow: 1px 1px 1px 2px #0000006e;
-}
-input::-webkit-input-placeholder {
-  opacity: 0.5;
-}
-input:focus {
-  outline: 1px solid #a5b5ff;
-  box-shadow: -3px 4px 2px #894aff0f;
+form {
+  width: 100%;
 }
 </style>

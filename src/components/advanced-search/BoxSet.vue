@@ -55,13 +55,13 @@ function handleDataChange(data: any) {
 <style scoped>
 .box {
   display: grid;
-  padding: 20px 0;
-  margin-bottom: 20px;
+  padding: var(--space-5) 0;
+  margin-bottom: var(--space-5);
 }
 .dropdown-container {
   display: flex;
   justify-content: center;
-  margin: -25px;
+  margin: calc(var(--space-6) * -1);
   z-index: 2;
 }
 </style>
