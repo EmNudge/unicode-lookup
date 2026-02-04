@@ -92,7 +92,7 @@ watch(
   font-size: 0.8rem;
 }
 .row.active {
-  border: 1px solid blue;
+  border: var(--border-width-1) solid var(--color-border-focus);
 }
 .content {
   width: 100%;

@@ -39,15 +39,15 @@ th {
   text-align: left;
   color: var(--primary-text);
   font-weight: 400;
-  padding-bottom: 6px;
+  padding-bottom: var(--space-2);
 }
 tbody tr:nth-child(odd) {
   background-color: var(--bg-offset);
 }
 td {
-  padding: 6px;
+  padding: var(--space-2);
 }
 td:first-child {
-  padding-right: 30px;
+  padding-right: var(--space-8);
 }
 </style>

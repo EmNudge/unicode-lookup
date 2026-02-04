@@ -54,33 +54,43 @@ function handleDataChange(data: any) {
 
     <hr />
 
-    <component :is="component" :data="props.data" @data-change="handleDataChange" />
+    <component
+      v-if="component"
+      :is="component"
+      :data="props.data"
+      @data-change="handleDataChange"
+    />
   </div>
 </template>
 
 <style scoped>
 .content {
-  padding: 40px;
+  padding: var(--space-10);
   display: grid;
   justify-content: center;
   margin-top: -1px;
   position: relative;
+  z-index: 1;
+  isolation: isolate;
 }
 button {
   position: absolute;
-  top: 5px;
-  right: 10px;
+  top: var(--space-1);
+  right: var(--space-3);
   background: none;
   border: none;
   font-size: 2em;
-  padding: 3px;
+  padding: var(--space-1);
   line-height: 0.8em;
   margin: 0;
-  z-index: 2;
+  z-index: 3;
   cursor: pointer;
 }
+button:hover {
+  opacity: 0.7;
+}
 hr {
-  margin: 10px -40px;
+  margin: var(--space-3) calc(var(--space-10) * -1);
   opacity: 0.4;
 }
 </style>

@@ -32,7 +32,7 @@ body {
 }
 
 a {
-  color: rgb(0, 100, 200);
+  color: var(--color-link);
   text-decoration: none;
   transition: var(--transition-colors);
 }
@@ -42,7 +42,7 @@ a:hover {
 }
 
 a:visited {
-  color: rgb(0, 80, 160);
+  color: var(--color-link-visited);
 }
 
 label {
@@ -70,7 +70,7 @@ input::placeholder {
 }
 
 input:disabled {
-  color: #ccc;
+  color: var(--color-text-tertiary);
   opacity: 0.6;
 }
 
@@ -80,23 +80,24 @@ input[type="range"] {
 
 button {
   color: var(--color-text);
-  background-color: #f4f4f4;
+  background-color: var(--color-bg-offset);
   outline: none;
   cursor: pointer;
 }
 
 button:disabled {
-  color: #999;
+  color: var(--color-text-tertiary);
   cursor: not-allowed;
   opacity: 0.6;
 }
 
 button:not(:disabled):active {
-  background-color: #ddd;
+  background-color: var(--color-bg-active);
 }
 
 button:focus {
-  border-color: #666;
+  outline: var(--border-width-2) solid var(--color-border-focus);
+  outline-offset: var(--border-width-2);
 }
 
 /* ==========================================
@@ -127,10 +128,12 @@ button.underline-btn {
   border-radius: var(--radius-base);
 }
 
-.styled:hover:not(:disabled) {
+button.styled:hover:not(:disabled),
+select.styled:hover:not(:disabled) {
   filter: brightness(0.95);
 }
 
-.styled:active:not(:disabled) {
+button.styled:active:not(:disabled),
+select.styled:active:not(:disabled) {
   transform: scale(0.98);
 }

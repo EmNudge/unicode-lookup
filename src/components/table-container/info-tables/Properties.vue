@@ -17,7 +17,7 @@ const props = defineProps<Props>();
 
 <style scoped>
 h3 {
-  padding-bottom: 6px;
+  padding-bottom: var(--space-2);
   color: var(--primary-text);
   font-size: 1rem;
   font-weight: 400;
@@ -26,13 +26,13 @@ h3 {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: var(--space-1);
   text-align: left;
   margin-bottom: var(--space-8);
 }
 .properties span {
   background: var(--bg-offset);
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-md);
 }
 </style>

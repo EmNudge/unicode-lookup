@@ -34,11 +34,11 @@ const chars = computed(() => Array.from(str.value));
 <style scoped>
 section {
   text-align: center;
-  padding-top: 50px;
+  padding-top: var(--space-12);
 }
 .chars span {
   display: inline-block;
-  width: 25px;
+  width: var(--space-6);
   text-align: center;
   line-height: 1em;
 }

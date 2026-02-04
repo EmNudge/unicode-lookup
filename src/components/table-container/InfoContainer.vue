@@ -103,14 +103,14 @@ const htmlEntityNames = computed(() => symbolHtmlNamesMap.value.get(props.codepo
 
 <style scoped>
 div.container {
-  border-radius: 8px;
-  padding: 20px;
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
 }
 .basic-info {
   display: grid;
 }
 td {
-  padding: 5px;
+  padding: var(--space-2);
 }
 td:nth-child(1) {
   font-weight: bold;
@@ -126,11 +126,11 @@ h1 {
   height: 64px;
   width: 64px;
   font-size: 3em;
-  border: 1px solid grey;
+  border: var(--border-width-1) solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 12px 0;
+  margin: var(--space-3) 0;
 }
 header {
   display: flex;
