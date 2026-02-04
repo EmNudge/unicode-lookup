@@ -1,13 +1,13 @@
-import { BidiClass } from "./BidiClass";
-import { CodepointRange } from "./CodepointRange";
-import { NameIncludes } from "./NameIncludes";
-import { RegexMatch } from "./RegexMatch";
-import { UnicodeBlock } from "./UnicodeBlock";
-import { UnicodePlane } from "./UnicodePlane";
-import { UnicodeProperty } from "./UnicodeProperty";
-import type { Component } from "solid-js";
+import BidiClass from "./BidiClass.vue";
+import CodepointRange from "./CodepointRange.vue";
+import NameIncludes from "./NameIncludes.vue";
+import RegexMatch from "./RegexMatch.vue";
+import UnicodeBlock from "./UnicodeBlock.vue";
+import UnicodePlane from "./UnicodePlane.vue";
+import UnicodeProperty from "./UnicodeProperty.vue";
+import type { Component } from "vue";
 
-const entries: [string, Component<{ data?: any; onDataChange?: (data: any) => void }>][] = [
+const entries: [string, Component][] = [
   ["Codepoint Range", CodepointRange],
   ["Name Includes", NameIncludes],
   ["Regex Match", RegexMatch],

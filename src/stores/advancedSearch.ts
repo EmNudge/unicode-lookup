@@ -1,9 +1,9 @@
 import type { BidiClass, Filter } from "$utils/types";
 import { PLANE_LENGTH } from "$utils/unicode";
-import { createSignal } from "solid-js";
+import { ref, type Ref } from "vue";
 
 export type Block = { range: [number, number]; name: string };
-export const [blockLookupSig, setBlockLookupSig] = createSignal<Block[]>([]);
+export const blockLookup: Ref<Block[]> = ref([]);
 
 type MatchType = "Require" | "Exclude";
 export type Box =
@@ -29,9 +29,8 @@ export const getNewBox = (): Box => ({
   matchType: "Require",
 });
 
-export const convertBoxSetToFilters = (boxes: Box[]): Filter[] => {
-  const blockLookup = blockLookupSig();
-  const filters = boxes
+export const convertBoxSetToFilters = (boxList: Box[]): Filter[] => {
+  const filters = boxList
     .filter((box) => box.data)
     .map((box) => {
       const negated = box.matchType === "Exclude";
@@ -61,8 +60,8 @@ export const convertBoxSetToFilters = (boxes: Box[]): Filter[] => {
       }
 
       if (name === "Unicode Block") {
-        if (!blockLookup) return;
-        const range = blockLookup.find((block) => block.name === data)?.range;
+        if (!blockLookup.value.length) return;
+        const range = blockLookup.value.find((block) => block.name === data)?.range;
         if (!range) return;
         return { type: "range", negated, value: range };
       }
@@ -79,4 +78,4 @@ export const convertBoxSetToFilters = (boxes: Box[]): Filter[] => {
   return filters.filter(Boolean) as Filter[];
 };
 
-export const [boxesSig, setBoxesSig] = createSignal<Box[]>([getNewBox()]);
+export const boxes: Ref<Box[]> = ref([getNewBox()]);
