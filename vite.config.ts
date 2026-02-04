@@ -1,6 +1,5 @@
-import { defineConfig } from "vite";
-import solid from "vite-plugin-solid";
-import solidStyled from "unplugin-solid-styled";
+import { defineConfig } from "rolldown-vite";
+import vue from "@vitejs/plugin-vue";
 import path from "path";
 
 export default defineConfig({
@@ -15,14 +14,5 @@ export default defineConfig({
 			$src: path.resolve(__dirname, "src"),
 		},
 	},
-	plugins: [
-		solid(),
-		solidStyled.vite({
-			prefix: "unicode",
-			filter: {
-				include: "src/**/*.tsx",
-				exclude: "node_modules/**/*.{ts,js}",
-			},
-		}),
-	],
+	plugins: [vue()],
 });

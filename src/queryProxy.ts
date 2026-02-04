@@ -1,10 +1,4 @@
-import {
-  setBlockLookupSig,
-  setHasFirstLoadedSig,
-  setSymbolHtmlNamesMapSig,
-  setWorkerIsReadySig,
-  setWorkerSig,
-} from "./stores";
+import { blockLookup, hasFirstLoaded, symbolHtmlNamesMap, workerIsReady, worker } from "./stores";
 import { parseBlocks } from "./utils/unicode";
 
 import { sendMessage } from "$utils/worker";
@@ -14,25 +8,25 @@ async function fetchBlocks() {
   const res = await fetch("/UnicodeBlocks.txt");
   const text = await res.text();
   const blocks = parseBlocks(text);
-  setBlockLookupSig(blocks);
+  blockLookup.value = blocks;
 }
 fetchBlocks();
 
 async function fetchSymbolHtmlNamesMap() {
   const text = await fetch("/SymbolHtmlNames.txt").then((res) => res.text());
 
-  const symbolNamesMap = text.split("\n").map((line) => {
+  const symbolNamesArr = text.split("\n").map((line) => {
     const [numStr, names] = line.split(";");
     return [parseInt(numStr!, 16), names!.split(",")] as [number, string[]];
   });
 
-  setSymbolHtmlNamesMapSig(new Map(symbolNamesMap));
+  symbolHtmlNamesMap.value = new Map(symbolNamesArr);
 }
 fetchSymbolHtmlNamesMap();
 
-const worker = new QueryWorker();
-setWorkerSig(worker);
-sendMessage(worker, { name: "loadTable" }).then(() => {
-  setHasFirstLoadedSig(true);
-  setWorkerIsReadySig(true);
+const queryWorker = new QueryWorker();
+worker.value = queryWorker;
+sendMessage(queryWorker, { name: "loadTable" }).then(() => {
+  hasFirstLoaded.value = true;
+  workerIsReady.value = true;
 });

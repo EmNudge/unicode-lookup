@@ -1,2 +1,0 @@
-import{s as r,a as c,b as i,c as m,p as l,d as p,e as k}from"./index-BILrXVKr.js";function u(e){return new Worker("/assets/index-BssihU6-.js",{name:e?.name})}async function S(){const s=await(await fetch("/UnicodeBlocks.txt")).text(),t=l(s);p(t)}S();async function d(){const s=(await fetch("/SymbolHtmlNames.txt").then(t=>t.text())).split(`
-`).map(t=>{const[n,o]=t.split(";");return[parseInt(n,16),o.split(",")]});k(new Map(s))}d();const a=new u;r(a);c(a,{name:"loadTable"}).then(()=>{i(!0),m(!0)});
