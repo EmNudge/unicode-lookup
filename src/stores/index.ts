@@ -61,4 +61,7 @@ export const encodingMode: Ref<"hex" | "bin" | "dec"> = ref("hex");
 // advanced search data
 export * from "./advancedSearch";
 
+// command palette
+export * from "./commandPalette";
+
 export const symbolHtmlNamesMap: Ref<Map<number, string[]>> = ref(new Map<number, string[]>());

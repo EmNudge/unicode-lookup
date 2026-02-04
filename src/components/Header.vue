@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { searchMode } from "$stores";
 import FilterIcon from "$icons/FilterIcon.vue";
-import ThemeSwitcher from "./ThemeSwitcher.vue";
 
 function toggleSearchMode() {
   searchMode.value = searchMode.value === "advanced" ? "simple" : "advanced";
@@ -17,7 +16,6 @@ function toggleSearchMode() {
     </div>
 
     <div class="buttons">
-      <ThemeSwitcher />
       <button :class="['styled', searchMode === 'advanced' && 'active']" @click="toggleSearchMode">
         <FilterIcon :active="searchMode === 'advanced'" />
       </button>

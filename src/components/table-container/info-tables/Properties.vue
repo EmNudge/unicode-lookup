@@ -28,6 +28,7 @@ h3 {
   flex-wrap: wrap;
   gap: 5px;
   text-align: left;
+  margin-bottom: var(--space-8);
 }
 .properties span {
   background: var(--bg-offset);

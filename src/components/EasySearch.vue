@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
-import { easySearch } from "$stores";
+import { easySearch, isCommandPaletteOpen } from "$stores";
 import { debounce } from "$utils/debounce";
 
 interface Props {
@@ -38,6 +38,8 @@ function trySearch() {
 }
 
 function handleKeyDown(e: KeyboardEvent) {
+  if (isCommandPaletteOpen.value) return;
+
   const inputIsFocused = document.activeElement === inputEl.value;
   if (inputIsFocused) return;
 
