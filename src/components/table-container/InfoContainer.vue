@@ -96,7 +96,6 @@ const htmlEntityNames = computed(() => symbolHtmlNamesMap.value.get(props.codepo
     />
     <Encoding :codepoint="props.codepoint" />
 
-    <br />
     <Properties :properties="properties" />
   </div>
 </template>
@@ -104,7 +103,7 @@ const htmlEntityNames = computed(() => symbolHtmlNamesMap.value.get(props.codepo
 <style scoped>
 div.container {
   border-radius: 0;
-  padding: var(--space-6) var(--space-5);
+  padding: var(--space-6) var(--space-5) var(--space-16);
 }
 .basic-info {
   display: grid;

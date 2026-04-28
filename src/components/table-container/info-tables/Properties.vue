@@ -7,7 +7,7 @@ const props = defineProps<Props>();
 </script>
 
 <template>
-  <div>
+  <div class="properties-section">
     <h3>Properties</h3>
     <div class="properties">
       <span v-for="property in props.properties" :key="property">{{ property }}</span>
@@ -16,6 +16,9 @@ const props = defineProps<Props>();
 </template>
 
 <style scoped>
+.properties-section {
+  margin-top: var(--space-4);
+}
 h3 {
   padding-bottom: var(--space-3);
   color: var(--color-text-primary);
