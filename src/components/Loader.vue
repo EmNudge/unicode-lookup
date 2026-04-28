@@ -36,10 +36,18 @@ section {
   text-align: center;
   padding-top: var(--space-12);
 }
+h2 {
+  font-weight: 300;
+  font-size: var(--font-size-base);
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.02em;
+  margin-bottom: var(--space-4);
+}
 .chars span {
   display: inline-block;
   width: var(--space-6);
   text-align: center;
   line-height: 1em;
+  opacity: 0.5;
 }
 </style>

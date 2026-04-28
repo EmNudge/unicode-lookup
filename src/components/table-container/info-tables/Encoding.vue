@@ -79,40 +79,54 @@ function setEncoding(encoding: EncodingType) {
 <style scoped>
 .bit-sets span {
   padding: 0 3px;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
 }
 .title {
-  color: var(--label-col);
-  font-weight: bold;
+  color: var(--color-text-secondary);
+  font-weight: 500;
 }
 td {
-  padding: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+}
+td:first-child {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  white-space: nowrap;
 }
 th:first-child {
-  color: var(--primary-text);
+  color: var(--color-text-primary);
   font-weight: 400;
+  font-size: var(--font-size-sm);
   padding-right: var(--space-4);
 }
 tbody tr:nth-child(odd) {
-  background-color: var(--bg-offset);
+  background-color: var(--color-bg-offset);
 }
 .encoding-type {
   display: flex;
+  gap: 2px;
 }
 .encoding-type button {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: pointer;
-  padding: var(--space-2);
+  padding: var(--space-1) var(--space-2);
   border: none;
   background: 0;
   margin: 0;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-md);
+  transition:
+    opacity var(--duration-fast),
+    background var(--duration-fast);
 }
-.encoding-type button:focus {
-  outline: var(--border-width-2) solid var(--color-border-focus);
-  outline-offset: var(--border-width-2);
+.encoding-type button:hover {
+  opacity: 0.8;
 }
 .encoding-type .active {
-  opacity: 0.95;
+  opacity: 1;
   background-color: var(--color-bg-active);
 }
 </style>

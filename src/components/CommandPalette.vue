@@ -140,33 +140,36 @@ const handleItemHover = (index: number) => {
 
 <style scoped>
 .command-palette {
-  width: 500px;
+  width: 480px;
   max-width: 90vw;
 }
 
 .search-container {
-  padding: var(--space-3);
-  border-bottom: var(--border-width-1) solid var(--color-border);
+  padding: var(--space-4);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.12);
 }
 
 .search-input {
   width: 100%;
   padding: var(--space-3) var(--space-4);
   border: none;
-  background: var(--color-bg-offset);
-  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
   font-size: var(--font-size-base);
+  font-weight: 300;
   color: var(--color-text);
   outline: none;
   box-sizing: border-box;
+  letter-spacing: -0.01em;
 }
 
 .search-input::placeholder {
   color: var(--color-text-tertiary);
+  opacity: 0.6;
 }
 
 .command-list {
-  max-height: 400px;
+  max-height: 360px;
   overflow-y: auto;
   padding: var(--space-2);
 }
@@ -179,7 +182,7 @@ const handleItemHover = (index: number) => {
   padding: var(--space-3) var(--space-4);
   border: none;
   background: transparent;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   cursor: pointer;
   text-align: left;
   color: var(--color-text);
@@ -194,31 +197,36 @@ const handleItemHover = (index: number) => {
 .command-info {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 2px;
 }
 
 .command-name {
-  font-weight: var(--font-weight-medium);
+  font-weight: 400;
   color: var(--color-text);
+  font-size: var(--font-size-sm);
 }
 
 .command-description {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   color: var(--color-text-tertiary);
+  font-weight: 300;
 }
 
 .command-shortcut {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
   background: var(--color-bg);
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-sm);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-md);
   font-family: var(--font-family-mono);
+  border: 1px solid rgba(128, 128, 128, 0.12);
 }
 
 .no-results {
-  padding: var(--space-4);
+  padding: var(--space-6);
   text-align: center;
   color: var(--color-text-tertiary);
+  font-weight: 300;
+  font-size: var(--font-size-sm);
 }
 </style>

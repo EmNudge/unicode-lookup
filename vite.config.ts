@@ -15,4 +15,11 @@ export default defineConfig({
 		},
 	},
 	plugins: [vue()],
+	build: {
+		rollupOptions: {
+			input: {
+				main: path.resolve(__dirname, "index.html"),
+			},
+		},
+	},
 });

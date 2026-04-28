@@ -41,16 +41,12 @@ function handleChange(e: Event) {
 
 <style scoped>
 select {
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
   cursor: pointer;
-}
-select:focus {
-  outline: var(--border-width-2) solid var(--color-border-focus);
-  outline-offset: var(--border-width-2);
+  font-weight: 400;
 }
 select:disabled {
-  opacity: 1;
-  filter: brightness(95%);
+  opacity: 0.6;
   cursor: auto;
 }
 </style>

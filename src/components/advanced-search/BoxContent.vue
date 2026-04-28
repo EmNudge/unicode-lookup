@@ -65,32 +65,37 @@ function handleDataChange(data: any) {
 
 <style scoped>
 .content {
-  padding: var(--space-10);
+  padding: var(--space-8);
   display: grid;
   justify-content: center;
   margin-top: -1px;
   position: relative;
   z-index: 1;
   isolation: isolate;
+  border-radius: var(--radius-xl);
 }
 button {
   position: absolute;
-  top: var(--space-1);
+  top: var(--space-2);
   right: var(--space-3);
   background: none;
   border: none;
-  font-size: 2em;
+  font-size: 1.5em;
   padding: var(--space-1);
   line-height: 0.8em;
   margin: 0;
   z-index: 3;
   cursor: pointer;
+  opacity: 0.5;
+  transition: opacity var(--duration-fast);
 }
 button:hover {
-  opacity: 0.7;
+  opacity: 0.9;
 }
 hr {
-  margin: var(--space-3) calc(var(--space-10) * -1);
-  opacity: 0.4;
+  margin: var(--space-3) calc(var(--space-8) * -1);
+  opacity: 0.2;
+  border: none;
+  border-top: 1px solid currentColor;
 }
 </style>

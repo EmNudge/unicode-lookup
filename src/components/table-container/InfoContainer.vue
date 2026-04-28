@@ -103,38 +103,51 @@ const htmlEntityNames = computed(() => symbolHtmlNamesMap.value.get(props.codepo
 
 <style scoped>
 div.container {
-  border-radius: var(--radius-xl);
-  padding: var(--space-5);
+  border-radius: 0;
+  padding: var(--space-6) var(--space-5);
 }
 .basic-info {
   display: grid;
+  font-size: var(--font-size-sm);
 }
 td {
-  padding: var(--space-2);
+  padding: var(--space-2) var(--space-3);
 }
 td:nth-child(1) {
-  font-weight: bold;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+td:nth-child(2) {
+  color: var(--color-text);
 }
 tr:nth-child(odd) {
-  background-color: var(--bg-offset);
+  background-color: var(--color-bg-offset);
+  border-radius: var(--radius-sm);
 }
 h1 {
   text-align: center;
+  font-size: var(--font-size-lg);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
 }
 .display-box {
-  background-color: var(--bg-offset);
-  height: 64px;
-  width: 64px;
-  font-size: 3em;
-  border: var(--border-width-1) solid var(--color-border);
+  background-color: var(--color-bg-offset);
+  height: 72px;
+  width: 72px;
+  font-size: 2.5em;
+  border: 1px solid rgba(128, 128, 128, 0.15);
+  border-radius: var(--radius-xl);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: var(--space-3) 0;
+  margin: var(--space-4) 0;
 }
 header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: var(--space-4);
 }
 </style>

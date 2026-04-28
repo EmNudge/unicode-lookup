@@ -56,10 +56,14 @@ button {
   margin: 0;
   background: none;
   border: none;
-  padding: 0 10px;
-  opacity: 0.6;
+  padding: 0 var(--space-3);
+  opacity: 0.5;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+button:hover {
+  opacity: 0.8;
 }
 button:active {
-  transform: scale(0.9);
+  transform: scale(0.92);
 }
 </style>

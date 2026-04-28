@@ -68,14 +68,18 @@ watch(
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 15vh;
+  padding-top: 18vh;
   z-index: var(--z-modal-backdrop);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .modal-content {
   background: var(--color-bg-elevated);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-xl);
+  border-radius: var(--radius-2xl);
+  box-shadow:
+    0 24px 48px -12px rgba(0, 0, 0, 0.18),
+    0 0 0 1px rgba(128, 128, 128, 0.08);
   z-index: var(--z-modal);
   max-height: 70vh;
   overflow: hidden;
@@ -86,14 +90,12 @@ watch(
 /* Transition animations */
 .modal-enter-active,
 .modal-leave-active {
-  transition:
-    opacity var(--duration-medium) var(--ease-out),
-    transform var(--duration-medium) var(--ease-out);
+  transition: opacity var(--duration-slow) var(--ease-out);
 }
 
 .modal-enter-active .modal-content,
 .modal-leave-active .modal-content {
-  transition: transform var(--duration-medium) var(--ease-out);
+  transition: transform var(--duration-slow) cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-enter-from,
@@ -103,6 +105,6 @@ watch(
 
 .modal-enter-from .modal-content,
 .modal-leave-to .modal-content {
-  transform: scale(0.95) translateY(-10px);
+  transform: scale(0.96) translateY(-8px);
 }
 </style>
