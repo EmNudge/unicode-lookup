@@ -52,11 +52,6 @@ function handleKeyDown(e: KeyboardEvent) {
   if (e.key.length > 1 || /\p{C}/u.test(e.key)) return;
   if (e.ctrlKey || e.altKey || e.metaKey) return;
 
-  if (e.key === " ") {
-    e.preventDefault();
-    return;
-  }
-
   input?.focus();
 }
 

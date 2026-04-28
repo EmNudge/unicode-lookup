@@ -69,6 +69,11 @@
   /* Active/Selected State */
   --color-bg-active: rgba(128, 128, 128, 0.1);
 
+  /* Scrollbar */
+  --color-scrollbar-thumb: rgba(75, 85, 140, 0.25);
+  --color-scrollbar-thumb-hover: rgba(75, 85, 140, 0.4);
+  --color-scrollbar-track: transparent;
+
   /* Shadow Colors */
   --color-shadow: rgba(0, 0, 0, 0.09);
   --color-shadow-elevated: rgba(0, 0, 0, 0.12);
@@ -270,6 +275,11 @@
   --color-backdrop: rgba(0, 0, 0, 0.7);
   --color-bg-active: rgba(128, 128, 128, 0.15);
 
+  /* Scrollbar */
+  --color-scrollbar-thumb: rgba(255, 255, 255, 0.2);
+  --color-scrollbar-thumb-hover: rgba(255, 255, 255, 0.35);
+  --color-scrollbar-track: transparent;
+
   /* Adjusted state colors for dark mode */
   --color-success: hsl(140, 50%, 55%);
   --color-success-bg: hsl(140, 40%, 20%);
@@ -318,6 +328,10 @@
     --color-link-visited: hsl(210, 70%, 52%);
     --color-backdrop: rgba(0, 0, 0, 0.7);
     --color-bg-active: rgba(128, 128, 128, 0.15);
+
+    --color-scrollbar-thumb: rgba(255, 255, 255, 0.2);
+    --color-scrollbar-thumb-hover: rgba(255, 255, 255, 0.35);
+    --color-scrollbar-track: transparent;
 
     --color-success: hsl(140, 50%, 55%);
     --color-success-bg: hsl(140, 40%, 20%);

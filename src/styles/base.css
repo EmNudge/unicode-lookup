@@ -109,6 +109,35 @@ button:focus-visible {
 }
 
 /* ==========================================
+   SCROLLBARS
+   ========================================== */
+
+/* Modern browsers (Firefox, Chrome 121+) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
+}
+
+/* WebKit (Safari, older Chrome) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar-thumb);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-scrollbar-thumb-hover);
+}
+
+/* ==========================================
    UTILITY CLASSES
    ========================================== */
 
