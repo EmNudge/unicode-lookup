@@ -74,14 +74,12 @@ const htmlEntityNames = computed(() => symbolHtmlNamesMap.value.get(props.codepo
         <span>{{ String.fromCodePoint(props.codepoint) }}</span>
       </div>
     </header>
-    <table class="basic-info">
-      <tbody>
-        <tr v-for="[name, value] in baseInfo" :key="name">
-          <td>{{ name }}</td>
-          <td>{{ value }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <dl class="basic-info">
+      <div v-for="[name, value] in baseInfo" :key="name" class="info-item">
+        <dt>{{ name }}</dt>
+        <dd>{{ value }}</dd>
+      </div>
+    </dl>
 
     <HtmlEntities :codepoint="props.codepoint" :names="htmlEntityNames" />
     <CaseMapping
@@ -107,22 +105,29 @@ div.container {
 }
 .basic-info {
   display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
   font-size: var(--font-size-sm);
 }
-td {
+.info-item {
+  background: var(--color-bg-offset);
+  border-radius: var(--radius-lg);
   padding: var(--space-2) var(--space-3);
+  border: 1px solid rgba(128, 128, 128, 0.1);
 }
-td:nth-child(1) {
+.info-item:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+dt {
+  font-size: var(--font-size-xs);
   font-weight: 500;
   color: var(--color-text-secondary);
-  white-space: nowrap;
+  margin-bottom: var(--space-1);
 }
-td:nth-child(2) {
+dd {
   color: var(--color-text);
-}
-tr:nth-child(odd) {
-  background-color: var(--color-bg-offset);
-  border-radius: var(--radius-sm);
+  margin: 0;
+  word-break: break-word;
 }
 h1 {
   text-align: center;

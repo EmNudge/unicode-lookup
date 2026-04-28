@@ -8,53 +8,58 @@ const props = defineProps<Props>();
 </script>
 
 <template>
-  <div>
-    <br />
-    <table>
-      <thead>
-        <tr>
-          <th class="title" colspan="2">Html Entities</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="name in props.names" :key="name">
-          <td>Named</td>
-          <td>&amp;{{ name }};</td>
-        </tr>
-        <tr>
-          <td>Hex</td>
-          <td>&amp;#x{{ props.codepoint.toString(16).padStart(5, "0") }};</td>
-        </tr>
-        <tr>
-          <td>Dec</td>
-          <td>&amp;#{{ props.codepoint }};</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="html-entities-section">
+    <h3>HTML Entities</h3>
+    <div class="chips">
+      <span v-for="name in props.names" :key="name" class="chip">
+        <span class="chip-label">Named</span>
+        <code>&amp;{{ name }};</code>
+      </span>
+      <span class="chip">
+        <span class="chip-label">Hex</span>
+        <code>&amp;#x{{ props.codepoint.toString(16).padStart(5, "0") }};</code>
+      </span>
+      <span class="chip">
+        <span class="chip-label">Dec</span>
+        <code>&amp;#{{ props.codepoint }};</code>
+      </span>
+    </div>
   </div>
 </template>
 
 <style scoped>
-th {
-  text-align: left;
+.html-entities-section {
+  margin-top: var(--space-4);
+}
+h3 {
+  padding-bottom: var(--space-3);
   color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
   font-weight: 400;
-  font-size: var(--font-size-sm);
-  padding-bottom: var(--space-2);
+  letter-spacing: 0.01em;
 }
-tbody tr:nth-child(odd) {
-  background-color: var(--color-bg-offset);
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }
-td {
+.chip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  background: var(--color-bg-offset);
+  border: 1px solid rgba(128, 128, 128, 0.1);
+  border-radius: var(--radius-lg);
   padding: var(--space-2) var(--space-3);
-  font-size: var(--font-size-sm);
 }
-td:first-child {
-  padding-right: var(--space-8);
+.chip-label {
+  font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
   font-weight: 500;
 }
-td:nth-child(2) {
+.chip code {
   font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
 }
 </style>

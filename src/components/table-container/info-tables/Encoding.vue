@@ -39,76 +39,60 @@ function setEncoding(encoding: EncodingType) {
 </script>
 
 <template>
-  <div>
-    <br />
-    <table class="encoding-table">
-      <thead>
-        <tr>
-          <th class="title">Encoding</th>
-          <th>
-            <div class="encoding-type">
-              <button
-                v-for="encoding in encodingTypes"
-                :key="encoding"
-                :class="{ active: encodingMode === encoding }"
-                @click="setEncoding(encoding)"
-              >
-                {{ encoding }}
-              </button>
-            </div>
-          </th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr v-for="[name, bitSets, length] in encodingsTable" :key="name">
-          <td>{{ name }}</td>
-          <td class="bit-sets">
-            <span
-              v-for="(bitSet, i) in Array.from(bitSets)"
-              :key="i"
-              v-html="getNumber(bitSet, encodingMode, length as number)"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="encoding-section">
+    <div class="encoding-header">
+      <h3>Encoding</h3>
+      <div class="encoding-toggle">
+        <button
+          v-for="encoding in encodingTypes"
+          :key="encoding"
+          :class="{ active: encodingMode === encoding }"
+          @click="setEncoding(encoding)"
+        >
+          {{ encoding }}
+        </button>
+      </div>
+    </div>
+    <div class="encoding-block">
+      <div v-for="[name, bitSets, length] in encodingsTable" :key="name" class="encoding-line">
+        <span class="encoding-label">{{ name }}</span>
+        <span class="encoding-values">
+          <span
+            v-for="(bitSet, i) in Array.from(bitSets)"
+            :key="i"
+            v-html="getNumber(bitSet, encodingMode, length as number)"
+          />
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.bit-sets span {
-  padding: 0 3px;
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-sm);
+.encoding-section {
+  margin-top: var(--space-4);
 }
-.title {
-  color: var(--color-text-secondary);
-  font-weight: 500;
+.encoding-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
 }
-td {
-  padding: var(--space-2) var(--space-3);
-  font-size: var(--font-size-sm);
-}
-td:first-child {
-  color: var(--color-text-secondary);
-  font-weight: 500;
-  white-space: nowrap;
-}
-th:first-child {
+h3 {
   color: var(--color-text-primary);
-  font-weight: 400;
   font-size: var(--font-size-sm);
-  padding-right: var(--space-4);
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
-tbody tr:nth-child(odd) {
-  background-color: var(--color-bg-offset);
-}
-.encoding-type {
+.encoding-toggle {
   display: flex;
   gap: 2px;
+  background: var(--color-bg-offset);
+  border-radius: var(--radius-md);
+  padding: 2px;
+  border: 1px solid rgba(128, 128, 128, 0.1);
 }
-.encoding-type button {
+.encoding-toggle button {
   opacity: 0.5;
   cursor: pointer;
   padding: var(--space-1) var(--space-2);
@@ -117,16 +101,40 @@ tbody tr:nth-child(odd) {
   margin: 0;
   font-weight: 500;
   font-size: var(--font-size-xs);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   transition:
     opacity var(--duration-fast),
     background var(--duration-fast);
 }
-.encoding-type button:hover {
+.encoding-toggle button:hover {
   opacity: 0.8;
 }
-.encoding-type .active {
+.encoding-toggle .active {
   opacity: 1;
   background-color: var(--color-bg-active);
+}
+.encoding-block {
+  background: var(--color-bg-offset);
+  border: 1px solid rgba(128, 128, 128, 0.1);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2) 0;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+}
+.encoding-line {
+  display: flex;
+  padding: var(--space-1) var(--space-3);
+  gap: var(--space-3);
+}
+.encoding-label {
+  color: var(--color-text-secondary);
+  min-width: 5.5em;
+  flex-shrink: 0;
+}
+.encoding-values {
+  color: var(--color-text);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-1);
 }
 </style>
