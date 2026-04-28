@@ -14,7 +14,7 @@ body {
   color: var(--color-text);
   background: var(--color-bg);
   transition:
-    background var(--duration-base),
+    background var(--duration-medium) var(--ease-out),
     color var(--duration-fast);
 
   margin: 0;
@@ -23,6 +23,8 @@ body {
   font-family: var(--font-family-base);
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   overflow-y: scroll;
 }
@@ -56,22 +58,26 @@ select,
 textarea {
   font-family: inherit;
   font-size: inherit;
-  padding: 0.4em 1em;
-  margin: 0 0 0.5em 0;
+  padding: 0.4em 0.75em;
+  margin: 0;
   box-sizing: border-box;
   border: var(--border-width-1) solid var(--color-border);
-  border-radius: var(--radius-sm);
-  transition: var(--transition-colors);
+  border-radius: var(--radius-lg);
+  transition:
+    border-color var(--duration-medium) var(--ease-out),
+    box-shadow var(--duration-medium) var(--ease-out),
+    background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
 }
 
 input::placeholder {
   color: inherit;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 input:disabled {
   color: var(--color-text-tertiary);
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 input[type="range"] {
@@ -88,16 +94,18 @@ button {
 button:disabled {
   color: var(--color-text-tertiary);
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 button:not(:disabled):active {
   background-color: var(--color-bg-active);
 }
 
-button:focus {
-  outline: var(--border-width-2) solid var(--color-border-focus);
-  outline-offset: var(--border-width-2);
+button:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--color-bg),
+    0 0 0 4px var(--color-border-focus);
 }
 
 /* ==========================================
@@ -121,16 +129,19 @@ button.underline-btn {
   color: var(--hsl);
   background: var(--hsl-bg);
   transition:
-    background var(--duration-medium),
-    color var(--duration-fast);
+    background var(--duration-medium) var(--ease-out),
+    color var(--duration-fast),
+    border-color var(--duration-medium) var(--ease-out),
+    box-shadow var(--duration-medium) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
 
   border: var(--border-width-1) solid var(--hsl);
-  border-radius: var(--radius-base);
+  border-radius: var(--radius-lg);
 }
 
 button.styled:hover:not(:disabled),
 select.styled:hover:not(:disabled) {
-  filter: brightness(0.95);
+  filter: brightness(0.97);
 }
 
 button.styled:active:not(:disabled),

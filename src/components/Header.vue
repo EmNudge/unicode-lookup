@@ -28,12 +28,24 @@ header {
   display: flex;
   justify-content: space-between;
   max-width: 600px;
-  margin: var(--space-5) auto;
-  display: flex;
-  align-items: center;
+  margin: var(--space-8) auto var(--space-6);
+  align-items: baseline;
 }
 h1 {
-  font-size: 1.7em;
+  font-size: 1.5em;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+h3 {
+  font-weight: 300;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.01em;
+}
+.text {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
 }
 .buttons {
   display: flex;
@@ -42,15 +54,10 @@ button {
   cursor: pointer;
   margin: 0;
   z-index: 2;
-  padding: var(--space-3) var(--space-5);
+  padding: var(--space-2) var(--space-4);
 }
 .active {
   color: var(--hsl-bg);
   background: var(--hsl);
-  transition: 0.25s;
-}
-button:focus {
-  outline: var(--border-width-2) solid var(--color-border-focus);
-  outline-offset: var(--border-width-2);
 }
 </style>

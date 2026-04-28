@@ -47,8 +47,7 @@ onMounted(() => {
         <template v-if="hasFirstLoaded">
           <ResultsContainer v-if="results.length" />
           <template v-else>
-            <br />
-            <p>No results fit that query :/</p>
+            <p class="no-results">No results fit that query</p>
           </template>
         </template>
         <Loader v-else />
@@ -71,10 +70,12 @@ main {
   margin: 0 auto;
   width: 600px;
   max-width: 100%;
+  padding: 0 var(--space-4);
 }
 @media (min-width: 640px) {
   main {
     max-width: none;
+    padding: 0;
   }
 }
 .content.middle {
@@ -93,5 +94,11 @@ aside div {
   width: 400px;
   overflow-y: auto;
   height: 100vh;
+}
+.no-results {
+  color: var(--color-text-tertiary);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  padding: var(--space-4) 0;
 }
 </style>

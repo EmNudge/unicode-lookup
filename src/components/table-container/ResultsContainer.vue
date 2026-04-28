@@ -79,9 +79,11 @@ function handleKeydown(e: KeyboardEvent) {
 }
 p {
   text-align: left;
-  margin: 0;
-  opacity: 0.7;
-  font-size: 0.8rem;
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-xs);
+  font-weight: 400;
+  letter-spacing: 0.02em;
 }
 .intersection-observer {
   height: 5rem;

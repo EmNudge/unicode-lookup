@@ -37,17 +37,24 @@ const props = defineProps<Props>();
 <style scoped>
 th {
   text-align: left;
-  color: var(--primary-text);
+  color: var(--color-text-primary);
   font-weight: 400;
+  font-size: var(--font-size-sm);
   padding-bottom: var(--space-2);
 }
 tbody tr:nth-child(odd) {
-  background-color: var(--bg-offset);
+  background-color: var(--color-bg-offset);
 }
 td {
-  padding: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
 }
 td:first-child {
   padding-right: var(--space-8);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+td:nth-child(2) {
+  font-family: var(--font-family-mono);
 }
 </style>

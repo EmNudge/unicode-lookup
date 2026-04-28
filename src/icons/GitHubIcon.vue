@@ -5,7 +5,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: 60,
+  size: 50,
 });
 </script>
 
@@ -38,5 +38,10 @@ svg {
   position: absolute;
   top: 0;
   right: 0;
+  opacity: 0.5;
+  transition: opacity var(--duration-fast, 0.1s) ease-out;
+}
+svg:hover {
+  opacity: 0.8;
 }
 </style>

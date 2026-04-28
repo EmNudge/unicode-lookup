@@ -31,7 +31,7 @@
   --color-bg-input: white;
   --color-text: #30354b;
   --color-text-secondary: #4b558c;
-  --color-text-tertiary: #6b7099;
+  --color-text-tertiary: #5c6085;
   --color-text-primary: #584ca4;
 
   /* Backward compatibility aliases */
@@ -55,8 +55,8 @@
   --color-info-border: hsl(210, 80%, 50%);
 
   /* Border Colors */
-  --color-border: #ccc;
-  --color-border-focus: #a5b5ff;
+  --color-border: #b8bdd4;
+  --color-border-focus: #7b8ee6;
   --color-border-error: var(--color-error);
 
   /* Link Colors */
@@ -223,14 +223,15 @@
   --color-bg-input: white;
   --color-text: #30354b;
   --color-text-secondary: #4b558c;
-  --color-text-tertiary: #6b7099;
+  --color-text-tertiary: #5c6085;
   --color-text-primary: #584ca4;
 
   --hsl-lightness: 39%;
   --hsl-bg-lightness: 95%;
   --primary-text: #584ca4;
 
-  --color-border: #ccc;
+  --color-border: #b8bdd4;
+  --color-border-focus: #7b8ee6;
   --color-shadow: rgba(0, 0, 0, 0.09);
   --color-shadow-elevated: rgba(0, 0, 0, 0.12);
 
@@ -251,14 +252,14 @@
   --color-bg-input: #151515;
   --color-text: #d3d6e3;
   --color-text-secondary: #9da6dd;
-  --color-text-tertiary: #7b84b3;
+  --color-text-tertiary: #8d95c4;
   --color-text-primary: #a89ee6;
 
   --hsl-lightness: 50%;
   --hsl-bg-lightness: 5%;
   --primary-text: #a89ee6;
 
-  --color-border: #6b6b6b;
+  --color-border: #555;
   --color-border-focus: #8a9aff;
 
   --color-shadow: rgba(0, 0, 0, 0.43);
@@ -301,7 +302,7 @@
     --color-bg-input: #151515;
     --color-text: #d3d6e3;
     --color-text-secondary: #9da6dd;
-    --color-text-tertiary: #7b84b3;
+    --color-text-tertiary: #8d95c4;
     --color-text-primary: #a89ee6;
 
     --hsl-lightness: 50%;

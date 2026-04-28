@@ -68,6 +68,9 @@ function handleInput(e: Event) {
 
 <style scoped>
 p {
-  color: red;
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+  margin-top: var(--space-1);
+  font-weight: 400;
 }
 </style>

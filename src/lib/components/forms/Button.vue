@@ -59,12 +59,18 @@ const style = computed(() => (props.hue !== undefined ? `--hue: ${props.hue}` : 
 .btn {
   margin: 0;
   padding: var(--space-2) var(--space-5);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg);
+  box-shadow: none;
   cursor: pointer;
   font-family: var(--font-family-base);
-  font-weight: var(--font-weight-medium);
-  transition: var(--transition-colors), var(--transition-transform);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  transition:
+    background var(--duration-medium) var(--ease-out),
+    border-color var(--duration-medium) var(--ease-out),
+    box-shadow var(--duration-medium) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    filter var(--duration-fast) var(--ease-out);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -73,8 +79,10 @@ const style = computed(() => (props.hue !== undefined ? `--hue: ${props.hue}` : 
   border: var(--border-width-1) solid transparent;
 }
 .btn:focus-visible {
-  outline: 2px solid var(--color-border-focus);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--color-bg),
+    0 0 0 4px var(--color-border-focus);
 }
 .btn--primary {
   color: var(--color-primary);
@@ -82,8 +90,7 @@ const style = computed(() => (props.hue !== undefined ? `--hue: ${props.hue}` : 
   border-color: var(--color-primary);
 }
 .btn--primary:hover:not(:disabled) {
-  background: var(--color-primary-hover);
-  filter: brightness(0.95);
+  filter: brightness(0.97);
 }
 .btn--primary:active:not(:disabled) {
   transform: scale(0.98);
@@ -94,20 +101,20 @@ const style = computed(() => (props.hue !== undefined ? `--hue: ${props.hue}` : 
   border-color: var(--color-border);
 }
 .btn--secondary:hover:not(:disabled) {
-  background: var(--color-bg-elevated);
   border-color: var(--color-text-secondary);
+  background: var(--color-bg-elevated);
 }
 .btn--secondary:active:not(:disabled) {
   transform: scale(0.98);
 }
 .btn--ghost {
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
   background: transparent;
   border-color: transparent;
-  box-shadow: none;
 }
 .btn--ghost:hover:not(:disabled) {
-  background: var(--color-bg-offset);
+  background: var(--color-bg-active);
+  color: var(--color-text);
 }
 .btn--ghost:active:not(:disabled) {
   transform: scale(0.98);
@@ -116,7 +123,6 @@ const style = computed(() => (props.hue !== undefined ? `--hue: ${props.hue}` : 
   color: var(--color-primary);
   background: transparent;
   border-color: var(--color-primary);
-  box-shadow: none;
 }
 .btn--outline:hover:not(:disabled) {
   background: var(--color-primary-bg);
@@ -130,7 +136,7 @@ const style = computed(() => (props.hue !== undefined ? `--hue: ${props.hue}` : 
   border-color: var(--color-error);
 }
 .btn--danger:hover:not(:disabled) {
-  filter: brightness(1.1);
+  filter: brightness(1.08);
 }
 .btn--danger:active:not(:disabled) {
   transform: scale(0.98);
@@ -154,10 +160,10 @@ const style = computed(() => (props.hue !== undefined ? `--hue: ${props.hue}` : 
 .btn__spinner {
   width: 1em;
   height: 1em;
-  border: 2px solid currentColor;
+  border: 1.5px solid currentColor;
   border-right-color: transparent;
   border-radius: 50%;
-  animation: spin 0.6s linear infinite;
+  animation: spin 0.7s linear infinite;
 }
 @keyframes spin {
   to {
@@ -165,7 +171,7 @@ const style = computed(() => (props.hue !== undefined ? `--hue: ${props.hue}` : 
   }
 }
 .btn__content--loading {
-  opacity: 0.7;
+  opacity: 0.6;
 }
 .btn.styled {
   color: var(--hsl);
@@ -173,7 +179,7 @@ const style = computed(() => (props.hue !== undefined ? `--hue: ${props.hue}` : 
   border-color: var(--hsl);
 }
 .btn.styled:hover:not(:disabled) {
-  filter: brightness(0.95);
+  filter: brightness(0.97);
 }
 .btn.styled:active:not(:disabled) {
   transform: scale(0.98);

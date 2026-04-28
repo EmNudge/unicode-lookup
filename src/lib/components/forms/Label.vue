@@ -41,8 +41,9 @@ const classes = computed(() => ["label", `label--${props.size}`].join(" "));
 .label {
   display: block;
   color: var(--color-text-secondary);
-  font-weight: var(--font-weight-medium);
-  margin-bottom: var(--space-1);
+  font-weight: var(--font-weight-normal);
+  margin-bottom: var(--space-2);
+  letter-spacing: 0.005em;
 }
 .label--sm {
   font-size: var(--font-size-sm);
@@ -58,6 +59,7 @@ const classes = computed(() => ["label", `label--${props.size}`].join(" "));
 }
 .label-indicator--required {
   color: var(--color-error);
+  font-weight: var(--font-weight-normal);
 }
 .label-indicator--optional {
   color: var(--color-text-tertiary);

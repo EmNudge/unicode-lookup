@@ -78,8 +78,16 @@ watch(
 .row {
   border: 1px solid transparent;
   width: 100%;
-  background-color: var(--bg-offset);
+  background-color: var(--color-bg-offset);
   position: relative;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-1);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+.row:hover {
+  box-shadow: inset 0 0 0 1px var(--color-border);
 }
 .row:after {
   content: attr(data-codepoint);
@@ -87,30 +95,39 @@ watch(
   position: absolute;
   bottom: 0;
   right: 0;
-  padding: 0.5rem;
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-tertiary);
   opacity: 0.5;
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family-mono);
+  letter-spacing: 0.02em;
 }
 .row.active {
-  border: var(--border-width-1) solid var(--color-border-focus);
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px rgba(123, 142, 230, 0.2);
 }
 .content {
   width: 100%;
-  padding: 0.5rem;
+  padding: var(--space-3) var(--space-3);
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 1rem;
+  gap: var(--space-4);
+  align-items: center;
 }
 .symbol {
   width: 2rem;
   text-align: center;
+  font-size: var(--font-size-lg);
 }
 .symbol::before,
 .symbol::after {
   content: '"';
+  opacity: 0.3;
 }
 .name {
   text-align: left;
-  opacity: 0.75;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.005em;
 }
 </style>

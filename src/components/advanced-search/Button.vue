@@ -27,27 +27,19 @@ const btnClass = computed(() => ["styled", props.disabled && "disabled"].filter(
 <style scoped>
 button {
   margin: 0;
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-lg);
+  box-shadow: none;
   cursor: pointer;
-}
-button:focus {
-  outline: var(--border-width-2) solid var(--color-border-focus);
-  outline-offset: var(--border-width-2);
+  font-weight: 400;
 }
 button:active {
-  color: var(--hsl);
-  border: var(--border-width-1) solid var(--hsl);
-  background: hsl(var(--hue), 100%, 95%);
-}
-button:active {
-  background: hsl(var(--hue), 70%, 95%);
-  transform: scale(0.95);
+  transform: scale(0.97);
 }
 .disabled {
   border: 1px solid hsl(var(--hue), 40%, 75%);
   color: hsl(var(--hue), 40%, 75%);
   cursor: auto;
+  opacity: 0.6;
 }
 </style>
